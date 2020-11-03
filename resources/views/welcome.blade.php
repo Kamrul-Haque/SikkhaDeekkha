@@ -34,7 +34,7 @@
         }
         hr.line{
             border-top: 1px solid black;
-            width: 75%;
+            width: 70%;
         }
         a{
             display: block;
@@ -48,6 +48,9 @@
             height: 200px;
             border: 0;
             filter: invert(25%);
+        }
+        iframe:hover{
+            filter: invert(20%) drop-shadow(3px 7px 7px slategray);
         }
     </style>
 @endsection

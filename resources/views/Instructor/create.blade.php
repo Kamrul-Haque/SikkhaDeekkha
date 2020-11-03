@@ -6,11 +6,11 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header bg-primary text-light">
-                        <h4>Create Student</h4>
+                        <h4>Create Instructor</h4>
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('student.store') }}">
+                        <form method="POST" action="{{ route('instructor.store') }}">
                             @csrf
 
                             <div class="form-group row">
@@ -63,23 +63,13 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="study" class="col-md-4 col-form-label text-md-right">Currently Studying</label>
+                            <div id="degree" class="form-group row">
+                                <label for="designation" class="col-md-4 col-form-label text-md-right">Designation</label>
 
                                 <div class="col-md-6">
-                                    <select id="study" type="text" class="form-control @error('study') is-invalid @enderror" name="study" required>
-                                        <option value="" selected disabled>Please Select...</option>
-                                        <option value="Primary School">Primary School</option>
-                                        <option value="High School">High School</option>
-                                        <option value="Secondary">Secondary</option>
-                                        <option value="Higher Secondary">Higher Secondary</option>
-                                        <option value="Diploma">Diploma</option>
-                                        <option value="Undergraduate">Undergraduate</option>
-                                        <option value="Graduate">Graduate</option>
-                                        <option value="Post-Graduate">Post-Graduate</option>
-                                    </select>
+                                    <input id="designation" type="text" class="form-control @error('designation') is-invalid @enderror" name="designation" value="{{ old('designation') }}">
 
-                                    @error('study')
+                                    @error('designation')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -87,18 +77,13 @@
                                 </div>
                             </div>
 
-                            <div id="group" class="form-group row">
-                                <label for="faculty" class="col-md-4 col-form-label text-md-right">Faculty</label>
+                            <div id="degree" class="form-group row">
+                                <label for="department" class="col-md-4 col-form-label text-md-right">Department</label>
 
                                 <div class="col-md-6">
-                                    <select id="faculty" type="text" class="form-control @error('faculty') is-invalid @enderror" name="faculty">
-                                        <option value="" selected disabled>Please Select...</option>
-                                        <option value="Science">Science</option>
-                                        <option value="Commerce">Commerce</option>
-                                        <option value="Art">Art</option>
-                                    </select>
+                                    <input id="department" type="text" class="form-control @error('department') is-invalid @enderror" name="department" value="{{ old('department') }}">
 
-                                    @error('faculty')
+                                    @error('department')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -113,36 +98,6 @@
                                     <input id="institution" type="text" class="form-control @error('institution') is-invalid @enderror" name="institution" value="{{ old('institution') }}" required>
 
                                     @error('institution')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div id="degree" class="form-group row">
-                                <label for="specialization" class="col-md-4 col-form-label text-md-right">Specialization</label>
-
-                                <div class="col-md-6">
-                                    <input id="specialization" type="text" class="form-control @error('specialization') is-invalid @enderror" name="specialization" value="{{ old('specialization') }}">
-
-                                    @error('specialization')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="interest" class="col-md-4 col-form-label text-md-right">Interest</label>
-
-                                <div class="col-md-6">
-                                    <select id="interest" type="text" class="form-control @error('interest') is-invalid @enderror" name="interest">
-                                        <option value="" selected disabled>Please Select...</option>
-                                    </select>
-
-                                    @error('interest')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -196,40 +151,4 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        $(function() {
-            $('#degree').hide();
-            $('#group').hide();
-            $('#study').change(function (){
-               var study = $(this).val();
-
-               switch (study){
-                   case "Diploma":
-                   case "Undergraduate":
-                   case "Graduate":
-                   case "Post-Graduate":
-                       $('#degree').show();
-                       break;
-                   default:
-                       $('#degree').hide();
-               }
-            });
-            $('#study').change(function (){
-                var study = $(this).val();
-
-                switch (study){
-                    case "Secondary":
-                    case "Higher Secondary":
-                    case "Diploma":
-                    case "Undergraduate":
-                    case "Graduate":
-                    case "Post-Graduate":
-                        $('#group').show();
-                        break;
-                    default:
-                        $('#group').hide();
-                }
-            });
-        });
-    </script>
 @endsection

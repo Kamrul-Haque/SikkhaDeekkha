@@ -22,3 +22,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('/student', 'StudentController')->middleware('auth');
+Route::resource('/instructor','InstructorController')->middleware('auth');
+Route::resource('/institution','InstitutionController')->middleware('auth');

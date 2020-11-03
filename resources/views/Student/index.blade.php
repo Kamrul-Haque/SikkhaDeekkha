@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('styles')
     <style>
         th{
@@ -7,6 +8,7 @@
         }
     </style>
 @endsection
+
 @section('content')
     <div class="container-fluid p-4">
         <div class="card">
