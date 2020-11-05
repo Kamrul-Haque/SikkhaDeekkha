@@ -27,6 +27,8 @@
             height: 300px;
             text-align: center;
             vertical-align: middle;
+        }
+        .jumbotron-intro{
             z-index: 1;
         }
         .display-4{
@@ -52,6 +54,49 @@
         iframe:hover{
             filter: invert(20%) drop-shadow(3px 7px 7px slategray);
         }
+        .num{
+            justify-content: center;
+            text-align: center;
+            font-size: 30px;
+            color: #1f6fb2;
+            font-family: "montserrat",sans-serif;
+            font-weight: 8;
+            text-shadow: 2px 2px 4px #2176bd;
+        }
+        li.stat-list{
+            position: relative;
+            background: #060c21;
+        }
+        .stat-jumbotron.d-flex{
+            height: 350px;
+            background-image: background-color:hsl(0, 0%, 90%);
+        }
+        .bg-white{
+            background: linear-gradient(0deg, #a5dce3, #e2dad0);
+        }
+        .bg-white:before{
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            background: linear-gradient(45deg, #c1c1c1, #e2f3f1, #d6d5cf, #c5d7c5, #c1c1c1, #c5d7c5, #c5d7c5, #c5d7c5);
+            background-size: 400%;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
+            z-index: -1;
+            animation: gradient-shadow 20s linear infinite;
+        }
+        @keyframes gradient-shadow {
+            0%{
+                background-position: 0 0 ;
+            }
+            50%{
+                background-position: 300% 0 ;
+            }
+            100%{
+                background-position: 0 0 ;
+            }
+        }
     </style>
 @endsection
 
@@ -59,7 +104,7 @@
     <div class="container-fluid p-0">
         <section>
             <div class="section">
-                <div class="jumbotron">
+                <div class="jumbotron jumbotron-intro">
                     <div class="content">
                         <h4 class="display-4">SikkhaDeekkha</h4>
                         <h6 class="text-dark"><i>World Class Online Education Platform First Ever In Bangladesh!</i></h6>
@@ -120,11 +165,54 @@
                 </ul>
             </div>
         </section>
+        <section class="counter d-flex">
+            <div class="pt-5">
+                <ul class="list-group-horizontal">
+                    <li class="list-inline-item bg-white rounded stat-list">
+                        <div class="num text-center">80000</div>
+                        <div class="text-center">
+                            <iframe class="icon" src="{{ asset('icons/student.svg')}}"></iframe>
+                        </div>
+                        <div>
+                            <h4 class="font-weight-bold">Students</h4>
+                        </div>
+                    </li>
+                    <li class="list-inline-item  bg-white rounded stat-list">
+                        <div class="num text-center">4400</div>
+                        <div class="text-center">
+                            <iframe class="icon" src="{{ asset('icons/teacher.svg')}}"></iframe>
+                        </div>
+                        <div>
+                            <h4 class="font-weight-bold">Teacher</h4>
+                        </div>
+                    </li>
+                    <li class="list-inline-item bg-white rounded stat-list">
+                        <div class="num text-center">5140</div>
+                        <div class="text-center">
+                            <iframe class="icon" src="{{ asset('icons/Institute.svg')}}"></iframe>
+                        </div>
+                        <div>
+                            <h4 class="font-weight-bold">Institute</h4>
+                        </div>
+                    </li>
+                    <li class="list-inline-item bg-white rounded stat-list">
+                        <div class="num text-center">1400</div>
+                        <div class="text-center">
+                            <iframe class="icon" src="{{ asset('icons/Institution.svg')}}"></iframe>
+                        </div>
+                        <div>
+                            <h4 class="font-weight-bold">Institution</h4>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
     </div>
 @endsection
 
 @section('scripts')
     <script type="text/javascript">
         particlesJS();
+        $(".num").counterUp({delay:10,time:500});
     </script>
 @endsection
