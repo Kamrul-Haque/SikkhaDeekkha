@@ -19,8 +19,10 @@ class CreateInstitutionsTable extends Migration
             $table->string('email')->unique();
             $table->unsignedBigInteger('phone')->unique();
             $table->string('address')->nullable();
+            $table->string('website_link')->nullable();
             $table->string('study_level_lower');
             $table->string('study_level_upper');
+            $table->string('logo_path')->nullable();
             $table->timestamps();
         });
     }

@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
+        'guard' => 'admin',
+        'passwords' => 'admins',
     ],
 
     /*
@@ -41,11 +41,36 @@ return [
             'provider' => 'users',
         ],
 
-        'api' => [
+        //define 'admin' guard
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+
+        //define 'student' guard
+        'student' => [
+            'driver' => 'session',
+            'provider' => 'students',
+        ],
+
+        //define 'instructor' guard
+        'instructor' => [
+            'driver' => 'session',
+            'provider' => 'instructors',
+        ],
+
+        //define 'institution' guard
+        'institution' => [
+            'driver' => 'session',
+            'provider' => 'institution_management',
+        ],
+
+        //don't need api
+        /*'api' => [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
-        ],
+        ],*/
     ],
 
     /*
@@ -71,10 +96,29 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        // define admins provider
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Admin::class, //Admin model
+        ],
+
+        // define students provider
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Student::class, //Student model
+        ],
+
+        // define instructors provider
+        'instructors' => [
+            'driver' => 'eloquent',
+            'model' => App\Instructor::class, //Instructor model
+        ],
+
+        // define instructors provider
+        'institution_management' => [
+            'driver' => 'eloquent',
+            'model' => App\InstitutionManagement::class, //InstitutionManagement model
+        ],
     ],
 
     /*
@@ -94,6 +138,27 @@ return [
 
     'passwords' => [
         'users' => [
+            'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'admins' => [
+            'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'instructors' => [
+            'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'institution_management' => [
             'provider' => 'users',
             'table' => 'password_resets',
             'expire' => 60,

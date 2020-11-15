@@ -17,13 +17,16 @@ class CreateStudentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('study_level');
             $table->string('faculty')->nullable();
             $table->string('institution');
             $table->string('specialization')->nullable();
-            $table->bigInteger('phone')->unique()->nullable();
+            $table->unsignedBigInteger('phone')->unique()->nullable();
             $table->string('address')->nullable();
+            $table->string('profile_photo_path')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }
