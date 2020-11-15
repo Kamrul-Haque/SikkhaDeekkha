@@ -23,10 +23,8 @@ class CreateInstructorsTable extends Migration
             $table->string('institution');
             $table->unsignedBigInteger('phone')->unique();
             $table->string('address')->nullable();
-            $table->string('profile_photo_path')->nullable();
             $table->boolean('is_verified');
             $table->unsignedBigInteger('institution_id')->nullable();
-            $table->rememberToken();
             $table->timestamps();
 
             $table->foreign('institution_id')->references('id')->on('institutions');
