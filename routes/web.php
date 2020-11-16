@@ -19,6 +19,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::get('/admin/login', function (){
+   return view('auth.admin.login');
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('/student', 'StudentController')->middleware('auth');
