@@ -19,11 +19,17 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::get('/admin/login', function (){
-   return view('auth.admin.login');
+
+Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {
+    Route::get('/login', 'auth\LoginController@showAdminLoginForm')->name('login.form');
+    Route::post('/login', 'auth\LoginController@adminLogin')->name('login');
+    Route::post('/logout','AdminController@adminLogout')->name('logout');
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('/student', 'StudentController')->middleware('auth');
-Route::resource('/instructor','InstructorController')->middleware('auth');
-Route::resource('/institution','InstitutionController')->middleware('auth');
+
+Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], function (){
+    Route::resource('/student', 'StudentController');
+    Route::resource('/instructor','InstructorController');
+    Route::resource('/institution','InstitutionController');
+});

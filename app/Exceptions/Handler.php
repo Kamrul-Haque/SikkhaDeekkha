@@ -61,7 +61,7 @@ class Handler extends ExceptionHandler
         }
         elseif ($request->is('student') || $request->is('student/*'))
         {
-            return redirect()->guest('/login');
+            return redirect()->guest('/student/login');
         }
         elseif ($request->is('instructor') || $request->is('instructor/*')){
             return redirect()->guest('/instructor/login');
@@ -70,7 +70,7 @@ class Handler extends ExceptionHandler
             return redirect()->guest('/admin/login');
         }
         else{
-            return redirect()->guest(route('login'));
+            return redirect()->guest('/login');
         }
     }
 }

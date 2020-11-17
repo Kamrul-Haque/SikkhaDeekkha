@@ -33,9 +33,11 @@
             <!-- Left Side Of Navbar -->
             @auth
             <ul class="navbar-nav mr-auto">
+                @if(Auth::guard('admin')->check())
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('student.index') }}">Students</a>
+                    <a class="nav-link" href="{{ route('admin.student.index') }}">Students</a>
                 </li>
+                @endif
                 <li>
                     <a class="nav-link" href="#">Courses</a>
                 </li>
@@ -61,15 +63,25 @@
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <a href="#" class="dropdown-item">My Account</a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
+                            @if(Auth::guard('admin')->check())
+                                <a class="dropdown-item" href="{{ route('admin.logout') }}"
+                                   onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            @else
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            @endif
                         </div>
                     </li>
                 @endguest
