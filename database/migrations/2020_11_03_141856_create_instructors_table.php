@@ -24,7 +24,7 @@ class CreateInstructorsTable extends Migration
             $table->string('institution');
             $table->unsignedBigInteger('phone')->unique();
             $table->string('address')->nullable();
-            $table->boolean('is_verified');
+            $table->boolean('is_verified')->default(false);
             $table->unsignedBigInteger('institution_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
