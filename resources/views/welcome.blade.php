@@ -54,48 +54,39 @@
         iframe:hover{
             filter: invert(20%) drop-shadow(3px 7px 7px slategray);
         }
+        ol,ul,dl{
+            margin-bottom: 0rem;
+        }
         .num{
-            justify-content: center;
-            text-align: center;
-            font-size: 30px;
-            color: #1f6fb2;
-            font-family: "montserrat",sans-serif;
-            font-weight: 8;
-            text-shadow: 2px 2px 4px #2176bd;
-        }
-        li.stat-list{
-            position: relative;
-            background: #060c21;
-        }
-        .stat-jumbotron.d-flex{
-            height: 350px;
-            background-image: background-color:hsl(0, 0%, 90%);
-        }
-        .bg-white{
-            background: linear-gradient(0deg, #a5dce3, #e2dad0);
-        }
-        .bg-white:before{
-            content: '';
+            font-size: 25px;
+            color: black;
+            z-index: 1;
             position: absolute;
-            top: -5px;
-            left: -5px;
-            background: linear-gradient(45deg, #c1c1c1, #e2f3f1, #d6d5cf, #c5d7c5, #c1c1c1, #c5d7c5, #c5d7c5, #c5d7c5);
-            background-size: 400%;
-            width: calc(100% + 10px);
-            height: calc(100% + 10px);
-            z-index: -1;
-            animation: gradient-shadow 20s linear infinite;
+            padding-top: 70px;
+            padding-left: 92px;
         }
-        @keyframes gradient-shadow {
-            0%{
-                background-position: 0 0 ;
-            }
-            50%{
-                background-position: 300% 0 ;
-            }
-            100%{
-                background-position: 0 0 ;
-            }
+        .thirdsection{
+            background: dodgerblue;
+        }
+        #second-frame{
+            filter: invert(90%) drop-shadow(3px 7px 7px slategray);
+            z-index: -1;
+        }
+        .text-white{
+            font-size: 25px;
+        }
+        h2{
+            text-align: center;
+            padding: 20px;
+        }
+        .mb-4{
+            background-color: #23272b!important;
+        }
+        .formtext{
+            color: white;
+        }
+        label{
+            font-size: 20px;
         }
     </style>
 @endsection
@@ -165,54 +156,143 @@
                 </ul>
             </div>
         </section>
-        <section class="counter d-flex">
-            <div class="pt-5">
-                <ul class="list-group-horizontal">
-                    <li class="list-inline-item bg-white rounded stat-list">
-                        <div class="num text-center">80000</div>
-                        <div class="text-center">
-                            <iframe class="icon" src="{{ asset('icons/student.svg')}}"></iframe>
+        <section class="thirdsection">
+            <div class="pt-0">
+                <ul class="list-group-horizontal-md d-flex justify-content-center list-unstyled">
+                    <li class="list-inline-item p-3">
+                        <div class="img-container text-center">
+                            <h5 class="num"><strong>80000</strong></h5>
+                            <iframe id="second-frame" src="{{ asset('icons/student.svg') }}"></iframe>
                         </div>
-                        <div>
-                            <h4 class="font-weight-bold">Students</h4>
+                        <div class="text-center">
+                            <h5 class="text-white"><strong>Student</strong></h5>
                         </div>
                     </li>
-                    <li class="list-inline-item  bg-white rounded stat-list">
-                        <div class="num text-center">4400</div>
-                        <div class="text-center">
-                            <iframe class="icon" src="{{ asset('icons/teacher.svg')}}"></iframe>
+                    <li class="list-inline-item p-3">
+                        <div class="img-container text-center">
+                            <h5 class="num"><strong>8778</strong></h5>
+                            <iframe id="second-frame" src="{{ asset('icons/teacher.svg') }}"></iframe>
                         </div>
-                        <div>
-                            <h4 class="font-weight-bold">Teacher</h4>
+                        <div class="text-center">
+                            <h5 class="text-white"><strong>Coures</strong></h5>
                         </div>
                     </li>
-                    <li class="list-inline-item bg-white rounded stat-list">
-                        <div class="num text-center">5140</div>
-                        <div class="text-center">
-                            <iframe class="icon" src="{{ asset('icons/Institute.svg')}}"></iframe>
+                    <li class="list-inline-item p-3">
+                        <div class="img-container text-center">
+                            <h5 class="num"><strong>2000</strong></h5>
+                            <iframe id="second-frame" src="{{ asset('icons/institute.svg') }}"></iframe>
                         </div>
-                        <div>
-                            <h4 class="font-weight-bold">Institute</h4>
+                        <div class="text-center">
+                            <h5 class="text-white"><strong>Institution</strong></h5>
                         </div>
                     </li>
-                    <li class="list-inline-item bg-white rounded stat-list">
-                        <div class="num text-center">1400</div>
-                        <div class="text-center">
-                            <iframe class="icon" src="{{ asset('icons/Institution.svg')}}"></iframe>
+                    <li class="list-inline-item p-3">
+                        <div class="img-container text-center">
+                            <h5 class="num"><strong>10000</strong></h5>
+                            <iframe id="second-frame" src="{{ asset('icons/institution.svg') }}"></iframe>
                         </div>
-                        <div>
-                            <h4 class="font-weight-bold">Institution</h4>
+                        <div class="text-center">
+                            <h5 class="text-white"><strong>Instructor</strong></h5>
                         </div>
                     </li>
                 </ul>
             </div>
         </section>
-    </div>
+        <section class="partner-logos">
+            <h2 class="font-weight-bold justify-content-center">Our Partners</h2>
+            <ul class="list-group-horizontal-md d-flex justify-content-center list-unstyled">
+            <li class="list-inline-item  pl-5">
+                <img src="{{asset('icons/adidas.png')}}" alt="" style="max-height: 70px">
+            </li>
+            <li class="list-inline-item  pl-5">
+                <img src="{{asset('icons/adidas.png')}}" alt="" style="max-height: 70px">
+            </li>
+            <li class="list-inline-item pl-5">
+                <img src="{{asset('icons/adidas.png')}}" alt="" style="max-height: 70px">
+            </li>
+            <li class="list-inline-item  pl-5">
+                <img src="{{asset('icons/adidas.png')}}" alt="" style="max-height: 70px">
+            </li>
+            </ul>
+        </section>
+        <section class="mb-4">
+            <h2 class="h1-responsive font-weight-bold text-center my-4 text-white">Contact us</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6 mb-md-0 mb-5">
+                    <form id="contact-form" name="contact-form" method="POST">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="md-form mb-0">
+                                    <label for="name" class="formtext">Your name</label>
+                                    <input type="text" id="name" name="name" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="md-form mb-0">
+                                    <label for="email" class="formtext">Your email</label>
+                                    <input type="text" id="email" name="email" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="md-form mb-0">
+                                    <label for="phone" class="formtext">Phone Number</label>
+                                    <input type="text" id="phone" name="phone" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="md-form mb-0">
+                                    <label for="usertype" class="formtext">What type of user you are?</label>
+                                    <input type="text" id="" name="usertype" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="md-form mb-0">
+                                    <label for="subject" class="formtext">Subject</label>
+                                    <input type="text" id="subject" name="subject" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="md-form">
+                                    <label for="subject" class="formtext">Type your message here.</label>
+                                    <textarea type="text" id="message" name="message" rows="2" class="form-control md-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="text-center text-md-left pt-3">
+                        <a class="btn btn-outline-success" onclick="document.getElementById('contact-form').submit();">Submit</a>
+                    </div>
+                    <div class="status"></div>
+                </div>
+                <div class="col-md-4 pl-lg-5 pt-4">
+                    <h5 class="font-weight-bold text-white">
+                        Name: Somthing
+                    </h5>
+                    <h5 class="font-weight-bold text-white">
+                        Phone: Phone Number
+                    </h5>
+                    <h5 class="font-weight-bold text-white">
+                        Email: someone@example.com
+                    </h5>
+                    <h5 class="font-weight-bold text-white">
+                        Address: <br>Plot: 2A, House: 212,<br>
+                        Baridhara J Block, Dhaka 1212.
+                    </h5>
+                </div>
+            </div>
+            <hr class="line">
+        </section>
+
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        particlesJS();
-        $(".num").counterUp({delay:10,time:500});
-    </script>
+            <script type="text/javascript">
+                particlesJS();
+            </script>
 @endsection
