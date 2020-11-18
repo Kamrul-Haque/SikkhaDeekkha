@@ -64,8 +64,8 @@
                         <h4 class="display-4">SikkhaDeekkha</h4>
                         <h6 class="text-dark"><i>World Class Online Education Platform First Ever In Bangladesh!</i></h6>
                         <hr class="line">
-                        <a href="{{ route('register') }}" class="btn btn-success btn-lg" style="opacity: 1; z-index: 9999">Register</a>
-                        <a href="{{ route('login') }}" class="btn btn-primary btn-lg">Login</a>
+                        <a href="{{ route('student.register.form') }}" class="btn btn-success btn-lg" style="opacity: 1; z-index: 9999">Register</a>
+                        <a href="{{ route('student.login.form') }}" class="btn btn-primary btn-lg">Login</a>
                     </div>
                 </div>
             </div>

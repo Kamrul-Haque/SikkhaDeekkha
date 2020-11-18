@@ -10,7 +10,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('student.store') }}">
+                        <form method="POST" action="{{ route('student.register') }}">
                             @csrf
 
                             <div class="form-group row">
@@ -135,14 +135,12 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="interest" class="col-md-4 col-form-label text-md-right">Interest</label>
+                                <label for="interests" class="col-md-4 col-form-label text-md-right">Interest</label>
 
                                 <div class="col-md-6">
-                                    <select id="interest" type="text" class="form-control @error('interest') is-invalid @enderror" name="interest">
-                                        <option value="" selected disabled>Please Select...</option>
-                                    </select>
+                                    <input id="interests" type="text" class="form-control @error('interests') is-invalid @enderror" name="interests">
 
-                                    @error('interest')
+                                    @error('interests')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -158,7 +156,7 @@
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">+880</div>
                                         </div>
-                                        <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required>
+                                        <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}">
 
                                         @error('phone')
                                         <span class="invalid-feedback" role="alert">

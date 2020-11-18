@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Instructor;
 use App\Providers\RouteServiceProvider;
+use App\Student;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -39,6 +42,9 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        $this->middleware('guest:student')->except('logout');
+        $this->middleware('guest:instructor')->except('logout');
+        $this->middleware('guest:admin')->except('logout');
     }
 
     /**
@@ -69,5 +75,71 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    protected function showStudentRegisterForm()
+    {
+        return view('Student.create');
+    }
+
+    protected function studentCreate(Request $request)
+    {
+        $student = $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:students,email',
+            'password' => 'required|confirmed|min:8',
+            'study' => 'required',
+            'institution' => 'required',
+            'specialization' => 'nullable',
+            'phone' => 'nullable|digits:10|unique:students,phone',
+            'address' => 'nullable',
+            'interests' => 'nullable',
+        ]);
+
+        Student::create([
+            'name' => $student['name'],
+            'email' => $student['email'],
+            'password' => Hash::make($student['password']),
+            'study_level' => $student['study'],
+            'institution' => $student['institution'],
+            'specialization' => $student['specialization'],
+            'phone' => $student['phone'],
+            'address' => $student['address'],
+            'interests' => $student['interests'],
+        ]);
+
+        return redirect(route('student.login.form'));
+    }
+
+    protected function showInstructorRegisterForm()
+    {
+        return view('Instructor.create');
+    }
+
+    protected function instructorCreate(Request $request)
+    {
+        $instructor = $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:instructors,email',
+            'password' => 'required|confirmed|min:8',
+            'designation' => 'required',
+            'department' => 'required',
+            'institution' => 'required',
+            'phone' => 'required|digits:10|unique:instructors,phone',
+            'address' => 'required',
+        ]);
+
+        Instructor::create([
+            'name' => $instructor['name'],
+            'email' => $instructor['email'],
+            'password' => Hash::make($instructor['password']),
+            'designation' => $instructor['designation'],
+            'department' => $instructor['department'],
+            'institution' => $instructor['institution'],
+            'phone' => $instructor['phone'],
+            'address' => $instructor['address'],
+        ]);
+
+        return redirect(route('instructor.login.form'));
     }
 }
