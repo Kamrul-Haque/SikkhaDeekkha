@@ -57,14 +57,14 @@ class LoginController extends Controller
 
         if (Auth::guard('student')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
 
-            return redirect()->intended('/student');
+            return redirect()->intended(route('student.home'));
         }
         return back()->withErrors([$this->username() => [trans('auth.failed')]])->withInput($request->only('email', 'remember'));
     }
 
     public function showInstructorLoginForm()
     {
-        return view('auth.login');
+        return view('auth.login', ['url' => 'instructor']);
     }
 
     public function instructorLogin(Request $request)
@@ -76,7 +76,7 @@ class LoginController extends Controller
 
         if (Auth::guard('instructor')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
 
-            return redirect()->intended('/instructor');
+            return redirect()->intended(route('instructor.home'));
         }
         return back()->withErrors([$this->username() => [trans('auth.failed')]])->withInput($request->only('email', 'remember'));
     }
@@ -95,7 +95,7 @@ class LoginController extends Controller
 
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
 
-            return redirect()->intended('/admin');
+            return redirect()->intended(route('admin.home'));
         }
         return back()->withErrors([$this->username() => [trans('auth.failed')]])->withInput($request->only('email', 'remember'));
     }

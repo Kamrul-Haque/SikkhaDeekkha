@@ -5,10 +5,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header text-light @isset($url) bg-success @else bg-primary @endisset">@isset($url) Instructor @endisset {{ __('Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    @isset($url)
+                    <form method="POST" action="{{ route('instructor.login') }}">
+                    @else
+                    <form method="POST" action="{{ route('student.login') }}">
+                    @endisset
                         @csrf
 
                         <div class="form-group row">
@@ -53,9 +57,15 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
+                                @isset($url)
+                                    <button type="submit" class="btn btn-success">
+                                        {{ __('Login') }}
+                                    </button>
+                                @else
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Login') }}
+                                    </button>
+                                @endisset
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">

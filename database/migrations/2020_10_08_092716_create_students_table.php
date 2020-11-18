@@ -25,6 +25,7 @@ class CreateStudentsTable extends Migration
             $table->string('specialization')->nullable();
             $table->unsignedBigInteger('phone')->unique()->nullable();
             $table->string('address')->nullable();
+            $table->string('interests')->nullable();
             $table->string('profile_photo_path')->nullable();
             $table->rememberToken();
             $table->timestamps();
