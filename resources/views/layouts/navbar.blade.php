@@ -33,9 +33,11 @@
             <!-- Left Side Of Navbar -->
             @auth
             <ul class="navbar-nav mr-auto">
+                @if(Auth::guard('admin')->check())
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('student.index') }}">Students</a>
+                    <a class="nav-link" href="{{ route('admin.student.index') }}">Students</a>
                 </li>
+                @endif
                 <li>
                     <a class="nav-link" href="#">Courses</a>
                 </li>
@@ -46,30 +48,47 @@
                 <!-- Authentication Links -->
                 @guest
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        <a class="nav-link" href="{{ route('admin.login.form') }}">Admin Login</a>
                     </li>
-                    @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
-                    @endif
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('instructor.login.form') }}">Instructor Login</a>
+                    </li>
                 @else
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <a href="#" class="dropdown-item">My Account</a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
+                            @if(Auth::guard('admin')->check())
+                                <a class="dropdown-item" href="{{ route('admin.logout') }}"
+                                   onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            @elseif(Auth::guard('instructor')->check())
+                                <a class="dropdown-item" href="{{ route('instructor.logout') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('instructor.logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            @else
+                                <a class="dropdown-item" href="{{ route('student.logout') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+                                <form id="logout-form" action="{{ route('student.logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            @endif
                         </div>
                     </li>
                 @endguest

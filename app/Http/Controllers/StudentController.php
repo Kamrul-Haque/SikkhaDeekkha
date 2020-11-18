@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
@@ -13,21 +14,21 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    /*public function index()
     {
         $students = Student::paginate(3);
         return view('Student.index', compact('students'));
-    }
+    }*/
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    /*public function create()
     {
-        return view('student.create');
-    }
+        return view('Student.create');
+    }*/
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +36,7 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    /*public function store(Request $request)
     {
         $valid = $request->validate([
            'name' => 'required',
@@ -59,7 +60,7 @@ class StudentController extends Controller
         $student->save();
 
         return redirect('/student');
-    }
+    }*/
 
     /**
      * Display the specified resource.
@@ -67,10 +68,10 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    /*public function show(Student $student)
     {
 
-    }
+    }*/
 
     /**
      * Show the form for editing the specified resource.
@@ -78,11 +79,11 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function edit(Student $student)
+    /*public function edit(Student $student)
     {
         $student = Student::find($student->id);
-        return view('student.edit',compact('student'));
-    }
+        return view('Student.edit',compact('student'));
+    }*/
 
     /**
      * Update the specified resource in storage.
@@ -91,7 +92,7 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    /*public function update(Request $request, Student $student)
     {
         $valid = $request->validate([
             'name' => 'required',
@@ -113,7 +114,7 @@ class StudentController extends Controller
         $student->save();
 
         return redirect('/student');
-    }
+    }*/
 
     /**
      * Remove the specified resource from storage.
@@ -121,11 +122,22 @@ class StudentController extends Controller
      * @param  \App\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    /*public function destroy(Student $student)
     {
         $student = Student::find($student->id);
         $student->delete();
 
         return redirect('/student');
+    }*/
+
+    public function studentLogout(Request $request)
+    {
+        Auth::guard('student')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/student/login');
     }
 }

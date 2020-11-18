@@ -47,11 +47,11 @@
                                 <td> {{ $student->interest }} </td>
                                 <td>
                                     <div class="row justify-content-center">
-                                        <a href="{{ route('student.show', $student) }}" class="btn btn-dark btn-sm" title="view"><span data-feather="eye" style="height: 15px; width: 15px; padding: 0"></span></a>
+                                        <a href="{{ route('admin.student.show', $student) }}" class="btn btn-dark btn-sm" title="view"><span data-feather="eye" style="height: 15px; width: 15px; padding: 0"></span></a>
                                         <div class="pl-1">
-                                            <a class="btn btn-primary btn-sm" href="{{ route('student.edit', $student) }}" title="edit"><span data-feather="edit" style="height: 15px; width: 15px; padding: 0"></span></a>
+                                            <a class="btn btn-primary btn-sm" href="{{ route('admin.student.edit', $student) }}" title="edit"><span data-feather="edit" style="height: 15px; width: 15px; padding: 0"></span></a>
                                         </div>
-                                        <form class="pl-1" action="{{ route('student.destroy', $student) }}" method="post">
+                                        <form class="pl-1" action="{{ route('admin.student.destroy', $student) }}" method="post">
                                             @method('DELETE')
                                             @csrf
                                             <button type="submit" class="btn btn-danger btn-sm" title="delete"><span data-feather="trash-2" style="height: 15px; width: 15px; padding: 0"></span></button>
@@ -70,7 +70,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-sm-4">
-                        <a href="{{ route('student.create') }}" class="btn btn-success">Create New</a>
+                        <a href="{{ route('admin.student.create') }}" class="btn btn-success">Create New</a>
                     </div>
                     <div class="col-sm-4 d-flex justify-content-center">
                         {{ $students->links() }}

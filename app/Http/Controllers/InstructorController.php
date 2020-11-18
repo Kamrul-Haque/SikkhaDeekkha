@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Instructor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class InstructorController extends Controller
@@ -129,5 +130,16 @@ class InstructorController extends Controller
         $instructor->delete();
 
         return redirect('/instructor');
+    }
+
+    public function instructorLogout(Request $request)
+    {
+        Auth::guard('instructor')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/instructor/login');
     }
 }

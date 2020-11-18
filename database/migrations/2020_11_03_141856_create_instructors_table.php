@@ -17,14 +17,17 @@ class CreateInstructorsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('designation');
             $table->string('department');
             $table->string('institution');
             $table->unsignedBigInteger('phone')->unique();
             $table->string('address')->nullable();
-            $table->boolean('is_verified');
+            $table->boolean('is_verified')->default(false);
             $table->unsignedBigInteger('institution_id')->nullable();
+            $table->string('profile_photo_path')->nullable();
+            $table->rememberToken();
             $table->timestamps();
 
             $table->foreign('institution_id')->references('id')->on('institutions');

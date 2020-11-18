@@ -21,6 +21,7 @@ class CreateInstitutionsTable extends Migration
             $table->string('address')->nullable();
             $table->string('study_level_lower');
             $table->string('study_level_upper');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
