@@ -57,9 +57,9 @@ class LoginController extends Controller
 
         if (Auth::guard('student')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
 
-            return redirect()->intended(route('student.home'));
+            return redirect()->intended(route('student.home'))->with('toast_success','You are Logged In!');
         }
-        return back()->withErrors([$this->username() => [trans('auth.failed')]])->withInput($request->only('email', 'remember'));
+        return back()->with('toast_error','Credentials do not Match')->withInput($request->only('email', 'remember'));
     }
 
     public function showInstructorLoginForm()
@@ -76,9 +76,9 @@ class LoginController extends Controller
 
         if (Auth::guard('instructor')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
 
-            return redirect()->intended(route('instructor.home'));
+            return redirect()->intended(route('instructor.home'))->with('toast_success','You are Logged In!');
         }
-        return back()->withErrors([$this->username() => [trans('auth.failed')]])->withInput($request->only('email', 'remember'));
+        return back()->with('toast_error','Credentials do not Match')->withInput($request->only('email', 'remember'));
     }
 
     public function showAdminLoginForm()
@@ -95,8 +95,8 @@ class LoginController extends Controller
 
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
 
-            return redirect()->intended(route('admin.home'));
+            return redirect()->intended(route('admin.home'))->with('toast_success','You are Logged In!');
         }
-        return back()->withErrors([$this->username() => [trans('auth.failed')]])->withInput($request->only('email', 'remember'));
+        return back()->with('toast_error','Credentials do not Match')->withInput($request->only('email', 'remember'));
     }
 }

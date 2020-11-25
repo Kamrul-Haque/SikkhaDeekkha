@@ -18,6 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Auth::routes(['register'=>false]);
+
 Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {
     Route::get('/login', 'auth\LoginController@showAdminLoginForm')->name('login.form');
     Route::post('/login', 'auth\LoginController@adminLogin')->name('login');
@@ -43,8 +45,9 @@ Route::group(['prefix'=>'/student', 'as'=>'student.'], function () {
     Route::get('/home', 'HomeController@index')->name('home')->middleware('auth:student');
 });
 
-/*Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function (){
-    Route::resource('/student', 'StudentController');
-    Route::resource('/instructor','InstructorController');
+Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], function (){
+    Route::resource('/student', 'StudentController')->except(['create','store']);
+    Route::resource('/instructor','InstructorController')->except(['create','store']);
     Route::resource('/institution','InstitutionController');
-});*/
+    Route::resource('/course','CourseController');
+});

@@ -108,7 +108,7 @@ class RegisterController extends Controller
             'interests' => $student['interests'],
         ]);
 
-        return redirect(route('student.login.form'));
+        return redirect(route('student.login.form'))->with('toast_success','Successfully Registered! Please Login...');
     }
 
     protected function showInstructorRegisterForm()
@@ -140,6 +140,6 @@ class RegisterController extends Controller
             'address' => $instructor['address'],
         ]);
 
-        return redirect(route('instructor.login.form'));
+        return redirect(route('instructor.login.form'))->with('toast_success','Successfully Registered! Please Login...');
     }
 }

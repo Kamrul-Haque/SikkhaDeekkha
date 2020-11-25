@@ -22,13 +22,13 @@ class RedirectIfAuthenticated
             switch ($guard)
             {
                 case 'student':
-                    return redirect('/student');
+                    return redirect()->route('student.home');
                     break;
                 case 'instructor':
-                    return redirect('/instructor');
+                    return redirect()->route('instructor.home');
                     break;
                 case 'admin':
-                    return redirect('/admin');
+                    return redirect()->route('admin.home');
                     break;
                 default:
                     return redirect(RouteServiceProvider::HOME);

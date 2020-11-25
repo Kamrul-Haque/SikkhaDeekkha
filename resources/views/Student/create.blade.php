@@ -10,7 +10,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('student.register') }}">
+                        <form method="POST" action="{{ route('student.register') }}" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group row">
@@ -69,7 +69,6 @@
                                 <div class="col-md-6">
                                     <select id="study" type="text" class="form-control @error('study') is-invalid @enderror" name="study" required>
                                         <option value="" selected disabled>Please Select...</option>
-                                        <option value="Primary School">Primary School</option>
                                         <option value="High School">High School</option>
                                         <option value="Secondary">Secondary</option>
                                         <option value="Higher Secondary">Higher Secondary</option>
@@ -80,25 +79,6 @@
                                     </select>
 
                                     @error('study')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div id="group" class="form-group row">
-                                <label for="faculty" class="col-md-4 col-form-label text-md-right">Faculty</label>
-
-                                <div class="col-md-6">
-                                    <select id="faculty" type="text" class="form-control @error('faculty') is-invalid @enderror" name="faculty">
-                                        <option value="" selected disabled>Please Select...</option>
-                                        <option value="Science">Science</option>
-                                        <option value="Commerce">Commerce</option>
-                                        <option value="Art">Art</option>
-                                    </select>
-
-                                    @error('faculty')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -194,38 +174,28 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+
+    </script>
     <script type="text/javascript">
         $(function() {
             $('#degree').hide();
-            $('#group').hide();
-            $('#study').change(function (){
-               var study = $(this).val();
 
-               switch (study){
-                   case "Diploma":
-                   case "Undergraduate":
-                   case "Graduate":
-                   case "Post-Graduate":
-                       $('#degree').show();
-                       break;
-                   default:
-                       $('#degree').hide();
-               }
-            });
             $('#study').change(function (){
                 var study = $(this).val();
 
                 switch (study){
-                    case "Secondary":
-                    case "Higher Secondary":
                     case "Diploma":
                     case "Undergraduate":
                     case "Graduate":
                     case "Post-Graduate":
-                        $('#group').show();
+                        $('#degree').show();
                         break;
                     default:
-                        $('#group').hide();
+                        $('#degree').hide();
                 }
             });
         });

@@ -31,18 +31,20 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
-            @auth
             <ul class="navbar-nav mr-auto">
                 @if(Auth::guard('admin')->check())
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.student.index') }}">Students</a>
                 </li>
-                @endif
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.course.index') }}">Courses</a>
+                </li>
+                @else
                 <li>
                     <a class="nav-link" href="#">Courses</a>
                 </li>
+                @endif
             </ul>
-            @endauth
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <!-- Authentication Links -->

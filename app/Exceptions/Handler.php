@@ -59,18 +59,18 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
-        elseif ($request->is('student') || $request->is('student/*'))
+        else if ($request->is('student') || $request->is('student/*'))
         {
-            return redirect()->guest('/student/login');
+            return redirect()->guest('/student/login')->with('toast_warning', 'Not authorized to access the page');
         }
-        elseif ($request->is('instructor') || $request->is('instructor/*')){
-            return redirect()->guest('/instructor/login');
+        else if ($request->is('instructor') || $request->is('instructor/*')){
+            return redirect()->guest('/instructor/login')->with('toast_warning', 'Not Authorized to access the page');
         }
         else if ($request->is('admin') || $request->is('admin/*')) {
-            return redirect()->guest('/admin/login');
+            return redirect()->guest('/admin/login')->with('toast_warning', 'Not authorized to access the page');
         }
         else{
-            return redirect()->guest('/login');
+            return redirect()->guest('/student/login')->with('toast_warning', 'Not authorized to access the page');
         }
     }
 }

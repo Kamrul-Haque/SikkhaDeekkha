@@ -2,6 +2,9 @@
 
 @section('styles')
     <style>
+        .container-fluid{
+            overflow-x: hidden;
+        }
         #particles-js{
             width: 100%;
             height: 300px;
@@ -20,6 +23,8 @@
         .section{
             position: absolute;
             width: 100%;
+            padding: 0;
+            margin: 0;
         }
         .jumbotron{
             background: rgba(240, 240, 240, 0.4);
@@ -41,45 +46,45 @@
         a{
             display: block;
             position: relative;
-            z-index: 9999;
+            z-index: 5!important;
             opacity: 1;
         }
-        iframe{
+        iframe.benefits{
             display: block;
             width: 250px;
             height: 200px;
             border: 0;
             filter: invert(25%);
         }
-        iframe:hover{
+        iframe.benefits:hover{
             filter: invert(20%) drop-shadow(3px 7px 7px slategray);
         }
-        ol,ul,dl{
+       /* ol,ul,dl{
             margin-bottom: 0rem;
-        }
+        }*/
         .num{
             font-size: 25px;
             color: black;
-            z-index: 1;
             position: absolute;
-            padding-top: 70px;
-            padding-left: 92px;
+            z-index: 5;
+            padding-left: 90px;
+            padding-top: 165px;
         }
         .thirdsection{
             background: dodgerblue;
         }
-        #second-frame{
-            filter: invert(90%) drop-shadow(3px 7px 7px slategray);
-            z-index: -1;
+        iframe.second-frame{
+            display: block;
+            filter: invert(100%);
+            padding-top: 10px;
+            width: 250px;
+            height: 200px;
+            border: 0;
         }
-        .text-white{
-            font-size: 25px;
+        iframe.second-frame:hover{
+            filter: invert(25%) drop-shadow(3px 5px 5px black);
         }
-        h2{
-            text-align: center;
-            padding: 20px;
-        }
-        .mb-4{
+        .contact{
             background-color: #23272b!important;
         }
         .formtext{
@@ -88,11 +93,36 @@
         label{
             font-size: 20px;
         }
+        img.social{
+            display: block;
+            width: 50px;
+            height: 50px;
+            border: 0;
+            filter: invert(100%) brightness(0.225) sepia(1) hue-rotate(180deg) saturate(100);
+        }
+        img.social:hover{
+            display: block;
+            width: 50px;
+            height: 50px;
+            border: 0;
+            filter: invert(100%) brightness(0.2) sepia(1) hue-rotate(180deg) saturate(50) drop-shadow(1px 2px 2px black);
+        }
+        pre{
+            font-size: 20px;
+            font-family: Helvetica;
+        }
+        h5{
+            font-size: 20px;
+        }
+        .feather{
+            width: 18px;
+            height: auto;
+        }
     </style>
 @endsection
 
 @section('content')
-    <div class="container-fluid p-0">
+    <div class="container-fluid m-0 p-0">
         <section>
             <div class="section">
                 <div class="jumbotron jumbotron-intro">
@@ -118,7 +148,7 @@
                             <h5><strong>LEARN FROM EXPERTS</strong></h5>
                         </div>
                         <div class="img-container text-center">
-                            <iframe id="learn" src="{{ asset('icons/noun_experts_3201786.svg') }}"></iframe>
+                            <iframe class="benefits" id="learn" src="{{ asset('icons/noun_experts_3201786.svg') }}"></iframe>
                         </div>
                     </li>
                     <li class="list-inline-item p-3">
@@ -126,7 +156,7 @@
                             <h5><strong>FIND QUALITY CONTENTS</strong></h5>
                         </div>
                         <div class="img-container text-center">
-                            <iframe id="content" src="{{ asset('icons/noun_High Quality Content_1563734.svg') }}"></iframe>
+                            <iframe class="benefits" id="content" src="{{ asset('icons/noun_High Quality Content_1563734.svg') }}"></iframe>
                         </div>
                     </li>
                     <li class="list-inline-item p-3">
@@ -134,7 +164,7 @@
                             <h5><strong>SHARPEN YOUR SKILLS</strong></h5>
                         </div>
                         <div class="img-container text-center">
-                            <iframe id="skill" src="{{ asset('icons/noun_skill_2170300.svg') }}"></iframe>
+                            <iframe class="benefits" id="skill" src="{{ asset('icons/noun_skill_2170300.svg') }}"></iframe>
                         </div>
                     </li>
                     <li class="list-inline-item p-3">
@@ -142,7 +172,7 @@
                             <h5><strong>BE INDUSTRY READY</strong></h5>
                         </div>
                         <div class="img-container text-center">
-                            <iframe id="ready" src="{{ asset('icons/noun_technical expert_2439432.svg') }}"></iframe>
+                            <iframe class="benefits" id="ready" src="{{ asset('icons/noun_technical expert_2439432.svg') }}"></iframe>
                         </div>
                     </li>
                     <li class="list-inline-item p-3">
@@ -150,7 +180,7 @@
                             <h5><strong>COMPETE WITH WORLD</strong></h5>
                         </div>
                         <div class="img-container text-center">
-                            <iframe id="world" src="{{ asset('icons/noun_Globe_1412361.svg') }}"></iframe>
+                            <iframe class="benefits" id="world" src="{{ asset('icons/noun_Globe_1412361.svg') }}"></iframe>
                         </div>
                     </li>
                 </ul>
@@ -161,138 +191,190 @@
                 <ul class="list-group-horizontal-md d-flex justify-content-center list-unstyled">
                     <li class="list-inline-item p-3">
                         <div class="img-container text-center">
-                            <h5 class="num"><strong>80000</strong></h5>
-                            <iframe id="second-frame" src="{{ asset('icons/student.svg') }}"></iframe>
+                            <h5 class="num num-student"><strong>80000</strong></h5>
+                            <iframe class="second-frame" src="{{ asset('icons/student.svg') }}"></iframe>
                         </div>
                         <div class="text-center">
-                            <h5 class="text-white"><strong>Student</strong></h5>
+                            <h4 class="text-light"><strong>Students</strong></h4>
                         </div>
                     </li>
                     <li class="list-inline-item p-3">
                         <div class="img-container text-center">
-                            <h5 class="num"><strong>8778</strong></h5>
-                            <iframe id="second-frame" src="{{ asset('icons/teacher.svg') }}"></iframe>
+                            <h5 class="num num-courses"><strong>8778</strong></h5>
+                            <iframe class="second-frame" src="{{ asset('icons/noun_online learning course_2485285.svg') }}"></iframe>
                         </div>
                         <div class="text-center">
-                            <h5 class="text-white"><strong>Coures</strong></h5>
+                            <h4 class="text-light"><strong>Courses</strong></h4>
                         </div>
                     </li>
                     <li class="list-inline-item p-3">
                         <div class="img-container text-center">
-                            <h5 class="num"><strong>2000</strong></h5>
-                            <iframe id="second-frame" src="{{ asset('icons/institute.svg') }}"></iframe>
+                            <h5 class="num num-instructors"><strong>2000</strong></h5>
+                            <iframe class="second-frame" src="{{ asset('icons/teacher.svg') }}"></iframe>
                         </div>
                         <div class="text-center">
-                            <h5 class="text-white"><strong>Institution</strong></h5>
+                            <h4 class="text-light"><strong>Instructors</strong></h4>
                         </div>
                     </li>
                     <li class="list-inline-item p-3">
                         <div class="img-container text-center">
-                            <h5 class="num"><strong>10000</strong></h5>
-                            <iframe id="second-frame" src="{{ asset('icons/institution.svg') }}"></iframe>
+                            <h5 class="num num-institutions"><strong>10000</strong></h5>
+                            <iframe class="second-frame" src="{{ asset('icons/noun_city hall_2152676.svg') }}"></iframe>
                         </div>
                         <div class="text-center">
-                            <h5 class="text-white"><strong>Instructor</strong></h5>
+                            <h4 class="text-light"><strong>Institutions</strong></h4>
                         </div>
                     </li>
                 </ul>
             </div>
         </section>
         <section class="partner-logos">
-            <h2 class="font-weight-bold justify-content-center">Our Partners</h2>
             <ul class="list-group-horizontal-md d-flex justify-content-center list-unstyled">
-            <li class="list-inline-item  pl-5">
-                <img src="{{asset('icons/adidas.png')}}" alt="" style="max-height: 70px">
-            </li>
-            <li class="list-inline-item  pl-5">
-                <img src="{{asset('icons/adidas.png')}}" alt="" style="max-height: 70px">
-            </li>
-            <li class="list-inline-item pl-5">
-                <img src="{{asset('icons/adidas.png')}}" alt="" style="max-height: 70px">
-            </li>
-            <li class="list-inline-item  pl-5">
-                <img src="{{asset('icons/adidas.png')}}" alt="" style="max-height: 70px">
-            </li>
+                <li class="list-inline-item">
+                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
+                </li>
+                <li class="list-inline-item  pl-5">
+                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
+                </li>
+                <li class="list-inline-item pl-5">
+                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
+                </li>
+                <li class="list-inline-item  pl-5">
+                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
+                </li>
+                <li class="list-inline-item  pl-5">
+                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
+                </li>
+                <li class="list-inline-item  pl-5">
+                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
+                </li>
+                <li class="list-inline-item pl-5">
+                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
+                </li>
+                <li class="list-inline-item  pl-5">
+                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
+                </li>
+                <li class="list-inline-item  pl-5">
+                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
+                </li>
+                <li class="list-inline-item  pl-5">
+                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
+                </li>
             </ul>
+            <a class="font-weight-bold text-center text-dark">And 100 More Institutions</a>
         </section>
-        <section class="mb-4">
-            <h2 class="h1-responsive font-weight-bold text-center my-4 text-white">Contact us</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-6 mb-md-0 mb-5">
-                    <form id="contact-form" name="contact-form" method="POST">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="md-form mb-0">
-                                    <label for="name" class="formtext">Your name</label>
-                                    <input type="text" id="name" name="name" class="form-control">
+        <section class="contact pb-4">
+            <h1 class="text-center text-primary pt-4"><strong>Contact us</strong></h1>
+            <div class="container-fluid" style="width: 1450px">
+                <div class="row">
+                    <div class="col-md-3">
+                        <form id="contact-form" action="#" name="contact-form" method="POST">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <div>
+                                        <label for="name" class="formtext">Name</label>
+                                        <input type="text" id="name" name="name" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <div>
+                                        <label for="email" class="formtext">Email</label>
+                                        <input type="text" id="email" name="email" class="form-control">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="md-form mb-0">
-                                    <label for="email" class="formtext">Your email</label>
-                                    <input type="text" id="email" name="email" class="form-control">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <div>
+                                        <label for="phone" class="formtext">Phone</label>
+                                        <input type="text" id="phone" name="phone" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <div>
+                                        <label for="usertype" class="formtext">You're a(n)?</label>
+                                        <select type="text" id="usertype" name="usertype" class="form-control">
+                                            <option value="" selected disabled>Please Select...</option>
+                                            <option value="Instructor">Instructor</option>
+                                            <option value="Institution Management Authority">Institution Management Authority</option>
+                                            <option value="Student">Student</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="md-form mb-0">
-                                    <label for="phone" class="formtext">Phone Number</label>
-                                    <input type="text" id="phone" name="phone" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="md-form mb-0">
-                                    <label for="usertype" class="formtext">What type of user you are?</label>
-                                    <input type="text" id="" name="usertype" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="md-form mb-0">
+                            <div class="row">
+                                <div class="form-group col-md-12">
                                     <label for="subject" class="formtext">Subject</label>
                                     <input type="text" id="subject" name="subject" class="form-control">
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="md-form">
-                                    <label for="subject" class="formtext">Type your message here.</label>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label for="message" class="formtext">Enquiry Details</label>
                                     <textarea type="text" id="message" name="message" rows="2" class="form-control md-textarea"></textarea>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                    <div class="text-center text-md-left pt-3">
-                        <a class="btn btn-outline-success" onclick="document.getElementById('contact-form').submit();">Submit</a>
+                            <button type="submit" class="btn btn-outline-success">Enquire</button>
+                        </form>
                     </div>
-                    <div class="status"></div>
-                </div>
-                <div class="col-md-4 pl-lg-5 pt-4">
-                    <h5 class="font-weight-bold text-white">
-                        Name: Somthing
-                    </h5>
-                    <h5 class="font-weight-bold text-white">
-                        Phone: Phone Number
-                    </h5>
-                    <h5 class="font-weight-bold text-white">
-                        Email: someone@example.com
-                    </h5>
-                    <h5 class="font-weight-bold text-white">
-                        Address: <br>Plot: 2A, House: 212,<br>
-                        Baridhara J Block, Dhaka 1212.
-                    </h5>
+                    <div class="col-md-6 text-center">
+                        <div class="pt-5">
+                            <iframe class="pt-4 border-0" src="{{ asset('icons/noun_contact_918754.svg') }}" style="filter: invert(35%) grayscale(100%)"></iframe>
+                            <br>
+                            <ul class="list-group-horizontal-md d-flex justify-content-center list-unstyled">
+                                <li class="list-inline-item text-center">
+                                    <div class="img-container text-center">
+                                        <a href="#"><img class="social" src="{{ asset('icons/010-linkedin.svg') }}"></a>
+                                    </div>
+                                </li>
+                                <li class="list-inline-item">
+                                    <div class="img-container text-center">
+                                        <a href="#"><img class="social" src="{{ asset('icons/001-facebook.svg') }}"></a>
+                                    </div>
+                                </li>
+                                <li class="list-inline-item">
+                                    <div class="img-container text-center">
+                                        <a href="#"><img class="social" src="{{ asset('icons/twitter.svg') }}"></a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-block float-right text-right">
+                            <h2 class="text-light">
+                                <strong>Code Breakers</strong>
+                            </h2>
+                            <br>
+                            <div class="text-light">
+                                <h5><span data-feather="phone" class="text-success"></span> +88 01521479924</h5>
+                                <h5><span data-feather="phone" class="text-success"></span> +88 01784086002</h5>
+                                <h5><span data-feather="phone" class="text-success"></span> +88 01786543641</h5>
+                                <h5><span data-feather="phone" class="text-success"></span> +88 01302570934</h5>
+                            </div>
+                            <br>
+                            <div class="text-light">
+                                <h5><span data-feather="mail" class="text-info"></span> kamrul35-255@diu.edu.bd</h5>
+                                <h5><span data-feather="mail" class="text-info"></span> eshan35-268@diu.edu.bd</h5>
+                                <h5><span data-feather="mail" class="text-info"></span> razwan35-2233@diu.edu.bd</h5>
+                                <h5><span data-feather="mail" class="text-info"></span> masud35-254@diu.edu.bd</h5>
+                            </div>
+                            <br>
+                            <div>
+                                <pre class="text-light">
+                                <span data-feather="map-pin" class="text-danger"></span> House:9(2nd Floor), Road:10,
+                                Sector:9, Uttara, Dhaka-1230</pre>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <hr class="line">
         </section>
-
+    </div>
 @endsection
 
 @section('scripts')
-            <script type="text/javascript">
-                particlesJS();
-            </script>
+        <script type="text/javascript">
+            particlesJS();
+        </script>
 @endsection

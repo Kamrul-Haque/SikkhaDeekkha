@@ -70,7 +70,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-sm-4">
-                        <a href="{{ route('admin.student.create') }}" class="btn btn-success">Create New</a>
+                        <a href="{{ url()->previous() }}" class="btn btn-light">Back</a>
                     </div>
                     <div class="col-sm-4 d-flex justify-content-center">
                         {{ $students->links() }}

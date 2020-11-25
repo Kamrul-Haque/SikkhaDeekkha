@@ -14,6 +14,9 @@
         <script src="{{ asset('js/jquery-3.5.1.min.js') }}"></script>
         <script src="{{ asset('js/feather.min.js') }}"></script>
         <script src="{{ asset('js/particles.js') }}"></script>
+        <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+        <script src="{{ asset('js/ckeditor/adapters/jquery.js') }}"></script>
+
         <!-- Fonts -->
         <link rel="dns-prefetch" href="//fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -30,13 +33,20 @@
                 padding-top: 35px;
                 /* Space for fixed navbar */
             }
+            .btn.btn-light{
+                background-color: #ebebeb;
+            }
+            .btn.btn-light:hover{
+                background-color: lightgray;
+            }
         </style>
         @yield('styles')
     </head>
     <body>
         <div id="app">
             @include('layouts.navbar')
-            <main class="py-4">
+            @include('sweetalert::alert')
+            <main class="pt-4">
                 <div class="content-wrapper">
                     @yield('content')
                 </div>
@@ -45,6 +55,12 @@
     </body>
     <script>
         feather.replace();
+        Array.from(document.querySelectorAll('svg.feather[title]')).forEach((element) => {
+            element.insertAdjacentHTML('afterbegin', `<title>${element.attributes.title.value}</title>`);
+        });
+    </script>
+    <script type="text/javascript">
+        $('textarea.editor').ckeditor();
     </script>
     @yield('scripts')
 </html>
