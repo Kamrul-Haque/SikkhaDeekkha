@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="container">
-            @foreach($courses as $course)
+            @forelse($courses as $course)
             <div class="card d-flex flex-column">
                 <div class="card-body">
                     <div class="row">
@@ -93,7 +93,9 @@
                 </div>
             </div>
             <br>
-            @endforeach
+            @empty
+                <h4 class="display-4 text-center p-5">NO RECORDS FOUND</h4>
+            @endforelse
         </div>
         <div class="col-sm-4 d-flex justify-content-center">
             {{ $courses->links() }}

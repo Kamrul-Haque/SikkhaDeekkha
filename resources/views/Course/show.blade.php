@@ -26,7 +26,7 @@
             color: dodgerblue;
             font-weight: bolder;
         }
-        .btn{
+        .btn-enroll{
             border-radius: 0;
             font-size: 30px;
         }
@@ -74,11 +74,7 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
                                     <a href="{{ route('admin.course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
-                                    <form action="{{ route('admin.course.destroy', $course) }}" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit" class="dropdown-item">Delete</button>
-                                    </form>
+                                    <button type="submit" class="dropdown-item" data-toggle="modal" data-target="#dynamicModal">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +83,7 @@
                     <p class="font-weight-bolder pt-1"><span data-feather="star" class="pr-2" title="rating"></span><strong>8.6/10</strong> on <strong>2000</strong> ratings</p>
                     <div class="row">
                         <div class="col-md-3 pt-5">
-                            <button class="btn btn-block btn-primary btn-lg mt-1 mb-1"><strong>Enroll</strong></button>
+                            <button class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>Enroll</strong></button>
                             <p class="font-weight-bolder"><strong>5000</strong> students currently enrolled</p>
                             <a href="#" class="text-danger pt-0" style="font-size: medium"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</a>
                         </div>
@@ -187,5 +183,11 @@
                 </div>
             </div>
         </section>
+        @component('components.modal')
+            @slot('title') Delete Confirmation @endslot
+            @slot('type') danger @endslot
+            @slot('action') action="{{ route('admin.course.destroy', $course) }}" @endslot
+            Do you really want to delete the course? All Contents will be deleted as well!
+        @endcomponent
     </div>
 @endsection
