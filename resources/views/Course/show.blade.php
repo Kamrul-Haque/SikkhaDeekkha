@@ -7,7 +7,7 @@
             background-color: ghostwhite;
             filter: drop-shadow(0px 1px 1px darkgray);
             padding-bottom: 20px;
-            background-image: linear-gradient(to left, rgba(255,255,255,0.9) 0%,rgba(255,255,255,0.9) 100%), url("{{ $course->course_image }}");
+            background-image: linear-gradient(to left, rgba(255,255,255,0.9) 0%,rgba(255,255,255,0.9) 100%), url("{{ $course->image_path }}");
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -68,6 +68,20 @@
                             <h3 class="display-4 course-title">{{ $course->title }}</h3>
                         </div>
                         <div class="col-md-1">
+                            @if(Auth::guard('instructor')->check())
+                                @if($course->hasInstructor(Auth::user()->id))
+                                <div class="dropdown">
+                                    <button class="dropdown-button float-right pt-4" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span data-feather="settings"></span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
+                                        <a href="{{ route('instructor.course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
+                                        <button type="submit" class="dropdown-item" data-toggle="modal" data-target="#dynamicModal">Delete</button>
+                                        <a href="{{ route('instructor.course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
+                                    </div>
+                                </div>
+                                @endif
+                            @elseif(Auth::guard('admin')->check())
                             <div class="dropdown">
                                 <button class="dropdown-button float-right pt-4" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span data-feather="settings"></span>
@@ -75,11 +89,13 @@
                                 <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
                                     <a href="{{ route('admin.course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
                                     <button type="submit" class="dropdown-item" data-toggle="modal" data-target="#dynamicModal">Delete</button>
+                                    <a href="{{ route('admin.course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
-                    <h4>This is Course Sub-Title. Not set in database yet.</h4>
+                    <h4>{{ $course->subtitle }}</h4>
                     <p class="font-weight-bolder pt-1"><span data-feather="star" class="pr-2" title="rating"></span><strong>8.6/10</strong> on <strong>2000</strong> ratings</p>
                     <div class="row">
                         <div class="col-md-3 pt-5">
@@ -125,39 +141,23 @@
                         </div>
                         <br>
                         <h2 class="pb-2 headings">INSTRUCTORS</h2>
+                        @foreach($course->instructors as $instructor)
                         <div class="row">
                             <div class="col-md-1 text-right">
-                                <img src="{{ asset('images/No_Image_Available.jpg') }}" alt="" class="rounded-circle" width="25px" height="25px">
+                                <img src="{{ ($instructor->profile_photo_path) ? $instructor->profile_photo_path : asset('images/No_Image_Available.jpg') }}" alt="" class="rounded-circle" width="25px" height="25px">
                             </div>
                             <div class="col-md-5">
-                                <h5><strong>Instructor Name</strong></h5>
-                                <p>Professor at Daffodil International University.<br>25years of Experience</p>
+                                <h5><strong>{{ $instructor->name }}</strong></h5>
+                                <p>{{ $instructor->institution }}<br>{{ $instructor->about }}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-1 text-right">
-                                <img src="{{ asset('images/No_Image_Available.jpg') }}" alt="" class="rounded-circle" width="25px" height="25px">
-                            </div>
-                            <div class="col-md-5">
-                                <h5><strong>Instructor Name 2</strong></h5>
-                                <p>Researcher at BARI<br>15years of Experience</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-1 text-right">
-                                <img src="{{ asset('images/No_Image_Available.jpg') }}" alt="" class="rounded-circle" width="25px" height="25px">
-                            </div>
-                            <div class="col-md-5">
-                                <h5><strong>Instructor Name 3</strong></h5>
-                                <p>35years of Experience</p>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="col-md-3">
                         <div class="card">
                             <div class="card-body">
                                 <h4><span data-feather="book-open" title="level" style="height: 23px; width: auto"></span>SUBJECT:</h4>
-                                <h5>{{ $course->category->category_name }}</h5>
+                                <h5>{{ $course->subject->subject_name }}</h5>
                                 <br>
                                 <h4><span data-feather="pie-chart" title="level" style="height: 23px; width: auto"></span>TOPIC:</h4>
                                 <h5>{{ $course->topic }}</h5>
@@ -174,7 +174,7 @@
                                 <br>
                                 <h5><span data-feather="calendar" title="starts from"></span>STARTS: {{ $course->date_starting }}</h5>
                                 <br>
-                                <h5><span data-feather="tag" class="@if(!($course->fee)) disabled @endif" title="fee"></span>FEE: {{ ($course->fee) ? $course->fee : "Free"}}</h5>
+                                <h5><span data-feather="tag" class="@if(!($course->fee)) disabled @endif" title="fee"></span>FEE: {{ ($course->fee) ? $course->fee." ".$course->currency : "Free"}}</h5>
                                 <br>
                                 <h5><span data-feather="award" class="@if(!($course->has_certificate)) disabled @endif" title="certificate"></span>{{ ($course->has_certificate) ? "Offers Certificate" : "No Certificate"}}</h5>
                             </div>
@@ -186,7 +186,7 @@
         @component('components.modal')
             @slot('title') Delete Confirmation @endslot
             @slot('type') danger @endslot
-            @slot('action') action="{{ route('admin.course.destroy', $course) }}" @endslot
+            @slot('action') @if(Auth::guard('instructor')->check()) action="{{ route('instructor.course.destroy', $course) }}" @elseif(Auth::guard('admin')->check()) action="{{ route('admin.course.destroy', $course) }}" @endif @endslot
             Do you really want to delete the course? All Contents will be deleted as well!
         @endcomponent
     </div>

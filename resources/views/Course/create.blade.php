@@ -22,7 +22,7 @@
             </div>
 
             <div class="card-body">
-                <form method="POST" action="{{ route('admin.course.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="@if(Auth::guard('instructor')->check()) {{ route('instructor.course.store') }} @elseif(Auth::guard('admin')->check()) {{ route('admin.course.store') }} @endif" enctype="multipart/form-data">
                     @csrf
 
                     <div class="pl-4 pr-4 pt-1">
@@ -34,7 +34,19 @@
                             @error('title')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
-                        </span>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subtitle">Subtitle</label>
+
+                            <textarea id="subtitle" type="text" class="form-control @error('subtitle') is-invalid @enderror" name="subtitle" rows="2" placeholder="1 to 3 sentences" required>{{ old('subtitle') }}</textarea>
+
+                            @error('subtitle')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
                             @enderror
                         </div>
 
@@ -81,22 +93,16 @@
                             <label for="duration">Duration</label>
 
                             <div id="duration" class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" class="form-control @error('duration') is-invalid @enderror" name="duration" value="{{ old('duration') }}" required>
-                                    @error('duration')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <select type="text" class="form-control @error('duration_unit') is-invalid @enderror" name="duration_unit" required>
+                                <input type="text" class="form-control col-md-8 @error('duration') is-invalid @enderror" name="duration" value="{{ old('duration') }}" required>
+
+                                <select type="text" class="form-control col-md-4 @error('duration_unit') is-invalid @enderror" name="duration_unit" required>
                                     <option value="" selected disabled>Select Unit</option>
-                                    <option value="Days" @if( old('duration_unit') === "Days") selected @endif>Days</option>
-                                    <option value="Weeks" @if( old('duration_unit') === "Weeks") selected @endif>Weeks</option>
-                                    <option value="Months" @if( old('duration_unit') === "Months") selected @endif>Months</option>
+                                    <option value="Days" @if( old('duration_unit') == "Days") selected @endif>Days</option>
+                                    <option value="Weeks" @if( old('duration_unit') == "Weeks") selected @endif>Weeks</option>
+                                    <option value="Months" @if( old('duration_unit') == "Months") selected @endif>Months</option>
                                 </select>
 
-                                @error('duration_unit')
+                                @error('duration')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -105,16 +111,16 @@
                         </div>
 
                         <div id="group" class="form-group">
-                            <label for="category">Category</label>
+                            <label for="subject">Subject</label>
 
-                            <select id="category" name="category" type="text" class="form-control @error('category') is-invalid @enderror" required>
+                            <select id="subject" name="subject" type="text" class="form-control @error('subject') is-invalid @enderror" required>
                                 <option value="" selected disabled>Please Select...</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" @if( old('category') == $category->id) selected @endif>{{ $category->category_name }}</option>
+                                @foreach($subjects as $subject)
+                                    <option value="{{ $subject->id }}" @if( old('subject') == $subject->id) selected @endif>{{ $subject->subject_name }}</option>
                                 @endforeach
                             </select>
 
-                            @error('difficulty')
+                            @error('$subject')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -136,7 +142,7 @@
                         <div class="form-group">
                             <label for="date_starting">Starting From</label>
 
-                            <input id="date_starting" type="date" class="form-control @error('date_starting') is-invalid @enderror" name="date_starting" required>
+                            <input id="date_starting" type="date" class="form-control @error('date_starting') is-invalid @enderror" name="date_starting" value="{{ old('date_starting') }}" required>
 
                             @error('date_starting')
                             <span class="invalid-feedback" role="alert">
@@ -160,7 +166,7 @@
                         <div class="form-group">
                             <label for="syllabus">Syllabus</label>
 
-                            <textarea id="syllabus" class="form-control editor @error('syllabus') is-invalid @enderror" name="syllabus" rows="7" required>{{ old('syllabus') }}</textarea>
+                            <textarea id="syllabus" class="form-control editor @error('syllabus') is-invalid @enderror" name="syllabus" rows="7" placeholder="we recommend you to use planned module names here." required>{{ old('syllabus') }}</textarea>
 
                             @error('syllabus')
                             <span class="invalid-feedback" role="alert">
@@ -172,7 +178,7 @@
                         <div class="form-group">
                             <label for="prerequisites">Prerequisites</label>
 
-                            <textarea id="prerequisites" class="form-control editor @error('prerequisites') is-invalid @enderror" name="prerequisites" rows="7" required>{{ old('prerequisites') }}</textarea>
+                            <textarea id="prerequisites" class="form-control editor @error('prerequisites') is-invalid @enderror" name="prerequisites" rows="7" placeholder="use bullets or lists" required>{{ old('prerequisites') }}</textarea>
 
                             @error('prerequisites')
                             <span class="invalid-feedback" role="alert">
@@ -184,7 +190,7 @@
                         <div class="form-group">
                             <label for="expected_outcome">Expected Outcome</label>
 
-                            <textarea id="expected_outcome" class="form-control editor @error('expected_outcome') is-invalid @enderror" name="expected_outcome" rows="7" required>{{ old('expected_outcome') }}</textarea>
+                            <textarea id="expected_outcome" class="form-control editor @error('expected_outcome') is-invalid @enderror" name="expected_outcome" rows="7" placeholder="use bullets or lists" required>{{ old('expected_outcome') }}</textarea>
 
                             @error('expected_outcome')
                             <span class="invalid-feedback" role="alert">
@@ -209,21 +215,14 @@
                             <label for="fee">Course Fee</label>
 
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" class="form-control @error('fee') is-invalid @enderror" name="fee" id="fee" value="{{ old('fee') }}">
-                                    @error('fee')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <select type="text" class="form-control @error('currency') is-invalid @enderror" name="currency" id="currency">
+                                <input type="text" class="form-control col-md-8 @error('fee') is-invalid @enderror" name="fee" id="fee" value="{{ old('fee') }}">
+
+                                <select type="text" class="form-control col-md-4 @error('currency') is-invalid @enderror" name="currency" id="currency">
                                     <option value="" selected disabled>Select Currency</option>
                                     <option value="BDT" @if( old('currency') === "BDT") selected @endif>BDT</option>
                                     <option value="USD" @if( old('currency') === "USD") selected @endif>USD</option>
                                 </select>
-
-                                @error('currency')
+                                @error('fee')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

@@ -15,6 +15,7 @@ class CreateInstructorsTable extends Migration
     {
         Schema::create('instructors', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('UUID');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -24,6 +25,7 @@ class CreateInstructorsTable extends Migration
             $table->string('institution');
             $table->unsignedBigInteger('phone')->unique();
             $table->string('address')->nullable();
+            $table->string('about');
             $table->boolean('is_verified')->default(false);
             $table->unsignedBigInteger('institution_id')->nullable();
             $table->string('profile_photo_path')->nullable();

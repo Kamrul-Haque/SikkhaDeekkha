@@ -14,12 +14,12 @@
 
             @if( isset($action) )
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
                     <form {{ $action }} method="post">
                         @method('DELETE')
                         @csrf
                         <button type="submit" class="btn btn-danger btn-sm">Confirm</button>
                     </form>
-                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Cancel</button>
                 </div>
             @else
                 <div class="modal-footer">

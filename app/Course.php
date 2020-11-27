@@ -9,12 +9,17 @@ class Course extends Model
 {
     protected $guarded = [];
 
-    public function category()
+    public function subject()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Subject::class);
     }
 
-    public function getCourseImageAttribute($value)
+    public function instructors()
+    {
+        return $this->belongsToMany(Instructor::class);
+    }
+
+    public function getImagePathAttribute($value)
     {
         if ($value)
         {
@@ -26,5 +31,17 @@ class Course extends Model
     {
         $carbon = new Carbon($value);
         return $carbon->format('d/m/Y');
+    }
+
+    public function hasInstructor($id)
+    {
+        foreach ($this->instructors as $instructor)
+        {
+            if ($instructor->id == $id)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

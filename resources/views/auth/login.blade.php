@@ -67,11 +67,15 @@
                                     </button>
                                 @endisset
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
+                                @isset($url)
+                                    <a class="btn btn-link" href="{{ route('instructor.register.form') }}">
+                                        don't have account? register here.
                                     </a>
-                                @endif
+                                @else
+                                    <a class="btn btn-link" href="{{ route('student.register.form') }}">
+                                        don't have account? register here.
+                                    </a>
+                                @endisset
                             </div>
                         </div>
                     </form>

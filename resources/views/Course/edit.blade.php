@@ -2,9 +2,6 @@
 
 @section('styles')
     <style>
-        .input-group-prepend{
-            width: 600px;
-        }
         .container{
             width: 50%;
         }
@@ -22,7 +19,7 @@
             </div>
 
             <div class="card-body">
-                <form method="POST" action="{{ route('admin.course.update', $course) }}" enctype="multipart/form-data">
+                <form method="POST" action="@if(Auth::guard('instructor')->check()) {{ route('instructor.course.update', $course) }} @elseif(Auth::guard('admin')->check()) {{ route('admin.course.update', $course) }} @endif" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
 
@@ -35,7 +32,19 @@
                             @error('title')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
-                        </span>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subtitle">Subtitle</label>
+
+                            <textarea id="subtitle" type="text" class="form-control @error('subtitle') is-invalid @enderror" name="subtitle" rows="2" placeholder="1 to 3 sentences" required>{{ $course->subtitle }}</textarea>
+
+                            @error('subtitle')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
                             @enderror
                         </div>
 
@@ -82,22 +91,16 @@
                             <label for="duration">Duration</label>
 
                             <div id="duration" class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" class="form-control @error('duration') is-invalid @enderror" name="duration" value="{{ $duration[0] }}" required>
-                                    @error('duration')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <select type="text" class="form-control @error('duration_unit') is-invalid @enderror" name="duration_unit" required>
+                                <input type="text" class="form-control col-md-8 @error('duration') is-invalid @enderror" name="duration" value="{{ $duration[0] }}" required>
+
+                                <select type="text" class="form-control col-md-4 @error('duration_unit') is-invalid @enderror" name="duration_unit" required>
                                     <option value="" selected disabled>Select Unit</option>
                                     <option value="Days" @if( $duration[1] == "Days") selected @endif>Days</option>
                                     <option value="Weeks" @if( $duration[1] == "Weeks") selected @endif>Weeks</option>
                                     <option value="Months" @if( $duration[1] == "Months") selected @endif>Months</option>
                                 </select>
 
-                                @error('duration_unit')
+                                @error('duration')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -106,16 +109,16 @@
                         </div>
 
                         <div id="group" class="form-group">
-                            <label for="category">Category</label>
+                            <label for="subject">Subject</label>
 
-                            <select id="category" name="category" type="text" class="form-control @error('category') is-invalid @enderror" required>
+                            <select id="subject" name="subject" type="text" class="form-control @error('subject') is-invalid @enderror" required>
                                 <option value="" selected disabled>Please Select...</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" @if($category->id == $course->category_id) selected @endif>{{ $category->category_name }}</option>
+                                @foreach($subjects as $subject)
+                                    <option value="{{ $subject->id }}" @if($course->subject_id == $subject->id) selected @endif>{{ $subject->subject_name }}</option>
                                 @endforeach
                             </select>
 
-                            @error('difficulty')
+                            @error('$subject')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -137,7 +140,7 @@
                         <div class="form-group">
                             <label for="date_starting">Starting From</label>
 
-                            <input id="date_starting" type="date" class="form-control @error('date_starting') is-invalid @enderror" name="date_starting" required>
+                            <input id="date_starting" type="date" class="form-control @error('date_starting') is-invalid @enderror" name="date_starting" value="{{ $course->date_starting }}" required>
 
                             @error('date_starting')
                             <span class="invalid-feedback" role="alert">
@@ -197,7 +200,7 @@
                         <div class="form-group">
                             <label for="marks_required">Required Marks to Complete the Course</label>
 
-                            <input id="marks_required" type="text" class="form-control @error('marks_required') is-invalid @enderror" name="marks_required" placeholder="percentage(%)" value="{{ $course->marks_required_for_completion }}" required>
+                            <input id="marks_required" type="text" class="form-control @error('marks_required') is-invalid @enderror" name="marks_required" placeholder="percentage(%)" value="{{ $course->completion_marks }}" required>
 
                             @error('marks_required')
                             <span class="invalid-feedback" role="alert">
@@ -210,21 +213,14 @@
                             <label for="fee">Course Fee</label>
 
                             <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <input type="text" class="form-control @error('fee') is-invalid @enderror" name="fee" id="fee" value="{{ $course->fee }}">
-                                    @error('fee')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <select type="text" class="form-control @error('currency') is-invalid @enderror" name="currency" id="currency">
+                                <input type="text" class="form-control col-md-8 @error('fee') is-invalid @enderror" name="fee" id="fee" value="{{ $course->fee }}">
+
+                                <select type="text" class="form-control col-md-4 @error('currency') is-invalid @enderror" name="currency" id="currency">
                                     <option value="" selected disabled>Select Currency</option>
                                     <option value="BDT" @if( $course->currency === "BDT") selected @endif>BDT</option>
                                     <option value="USD" @if( $course->currency === "USD") selected @endif>USD</option>
                                 </select>
-
-                                @error('currency')
+                                @error('fee')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -249,7 +245,7 @@
 
                         <div class="form-group">
                             <div class="form-check">
-                                <input id="certificate" name="certificate" type="checkbox" class="form-check-input @error('certificate') is-invalid @enderror" {{ ($course->has_certficate) ? 'checked' : '' }}>
+                                <input id="certificate" name="certificate" type="checkbox" class="form-check-input @error('certificate') is-invalid @enderror" {{ ($course->has_certificate) ? 'checked' : '' }}>
                                 <label for="certificate" class="form-check-label">the course offers certificate</label>
                             </div>
 
@@ -306,16 +302,20 @@
                 if ($(this).is(":checked"))
                 {
                     $('#fee').attr('disabled', false);
+                    $('#fee').attr('required', true);
                     $('#fee').val(null);
                     $('#currency').attr('disabled', false);
-                    $('#currency').val('disabled', null);
+                    $('#currency').attr('required', true);
+                    $('#currency').val(null);
                 }
                 else
                 {
                     $('#fee').attr('disabled', true);
+                    $('#fee').attr('required', false);
                     $('#fee').val(null);
                     $('#currency').attr('disabled', true);
-                    $('#currency').val('disabled', null);
+                    $('#currency').attr('required', false);
+                    $('#currency').val(null);
                 }
             });
         });

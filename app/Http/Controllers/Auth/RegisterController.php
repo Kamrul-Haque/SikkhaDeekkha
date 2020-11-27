@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -126,10 +127,12 @@ class RegisterController extends Controller
             'department' => 'required',
             'institution' => 'required',
             'phone' => 'required|digits:10|unique:instructors,phone',
-            'address' => 'required',
+            'address' => 'nullable',
+            'about' => 'required',
         ]);
 
         Instructor::create([
+            'UUID' => str::uuid()->toString(),
             'name' => $instructor['name'],
             'email' => $instructor['email'],
             'password' => Hash::make($instructor['password']),
@@ -138,6 +141,7 @@ class RegisterController extends Controller
             'institution' => $instructor['institution'],
             'phone' => $instructor['phone'],
             'address' => $instructor['address'],
+            'about' => $instructor['about'],
         ]);
 
         return redirect(route('instructor.login.form'))->with('toast_success','Successfully Registered! Please Login...');

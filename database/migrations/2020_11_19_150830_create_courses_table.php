@@ -16,27 +16,28 @@ class CreateCoursesTable extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title')->unique();
+            $table->string('subtitle');
             $table->string('level');
             $table->string('difficulty');
             $table->string('duration');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('subject_id');
             $table->string('topic');
             $table->text('description');
             $table->text('syllabus');
             $table->text('prerequisites');
             $table->text('expected_outcome');
-            $table->string('course_image')->nullable();
+            $table->string('image_path')->nullable();
             $table->string('date_starting');
-            $table->string('status')->default('Upcoming');
             $table->unsignedBigInteger('institution_id')->nullable();
             $table->boolean('has_certificate')->default(false);
             $table->boolean('is_paid')->default(false);
-            $table->decimal('marks_required_for_completion',5,2)->unsigned();
+            $table->integer('completion_marks')->unsigned()->nullable();
             $table->decimal('fee',7,2)->unsigned()->nullable();
+            $table->string('currency')->nullable();
             $table->timestamps();
 
             $table->foreign('institution_id')->references('id')->on('institutions');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('subject_id')->references('id')->on('subjects');
         });
     }
 

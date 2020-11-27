@@ -5,7 +5,7 @@
         width: 100%;
         z-index: 100;
         border-bottom: 4px solid #3490dc;
-
+        filter: drop-shadow(0px 1px 1px);
     }
     .navbar-collapse a{
         text-align: right!important;
@@ -33,22 +33,36 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
                 @if(Auth::guard('admin')->check())
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.student.index') }}">Students</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.course.index') }}">Courses</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.student.index') }}">Students</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.course.index') }}">Courses</a>
+                    </li>
+                @elseif(Auth::guard('instructor')->check())
+                    <li>
+                        <a class="nav-link" href="{{ route('instructor.course.create') }}">Create Courses</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#">My Courses</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{ route('instructor.course.index') }}">Courses</a>
+                    </li>
+                @elseif(Auth::guard('student')->check())
+                    <li>
+                        <a class="nav-link" href="{{ route('student.course.index') }}">Courses</a>
+                    </li>
                 @else
-                <li>
-                    <a class="nav-link" href="#">Courses</a>
-                </li>
+                    <li>
+                        <a class="nav-link" href="{{ route('course.index') }}">Courses</a>
+                    </li>
                 @endif
             </ul>
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <!-- Authentication Links -->
-                @guest
+                @if(!(Auth::guard('student')->check() || Auth::guard('instructor')->check() || Auth::guard('admin')->check()))
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.login.form') }}">Admin Login</a>
                     </li>
@@ -93,7 +107,7 @@
                             @endif
                         </div>
                     </li>
-                @endguest
+                @endif
             </ul>
         </div>
     </div>

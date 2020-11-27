@@ -16,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware(['guest','guest:admin','guest:student','guest:instructor']);
+
+Route::get('/course','CourseController@index')->name('course.index');
+Route::get('/course/{course}','CourseController@show')->name('course.show');
 
 Auth::routes(['register'=>false]);
 
@@ -34,6 +37,9 @@ Route::group(['prefix'=>'/instructor', 'as'=>'instructor.'], function () {
     Route::get('/register', 'auth\RegisterController@showInstructorRegisterForm')->name('register.form');
     Route::post('/register', 'auth\RegisterController@instructorCreate')->name('register');
     Route::get('/home', 'HomeController@index')->name('home')->middleware('auth:instructor');
+    Route::resource('/course','CourseController')->middleware('auth:instructor');
+    Route::get('/course/add-instructor/{course}','CourseController@addInstructorForm')->name('course.add.instructor')->middleware('auth:instructor');
+    Route::put('/course/add-instructor/{course}','CourseController@addInstructor')->name('course.instructor.store')->middleware('auth:instructor');
 });
 
 Route::group(['prefix'=>'/student', 'as'=>'student.'], function () {
@@ -43,6 +49,8 @@ Route::group(['prefix'=>'/student', 'as'=>'student.'], function () {
     Route::get('/register', 'auth\RegisterController@showStudentRegisterForm')->name('register.form');
     Route::post('/register', 'auth\RegisterController@studentCreate')->name('register');
     Route::get('/home', 'HomeController@index')->name('home')->middleware('auth:student');
+    Route::get('/course','CourseController@index')->name('course.index')->middleware('auth:student');
+    Route::get('/course/{course}','CourseController@show')->name('course.show')->middleware('auth:student');
 });
 
 Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], function (){
@@ -50,4 +58,6 @@ Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], f
     Route::resource('/instructor','InstructorController')->except(['create','store']);
     Route::resource('/institution','InstitutionController');
     Route::resource('/course','CourseController');
+    Route::get('/course/add-instructor/{course}','CourseController@addInstructorForm')->name('course.add.instructor');
+    Route::put('/course/add-instructor/{course}','CourseController@addInstructor')->name('course.instructor.store');
 });

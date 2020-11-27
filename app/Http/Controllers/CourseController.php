@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
 use App\Course;
+use App\Instructor;
+use App\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class CourseController extends Controller
@@ -27,8 +29,8 @@ class CourseController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        return view('Course.create',compact('categories'));
+        $subjects = Subject::all();
+        return view('Course.create',compact('subjects'));
     }
 
     /**
@@ -41,17 +43,18 @@ class CourseController extends Controller
     {
         $request->validate([
            'title'=>'required|string|min:5|unique:courses',
+           'subtitle'=>'required|max:150',
            'level'=>'required',
            'difficulty'=>'required',
-           'duration'=>'required',
+           'duration'=>'required|max:2',
            'duration_unit'=>'required',
-           'category'=>'required',
+           'subject'=>'required',
            'topic'=>'required',
            'date_starting'=>'required|after:today',
-           'description'=>'required|string|min:20',
-           'syllabus'=>'required|string|min:20',
-           'prerequisites'=>'required|string|min:10',
-           'expected_outcome'=>'required|string|min:10',
+           'description'=>'required|string|min:150',
+           'syllabus'=>'required|string|min:200',
+           'prerequisites'=>'required|string|min:150',
+           'expected_outcome'=>'required|string|min:60',
            'marks_required'=>'required|digits_between:1,3|gt:40|lte:100',
            'fee'=>'nullable|gt:0|lte:99999.99',
            'image'=>'nullable|file|mimes:jpeg,jpg,png|max:2024'
@@ -59,30 +62,44 @@ class CourseController extends Controller
 
         $course = new Course;
         $course->title = $request->title;
+        $course->subtitle = $request->subtitle;
         $course->level = $request->level;
         $course->difficulty = $request->difficulty;
         $course->duration = $request->duration.' '.$request->duration_unit;
-        $course->category_id = $request->category;
+        $course->subject_id = $request->subject;
         $course->topic = $request->topic;
         $course->date_starting = $request->date_starting;
         $course->description = $request->description;
         $course->syllabus = $request->syllabus;
         $course->prerequisites = $request->prerequisites;
         $course->expected_outcome = $request->expected_outcome;
-        $course->marks_required_for_completion = $request->marks_required;
+        $course->completion_marks = $request->marks_required;
         $course->fee = $request->fee;
+        $course->currency = $request->currency;
         $course->has_certificate = $request->has('certificate');
         $course->is_paid = $request->has('paid');
 
         if($request->hasFile('image'))
         {
             $path = $request->file('image')->store('CourseImage');
-            $course->course_image = 'storage/'.$path;
+            $course->image_path = 'storage/'.$path;
         }
 
         $course->save();
 
-        return redirect()->route('admin.course.index')->with('toast_success','Successfully Created!');
+        if (Auth::guard('instructor')->check())
+        {
+            $course->instructors()->syncWithoutDetaching(Auth::user()->id);
+        }
+
+        if (Auth::guard('admin')->check())
+        {
+            return redirect()->route('admin.course.index')->with('toast_success','Successfully Created!');
+        }
+        else
+        {
+            return redirect()->route('instructor.course.index')->with('toast_success','Successfully Created!');
+        }
     }
 
     /**
@@ -105,10 +122,17 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        $course = Course::find($course->id);
-        $duration = explode(" ",$course->duration);
-        $categories = Category::all();
-        return view('Course.edit', compact('course','categories','duration'));
+        if(Auth::guard('admin')->check() || $course->hasInstructor(Auth::user()->id))
+        {
+            $course = Course::find($course->id);
+            $duration = explode(" ",$course->duration);
+            $subjects = Subject::all();
+            return view('Course.edit', compact('course','subjects','duration'));
+        }
+        else
+        {
+            return back()->with('toast_warning', 'Not authorized to access the page');
+        }
     }
 
     /**
@@ -122,17 +146,18 @@ class CourseController extends Controller
     {
         $request->validate([
             'title'=>'required|string|min:5|unique:courses,title,'.$course->id,
+            'subtitle'=>'required|max:150',
             'level'=>'required',
             'difficulty'=>'required',
-            'duration'=>'required',
+            'duration'=>'required|max:2',
             'duration_unit'=>'required',
-            'category'=>'required',
+            'subject'=>'required',
             'topic'=>'required',
             'date_starting'=>'required|after:today',
-            'description'=>'required|string|min:20',
-            'syllabus'=>'required|string|min:20',
-            'prerequisites'=>'required|string|min:10',
-            'expected_outcome'=>'required|string|min:10',
+            'description'=>'required|string|min:150',
+            'syllabus'=>'required|string|min:200',
+            'prerequisites'=>'required|string|min:150',
+            'expected_outcome'=>'required|string|min:60',
             'marks_required'=>'required|digits_between:1,3|gt:40|lte:100',
             'fee'=>'nullable|gt:0|lte:99999.99',
             'image'=>'nullable|file|mimes:jpeg,jpg,png|max:2024'
@@ -140,21 +165,23 @@ class CourseController extends Controller
 
         $course = Course::find($course->id);
         $course->title = $request->title;
+        $course->subtitle = $request->subtitle;
         $course->level = $request->level;
         $course->difficulty = $request->difficulty;
         $course->duration = $request->duration.' '.$request->duration_unit;
-        $course->category_id = $request->category;
+        $course->subject_id = $request->subject;
         $course->topic = $request->topic;
         $course->date_starting = $request->date_starting;
         $course->description = $request->description;
         $course->syllabus = $request->syllabus;
         $course->prerequisites = $request->prerequisites;
         $course->expected_outcome = $request->expected_outcome;
-        $course->marks_required_for_completion = $request->marks_required;
+        $course->completion_marks = $request->marks_required;
         $course->fee = $request->fee;
+        $course->currency = $request->currency;
         $course->has_certificate = $request->has('certificate');
         $course->is_paid = $request->has('paid');
-        $oldImage = $course->getOriginal('course_image');
+        $oldImage = $course->getOriginal('image_path');
 
         if($request->hasFile('image'))
         {
@@ -163,12 +190,19 @@ class CourseController extends Controller
                 File::delete($oldImage);
             }
             $path = $request->file('image')->store('CourseImage');
-            $course->course_image = 'storage/'.$path;
+            $course->image_path = 'storage/'.$path;
         }
 
         $course->save();
 
-        return redirect()->route('admin.course.index')->with('toast_info','Successfully Updated!');
+        if (Auth::guard('admin')->check())
+        {
+            return redirect()->route('admin.course.index')->with('toast_info','Successfully Updated!');
+        }
+        else
+        {
+            return redirect()->route('instructor.course.index')->with('toast_info','Successfully Updated!');
+        }
     }
 
     /**
@@ -180,13 +214,60 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         $course = Course::find($course->id);
-        $image = $course->getOriginal('course_image');
-        if (File::exists($image))
-        {
+        $image = $course->getOriginal('image_path');
+        if (File::exists($image)) {
             File::delete($image);
         }
+
         $course->delete();
 
-        return redirect()->route('admin.course.index')->with('toast_error','Course Deleted!');
+        if (Auth::guard('admin')->check())
+        {
+            return redirect()->route('admin.course.index')->with('toast_error', 'Course Deleted!');
+        }
+        else
+        {
+            return redirect()->route('instructor.course.index')->with('toast_error', 'Course Deleted!');
+        }
+    }
+
+    public function addInstructorForm(Course $course)
+    {
+        if(Auth::guard('admin')->check() || $course->hasInstructor(Auth::user()->id))
+        {
+            $course = Course::find($course->id);
+            return view('Course.add-instructor', compact('course'));
+        }
+        else
+        {
+            return back()->with('toast_warning', 'Not authorized to access the page');
+        }
+    }
+
+    public function addInstructor(Request $request, Course $course)
+    {
+        $request->validate([
+            'uuid' => 'required|min:36|min:36'
+        ]);
+
+        $instructor = Instructor::where('UUID', (string)$request->uuid)->get()->first();
+
+        if ($instructor) {
+            $course = Course::find($course->id);
+            $course->instructors()->syncWithoutDetaching($instructor->id);
+
+            if (Auth::guard('admin')->check())
+            {
+                return redirect()->route('admin.course.index')->with('toast_info', 'Instructor Added!');
+            }
+            else
+            {
+                return redirect()->route('instructor.course.index')->with('toast_info', 'Instructor Added!');
+            }
+        }
+        else
+        {
+            return back()->with('toast_error', 'Incorrect Unique ID');
+        }
     }
 }

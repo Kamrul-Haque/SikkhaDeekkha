@@ -128,9 +128,23 @@
                                 <label for="address" class="col-md-4 col-form-label text-md-right">Address</label>
 
                                 <div class="col-md-6">
-                                    <textarea id="address" class="form-control @error('address') is-invalid @enderror" name="address">{{ old('address') }}</textarea>
+                                    <textarea id="address" class="form-control @error('address') is-invalid @enderror" name="address" rows="2">{{ old('address') }}</textarea>
 
                                     @error('address')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="about" class="col-md-4 col-form-label text-md-right">About</label>
+
+                                <div class="col-md-6">
+                                    <textarea id="about" class="form-control @error('about') is-invalid @enderror" name="about" rows="2" placeholder="this will be shown in your courses">{{ old('about') }}</textarea>
+
+                                    @error('about')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
