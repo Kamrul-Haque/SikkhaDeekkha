@@ -75,8 +75,9 @@
                                         <span data-feather="settings"></span>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
+                                        <a href="{{ route('instructor.course.module', $course) }}" class="dropdown-item">Course Modules</a>
                                         <a href="{{ route('instructor.course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
-                                        <button type="submit" class="dropdown-item" data-toggle="modal" data-target="#dynamicModal">Delete</button>
+                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#dynamicModal">Delete</button>
                                         <a href="{{ route('instructor.course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
                                     </div>
                                 </div>
@@ -87,8 +88,9 @@
                                     <span data-feather="settings"></span>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
+                                    <a href="{{ route('admin.course.module', $course) }}" class="dropdown-item">Course Modules</a>
                                     <a href="{{ route('admin.course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
-                                    <button type="submit" class="dropdown-item" data-toggle="modal" data-target="#dynamicModal">Delete</button>
+                                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#dynamicModal">Delete</button>
                                     <a href="{{ route('admin.course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
                                 </div>
                             </div>
@@ -99,7 +101,10 @@
                     <p class="font-weight-bolder pt-1"><span data-feather="star" class="pr-2" title="rating"></span><strong>8.6/10</strong> on <strong>2000</strong> ratings</p>
                     <div class="row">
                         <div class="col-md-3 pt-5">
-                            <button class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>Enroll</strong></button>
+                            <form action="{{ route('student.course.enroll', $course) }}" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>Enroll</strong></button>
+                            </form>
                             <p class="font-weight-bolder"><strong>5000</strong> students currently enrolled</p>
                             <a href="#" class="text-danger pt-0" style="font-size: medium"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</a>
                         </div>
@@ -148,7 +153,7 @@
                             </div>
                             <div class="col-md-5">
                                 <h5><strong>{{ $instructor->name }}</strong></h5>
-                                <p>{{ $instructor->institution }}<br>{{ $instructor->about }}</p>
+                                <p>{{ $instructor->designation }}, {{ $instructor->institution }}<br>{{ $instructor->about }}</p>
                             </div>
                         </div>
                         @endforeach
@@ -187,7 +192,7 @@
             @slot('title') Delete Confirmation @endslot
             @slot('type') danger @endslot
             @slot('action') @if(Auth::guard('instructor')->check()) action="{{ route('instructor.course.destroy', $course) }}" @elseif(Auth::guard('admin')->check()) action="{{ route('admin.course.destroy', $course) }}" @endif @endslot
-            Do you really want to delete the course? All Contents will be deleted as well!
+            Do you really want to delete the Course? All Contents will be deleted as well!
         @endcomponent
     </div>
 @endsection

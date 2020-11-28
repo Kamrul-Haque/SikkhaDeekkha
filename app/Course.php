@@ -19,6 +19,16 @@ class Course extends Model
         return $this->belongsToMany(Instructor::class);
     }
 
+    public function students()
+    {
+        return $this->belongsToMany(Student::class)->withPivot('total_marks_obtained', 'has_completed');
+    }
+
+    public function modules()
+    {
+        return $this->hasMany(Module::class);
+    }
+
     public function getImagePathAttribute($value)
     {
         if ($value)
@@ -35,13 +45,11 @@ class Course extends Model
 
     public function hasInstructor($id)
     {
-        foreach ($this->instructors as $instructor)
-        {
-            if ($instructor->id == $id)
-            {
-                return true;
-            }
-        }
-        return false;
+        return $this->instructors->contains($id);
+    }
+
+    public function hasStudent($id)
+    {
+        return $this->students->contains($id);
     }
 }

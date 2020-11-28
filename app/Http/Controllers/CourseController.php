@@ -270,4 +270,25 @@ class CourseController extends Controller
             return back()->with('toast_error', 'Incorrect Unique ID');
         }
     }
+
+    public function enroll(Course $course)
+    {
+        if ($course->hasStudent(Auth::user()->id))
+        {
+            return back()->with('toast_info','You are already Enrolled!');
+        }
+        else
+        {
+            $course = Course::find($course->id);
+
+            $course->students()->syncWithoutDetaching(Auth::user()->id);
+            return redirect()->route('student.course.module', $course)->with('toast_success', 'Enrollment Successful!');
+        }
+    }
+
+    public function modules(Course $course)
+    {
+        $course = Course::find($course->id);
+        return view('Course.modules', compact('course'));
+    }
 }

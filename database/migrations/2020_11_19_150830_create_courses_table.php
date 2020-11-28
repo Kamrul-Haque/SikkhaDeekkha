@@ -31,6 +31,7 @@ class CreateCoursesTable extends Migration
             $table->unsignedBigInteger('institution_id')->nullable();
             $table->boolean('has_certificate')->default(false);
             $table->boolean('is_paid')->default(false);
+            $table->float('total_marks',5,2)->unsigned()->default(0);
             $table->integer('completion_marks')->unsigned()->nullable();
             $table->decimal('fee',7,2)->unsigned()->nullable();
             $table->string('currency')->nullable();

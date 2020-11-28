@@ -3,83 +3,111 @@
 namespace App\Http\Controllers;
 
 use App\Module;
+use App\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ModuleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index(Course $course)
     {
-        //
+        if ($course->hasStudent(Auth::user()->id) || $course->hasInstructor(Auth::user()->id))
+        {
+            $course = Course::find($course->id);
+            return view('Module.index', compact('course'));
+        }
+        else
+        {
+            if (!$course->hasStudent(Auth::user()->id))
+            {
+                return redirect()->route('student.course.show', $course)->with('toast_warning','You need to enroll first');
+            }
+            else
+            {
+                return back()->with('toast_warning','Not authorized to access the page');
+            }
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(Course $course)
     {
-        //
+        if (Auth::guard('admin')->check() || $course->hasInstructor(Auth::user()->id))
+        {
+            $course = Course::find($course->id);
+            return view('Module.create',compact('course'));
+        }
+        else
+        {
+            return back()->with('toast_warning','Not authorized to access the page');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store(Request $request, Course $course)
     {
-        //
+        $request->validate([
+           'module_name'=>'required|min:3'
+        ]);
+
+        $module = new Module;
+        $module->module_name = $request->module_name;
+        $module->course_id = $course->id;
+        $module->save();
+
+        if (Auth::guard('admin')->check())
+        {
+            return redirect()->route('admin.course.module', $course)->with('toast_success','Successfully Created!');
+        }
+        return redirect()->route('instructor.course.module', $course)->with('toast_success','Successfully Created!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Module  $module
-     * @return \Illuminate\Http\Response
-     */
     public function show(Module $module)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Module  $module
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Module $module)
+    public function edit(Course $course, Module $module)
     {
-        //
+        if (Auth::guard('admin')->check() || $course->hasInstructor(Auth::user()->id))
+        {
+            $module = Module::find($module->id);
+            $course = Course::find($course->id);
+            return view('Module.edit',compact('module','course'));
+        }
+        else
+        {
+            return back()->with('toast_warning','Not authorized to access the page');
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Module  $module
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Module $module)
+    public function update(Request $request, Course $course, Module $module)
     {
-        //
+        $request->validate([
+            'module_name'=>'required|min:3'
+        ]);
+
+        $course = Course::find($course->id);
+        $module = Module::find($module->id);
+        $module->module_name = $request->module_name;
+        $module->save();
+
+        if (Auth::guard('admin')->check())
+        {
+            return redirect()->route('admin.course.module', $course)->with('toast_info','Successfully Updated!');
+        }
+        return redirect()->route('instructor.course.module', $course)->with('toast_info','Successfully Updated!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Module  $module
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Module $module)
+    public function destroy(Course $course, Module $module)
     {
-        //
+        $module = Module::find($module->id);
+        $module->delete();
+
+        if (Auth::guard('admin')->check())
+        {
+            return redirect()->route('admin.course.module', $course)->with('toast_error','Module Deleted!');
+        }
+        return redirect()->route('instructor.course.module', $course)->with('toast_error','Module Deleted!');
     }
 }

@@ -6,8 +6,7 @@
             width: 100%;
             height: 200px;
             background-color: ghostwhite;
-            filter: drop-shadow(0px 1px 1px darkgray);
-            padding-bottom: 20px;
+            filter: drop-shadow(0px 2px 2px darkgray);
             background-image: linear-gradient(to left, rgba(255,255,255,0.6) 0%,rgba(255,255,255,0.6) 100%), url("{{ asset('images/books-1281581_640.jpg') }}");
             background-position: top;
             background-repeat: no-repeat;
@@ -34,6 +33,7 @@
         .logo{
             display: block;
             max-height: 75px;
+            left: 0;
             filter: invert(70%);
         }
         .course-image{
@@ -92,7 +92,10 @@
                             <p><span data-feather="calendar" class="pr-1" title="starts from"></span> {{ $course->date_starting }}</p>
                             <p><span data-feather="tag" class="pr-1 @if(!($course->fee)) disabled @endif" title="fee"></span> {{ ($course->fee) ? $course->fee." ".$course->currency : "Free"}}</p>
                             <p><span data-feather="award" class="pr-1 @if(!($course->has_certificate)) disabled @endif" title="certificate"></span> {{ ($course->has_certificate) ? "Offers Certificate" : "No Certificate"}}</p>
-                            <button class="btn btn-block btn-primary mt-1 mb-1">Enroll</button>
+                            <form action="{{ route('student.course.enroll', $course) }}" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>Enroll</strong></button>
+                            </form>
                             <a href="#" class="text-danger"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</a>
                         </div>
                     </div>
