@@ -30,6 +30,9 @@ Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {
 });
 
 Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], function (){
+    Route::get('/', function () {
+        return view('auth.admin.profile');
+    })->name('profile');
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('/student', 'StudentController')->except(['create','store']);
     Route::resource('/instructor','InstructorController')->except(['create','store']);
@@ -54,6 +57,9 @@ Route::group(['prefix'=>'/instructor', 'as'=>'instructor.'], function () {
 });
 
 Route::group(['prefix'=>'/instructor', 'as'=>'instructor.', 'middleware'=>'auth:instructor'], function () {
+    Route::get('/', function () {
+        return view('Instructor.profile');
+    })->name('profile');
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('/course','CourseController');
     Route::get('/course/add-instructor/{course}','CourseController@addInstructorForm')->name('course.add.instructor');
@@ -75,6 +81,9 @@ Route::group(['prefix'=>'/student', 'as'=>'student.'], function () {
 });
 
 Route::group(['prefix'=>'/student', 'as'=>'student.', 'middleware'=>'auth:student'], function () {
+    Route::get('/', function () {
+        return view('Student.profile');
+    })->name('profile');
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/course','CourseController@index')->name('course.index');
     Route::get('/course/{course}','CourseController@show')->name('course.show');

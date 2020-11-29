@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header bg-primary text-light">
-                        <h4>Create Student</h4>
+                        <h4>Student Registration</h4>
                     </div>
 
                     <div class="card-body">

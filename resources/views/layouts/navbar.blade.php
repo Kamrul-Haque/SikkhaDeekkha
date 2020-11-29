@@ -34,9 +34,6 @@
             <ul class="navbar-nav mr-auto">
                 @if(Auth::guard('admin')->check())
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.student.index') }}">Students</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.course.index') }}">Courses</a>
                     </li>
                 @elseif(Auth::guard('instructor')->check())
@@ -66,9 +63,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.login.form') }}">Admin Login</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('instructor.login.form') }}">Instructor Login</a>
-                    </li>
                 @else
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -76,8 +70,8 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a href="#" class="dropdown-item">My Account</a>
                             @if(Auth::guard('admin')->check())
+                                <a href="{{ route('admin.profile') }}" class="dropdown-item">My Account</a>
                                 <a class="dropdown-item" href="{{ route('admin.logout') }}"
                                    onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
@@ -87,6 +81,7 @@
                                     @csrf
                                 </form>
                             @elseif(Auth::guard('instructor')->check())
+                                <a href="{{ route('instructor.profile') }}" class="dropdown-item">My Account</a>
                                 <a class="dropdown-item" href="{{ route('instructor.logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -96,6 +91,7 @@
                                     @csrf
                                 </form>
                             @else
+                                <a href="{{ route('student.profile') }}" class="dropdown-item">My Account</a>
                                 <a class="dropdown-item" href="{{ route('student.logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

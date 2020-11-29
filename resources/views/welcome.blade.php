@@ -43,7 +43,7 @@
             border-top: 1px solid black;
             width: 70%;
         }
-        a{
+        button{
             display: block;
             position: relative;
             z-index: 5!important;
@@ -130,8 +130,28 @@
                         <h4 class="display-4">SikkhaDeekkha</h4>
                         <h6 class="text-dark"><i>World Class Online Education Platform First Ever In Bangladesh!</i></h6>
                         <hr class="line">
-                        <a href="{{ route('student.register.form') }}" class="btn btn-success btn-lg" style="opacity: 1; z-index: 9999">Register</a>
-                        <a href="{{ route('student.login.form') }}" class="btn btn-primary btn-lg">Login</a>
+                        <div class="row">
+                            <div class="col-md-5"></div>
+                            <div class="dropdown col-md-1 float-right pr-1">
+                                <button class="dropdown-button btn btn-block btn-success btn-lg" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Register
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
+                                    <a href="{{ route('student.register.form') }}" class="dropdown-item bg-primary">Student Register</a>
+                                    <a href="{{ route('instructor.register.form') }}" class="dropdown-item bg-success" title="edit">Instructor Register</a>
+                                </div>
+                            </div>
+                            <div class="dropdown col-md-1 float-left pl-1">
+                                <button class="dropdown-button btn btn-block btn-primary btn-lg" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Login
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-left text-left" aria-labelledby="dropdownMenuButton">
+                                    <a href="{{ route('student.login.form') }}" class="dropdown-item bg-primary">Student Login</a>
+                                    <a href="{{ route('instructor.login.form') }}" class="dropdown-item bg-success" title="edit">Instructor Login</a>
+                                </div>
+                            </div>
+                            <div class="col-md-5"></div>
+                        </div>
                     </div>
                 </div>
             </div>
