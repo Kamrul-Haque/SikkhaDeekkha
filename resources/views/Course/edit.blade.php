@@ -19,7 +19,7 @@
             </div>
 
             <div class="card-body">
-                <form method="POST" action="@if(Auth::guard('instructor')->check()) {{ route('instructor.course.update', $course) }} @elseif(Auth::guard('admin')->check()) {{ route('admin.course.update', $course) }} @endif" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('course.update', $course) }}" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
 

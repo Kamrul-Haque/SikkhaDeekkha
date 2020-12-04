@@ -32,25 +32,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-                @if(Auth::guard('admin')->check())
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('admin.course.index') }}">Courses</a>
-                    </li>
-                @elseif(Auth::guard('instructor')->check())
+                @guest
                     <li>
-                        <a class="nav-link" href="{{ route('instructor.course.create') }}">Create Courses</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="#">My Courses</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="{{ route('instructor.course.index') }}">Courses</a>
-                    </li>
-                @elseif(Auth::guard('student')->check())
-                    <li>
-                        <a class="nav-link" href="{{ route('student.course.index') }}">Courses</a>
+                        <a class="nav-link" href="{{ route('guest.course.index') }}">Courses</a>
                     </li>
                 @else
+                    @if(Auth::guard('instructor')->check())
+                        <li>
+                            <a class="nav-link" href="{{ route('course.create') }}">Create Course</a>
+                        </li>
+                    @endif
                     <li>
                         <a class="nav-link" href="{{ route('course.index') }}">Courses</a>
                     </li>

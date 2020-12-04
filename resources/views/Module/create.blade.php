@@ -7,7 +7,7 @@
                 Create Module
             </div>
             <div class="card-body">
-                <form method="post" @if(Auth::guard('admin')->check()) action="{{ route('admin.course.module.store', $course) }}" @else action="{{ route('instructor.course.module.store', $course) }}" @endif>
+                <form method="post" action="{{ route('course.module.store', $course) }}">
                     @csrf
                     <div class="form-group row">
                         <label for="module_name" class="col-md-4 col-form-label text-md-right">Create Module</label>

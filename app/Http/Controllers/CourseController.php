@@ -92,14 +92,7 @@ class CourseController extends Controller
             $course->instructors()->syncWithoutDetaching(Auth::user()->id);
         }
 
-        if (Auth::guard('admin')->check())
-        {
-            return redirect()->route('admin.course.index')->with('toast_success','Successfully Created!');
-        }
-        else
-        {
-            return redirect()->route('instructor.course.index')->with('toast_success','Successfully Created!');
-        }
+        return redirect()->route('course.index')->with('toast_success','Successfully Created!');
     }
 
     /**
@@ -195,14 +188,7 @@ class CourseController extends Controller
 
         $course->save();
 
-        if (Auth::guard('admin')->check())
-        {
-            return redirect()->route('admin.course.index')->with('toast_info','Successfully Updated!');
-        }
-        else
-        {
-            return redirect()->route('instructor.course.index')->with('toast_info','Successfully Updated!');
-        }
+        return redirect()->route('course.index')->with('toast_info','Successfully Updated!');
     }
 
     /**
@@ -221,14 +207,7 @@ class CourseController extends Controller
 
         $course->delete();
 
-        if (Auth::guard('admin')->check())
-        {
-            return redirect()->route('admin.course.index')->with('toast_error', 'Course Deleted!');
-        }
-        else
-        {
-            return redirect()->route('instructor.course.index')->with('toast_error', 'Course Deleted!');
-        }
+        return redirect()->route('course.index')->with('toast_error', 'Course Deleted!');
     }
 
     public function addInstructorForm(Course $course)
@@ -256,14 +235,7 @@ class CourseController extends Controller
             $course = Course::find($course->id);
             $course->instructors()->syncWithoutDetaching($instructor->id);
 
-            if (Auth::guard('admin')->check())
-            {
-                return redirect()->route('admin.course.index')->with('toast_info', 'Instructor Added!');
-            }
-            else
-            {
-                return redirect()->route('instructor.course.index')->with('toast_info', 'Instructor Added!');
-            }
+            return redirect()->route('course.index')->with('toast_info', 'Instructor Added!');
         }
         else
         {
@@ -284,11 +256,5 @@ class CourseController extends Controller
             $course->students()->syncWithoutDetaching(Auth::user()->id);
             return redirect()->route('student.course.module', $course)->with('toast_success', 'Enrollment Successful!');
         }
-    }
-
-    public function modules(Course $course)
-    {
-        $course = Course::find($course->id);
-        return view('Course.modules', compact('course'));
     }
 }

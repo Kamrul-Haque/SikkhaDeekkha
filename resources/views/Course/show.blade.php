@@ -68,30 +68,16 @@
                             <h3 class="display-4 course-title">{{ $course->title }}</h3>
                         </div>
                         <div class="col-md-1">
-                            @if(Auth::guard('instructor')->check())
-                                @if($course->hasInstructor(Auth::user()->id))
-                                <div class="dropdown">
-                                    <button class="dropdown-button float-right pt-4" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span data-feather="settings"></span>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
-                                        <a href="{{ route('instructor.course.module', $course) }}" class="dropdown-item">Course Modules</a>
-                                        <a href="{{ route('instructor.course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
-                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#dynamicModal">Delete</button>
-                                        <a href="{{ route('instructor.course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
-                                    </div>
-                                </div>
-                                @endif
-                            @elseif(Auth::guard('admin')->check())
+                            @if((Auth::guard('admin')->check()) || (Auth::guard('instructor')->check() && $course->hasInstructor(Auth::user()->id)))
                             <div class="dropdown">
                                 <button class="dropdown-button float-right pt-4" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span data-feather="settings"></span>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
-                                    <a href="{{ route('admin.course.module', $course) }}" class="dropdown-item">Course Modules</a>
-                                    <a href="{{ route('admin.course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
+                                    <a href="{{ route('course.module', $course) }}" class="dropdown-item">Course Modules</a>
+                                    <a href="{{ route('course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
                                     <button type="button" class="dropdown-item" data-toggle="modal" data-target="#dynamicModal">Delete</button>
-                                    <a href="{{ route('admin.course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
+                                    <a href="{{ route('course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
                                 </div>
                             </div>
                             @endif
@@ -191,7 +177,7 @@
         @component('components.modal')
             @slot('title') Delete Confirmation @endslot
             @slot('type') danger @endslot
-            @slot('action') @if(Auth::guard('instructor')->check()) action="{{ route('instructor.course.destroy', $course) }}" @elseif(Auth::guard('admin')->check()) action="{{ route('admin.course.destroy', $course) }}" @endif @endslot
+            @slot('action') action="{{ route('course.destroy', $course) }}" @endslot
             Do you really want to delete the Course? All Contents will be deleted as well!
         @endcomponent
     </div>

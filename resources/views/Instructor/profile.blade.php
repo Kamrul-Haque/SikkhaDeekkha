@@ -6,14 +6,14 @@
             <div class="card">
                 <div class="card-header bg-success text-light">Admin Login</div>
 
-                <div class="card-body">
+                <div class="card-body pl-4">
                     <div class="form-group row">
                         <div class="col-md-4">
-                            <img src="{{ asset('images/No_Image_Available.jpg') }}" alt="" width="175px" height="150px">
+                            <img src="{{ asset('images/No_Image_Available.jpg') }}" alt="" width="150px" height="150px">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="name" class="col-md-5 col-form-label text-md-right">Name:</label>
+                        <label for="name" class="col-md-5 col-form-label">Name:</label>
 
                         <div class="col-md-7">
                             <label id="name" type="text" class="form-control-plaintext">{{ Auth::user()->name }}</label>
@@ -21,7 +21,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="email" class="col-md-5 col-form-label text-md-right">Email:</label>
+                        <label for="email" class="col-md-5 col-form-label">Email:</label>
 
                         <div class="col-md-7">
                             <label id="email" type="text" class="form-control-plaintext">{{ Auth::user()->email }}</label>
@@ -29,7 +29,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="designation" class="col-md-5 col-form-label text-md-right">Unique ID:</label>
+                        <label for="designation" class="col-md-5 col-form-label">Unique ID:</label>
 
                         <div class="col-md-7">
                             <label id="designation" type="text" class="form-control-plaintext">{{ Auth::user()->UUID }}</label>
@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="job" class="col-md-5 col-form-label text-md-right">Designation:</label>
+                        <label for="job" class="col-md-5 col-form-label">Designation:</label>
 
                         <div class="col-md-7">
                             <label id="job" type="text" class="form-control-plaintext">{{ Auth::user()->designation }}</label>
@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="department" class="col-md-5 col-form-label text-md-right">Department:</label>
+                        <label for="department" class="col-md-5 col-form-label">Department:</label>
 
                         <div class="col-md-7">
                             <label id="department" type="text" class="form-control-plaintext">{{ Auth::user()->department }}</label>
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="institution" class="col-md-5 col-form-label text-md-right">Institution:</label>
+                        <label for="institution" class="col-md-5 col-form-label">Institution:</label>
 
                         <div class="col-md-7">
                             <label id="institution" type="text" class="form-control-plaintext">{{ Auth::user()->institution }}</label>
@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="phone" class="col-md-5 col-form-label text-md-right">Phone:</label>
+                        <label for="phone" class="col-md-5 col-form-label">Phone:</label>
 
                         <div class="col-md-7">
                             <label id="phone" type="text" class="form-control-plaintext">{{ Auth::user()->phone }}</label>
@@ -69,7 +69,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="address" class="col-md-5 col-form-label text-md-right">Address:</label>
+                        <label for="address" class="col-md-5 col-form-label">Address:</label>
 
                         <div class="col-md-7">
                             <label id="address" type="text" class="form-control-plaintext">{{ (Auth::user()->address) ? (Auth::user()->address) : "no address given" }}</label>
@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="about" class="col-md-5 col-form-label text-md-right">About:</label>
+                        <label for="about" class="col-md-5 col-form-label">About:</label>
 
                         <div class="col-md-7">
                             <label id="about" type="text" class="form-control-plaintext">{{ Auth::user()->about }}</label>

@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header bg-success text-light">Add Instructor</div>
                         <div class="card-body">
-                        <form method="POST" @if(Auth::guard('admin')->check()) action="{{ route('admin.course.instructor.store', $course) }}" @else action="{{ route('instructor.course.instructor.store', $course) }}" @endif>
+                        <form method="POST" action="{{ route('course.instructor.store', $course) }}">
                             @method('PUT')
                             @csrf
 

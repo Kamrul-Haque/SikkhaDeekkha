@@ -7,7 +7,7 @@
                 Create Module
             </div>
             <div class="card-body">
-                <form method="post" @if(Auth::guard('admin')->check()) action="{{ route('admin.course.module.update', ['course'=>$course,'module'=>$module]) }}" @else action="{{ route('instructor.course.module.update', ['course'=>$course,'module'=>$module]) }}" @endif>
+                <form method="post" action="{{ route('course.module.update', ['course'=>$course,'module'=>$module]) }}">
                     @method('PUT')
                     @csrf
                     <div class="form-group row">

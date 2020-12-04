@@ -70,9 +70,15 @@
                             <p title="completed"><span data-feather="check-circle" class="pr-2" title="completed"></span> 5500</p>
                         </div>
                         <div class="col-md-7">
-                            <a href="@if(Auth::guard('instructor')->check()) {{ route('instructor.course.show', $course) }} @elseif(Auth::guard('admin')->check()) {{ route('admin.course.show', $course) }} @elseif(Auth::guard('student')->check()) {{ route('student.course.show', $course) }} @else {{ route('course.show', $course) }} @endif" class="course-title">
+                            @guest
+                            <a href="{{ route('guest.course.show', $course) }}" class="course-title">
                                 <h2>{{ $course->title }}</h2>
                             </a>
+                            @else
+                            <a href="{{ route('course.show', $course) }}" class="course-title">
+                                <h2>{{ $course->title }}</h2>
+                            </a>
+                            @endguest
                             <hr>
                             <h3>{{ $course->subject->subject_name }}</h3>
                             <h5>{{ $course->topic }}</h5>

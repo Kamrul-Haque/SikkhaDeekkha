@@ -22,7 +22,7 @@
             </div>
 
             <div class="card-body">
-                <form method="POST" action="@if(Auth::guard('instructor')->check()) {{ route('instructor.course.store') }} @elseif(Auth::guard('admin')->check()) {{ route('admin.course.store') }} @endif" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('course.store') }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="pl-4 pr-4 pt-1">

@@ -18,10 +18,28 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware(['guest','guest:admin','guest:student','guest:instructor']);
 
-Route::get('/course','CourseController@index')->name('course.index');
-Route::get('/course/{course}','CourseController@show')->name('course.show');
+Route::get('/guest/course','CourseController@index')->name('guest.course.index')->middleware('guest');
+Route::get('/guest/course/{course}','CourseController@show')->name('guest.course.show')->middleware('guest');
 
 Auth::routes(['register'=>false]);
+
+Route::group(['middleware'=>['auth:admin,instructor']],function (){
+    Route::resource('/course','CourseController')->except(['index','show']);
+    Route::get('/course/add-instructor/{course}','CourseController@addInstructorForm')->name('course.add.instructor');
+    Route::put('/course/add-instructor/{course}','CourseController@addInstructor')->name('course.instructor.store');
+    Route::get('/course/{course}/module','ModuleController@index')->name('course.module');
+    Route::get('/course/{course}/module/create','ModuleController@create')->name('course.module.create');
+    Route::post('/course/{course}/module/create','ModuleController@store')->name('course.module.store');
+    Route::get('/course/{course}/module/{module}/edit','ModuleController@edit')->name('course.module.edit');
+    Route::put('/course/{course}/module/{module}/edit','ModuleController@update')->name('course.module.update');
+    Route::delete('/course/{course}/module/{module}','ModuleController@destroy')->name('course.module.destroy');
+});
+
+Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
+    Route::get('/course','CourseController@index')->name('course.index');
+    Route::get('/course/{course}','CourseController@show')->name('course.show');
+    Route::get('/course/{course}/module','ModuleController@index')->name('course.module');
+});
 
 Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {
     Route::get('/login', 'auth\LoginController@showAdminLoginForm')->name('login.form');
@@ -37,15 +55,6 @@ Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], f
     Route::resource('/student', 'StudentController')->except(['create','store']);
     Route::resource('/instructor','InstructorController')->except(['create','store']);
     Route::resource('/institution','InstitutionController');
-    Route::resource('/course','CourseController');
-    Route::get('/course/add-instructor/{course}','CourseController@addInstructorForm')->name('course.add.instructor');
-    Route::put('/course/add-instructor/{course}','CourseController@addInstructor')->name('course.instructor.store');
-    Route::get('/course/{course}/module','ModuleController@index')->name('course.module');
-    Route::get('/course/{course}/module/create','ModuleController@create')->name('course.module.create');
-    Route::post('/course/{course}/module/create','ModuleController@store')->name('course.module.store');
-    Route::get('/course/{course}/module/{module}/edit','ModuleController@edit')->name('course.module.edit');
-    Route::put('/course/{course}/module/{module}/edit','ModuleController@update')->name('course.module.update');
-    Route::delete('/course/{course}/module/{module}','ModuleController@destroy')->name('course.module.destroy');
 });
 
 Route::group(['prefix'=>'/instructor', 'as'=>'instructor.'], function () {
@@ -61,15 +70,6 @@ Route::group(['prefix'=>'/instructor', 'as'=>'instructor.', 'middleware'=>'auth:
         return view('Instructor.profile');
     })->name('profile');
     Route::get('/home', 'HomeController@index')->name('home');
-    Route::resource('/course','CourseController');
-    Route::get('/course/add-instructor/{course}','CourseController@addInstructorForm')->name('course.add.instructor');
-    Route::put('/course/add-instructor/{course}','CourseController@addInstructor')->name('course.instructor.store');
-    Route::get('/course/{course}/module','ModuleController@index')->name('course.module');
-    Route::get('/course/{course}/module/create','ModuleController@create')->name('course.module.create');
-    Route::post('/course/{course}/module/create','ModuleController@store')->name('course.module.store');
-    Route::get('/course/{course}/module/{module}/edit','ModuleController@edit')->name('course.module.edit');
-    Route::put('/course/{course}/module/{module}/edit','ModuleController@update')->name('course.module.update');
-    Route::delete('/course/{course}/module/{module}','ModuleController@destroy')->name('course.module.destroy');
 });
 
 Route::group(['prefix'=>'/student', 'as'=>'student.'], function () {
@@ -85,8 +85,5 @@ Route::group(['prefix'=>'/student', 'as'=>'student.', 'middleware'=>'auth:studen
         return view('Student.profile');
     })->name('profile');
     Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('/course','CourseController@index')->name('course.index');
-    Route::get('/course/{course}','CourseController@show')->name('course.show');
     Route::post('/course/{course}/enroll','CourseController@enroll')->name('course.enroll');
-    Route::get('/course/{course}/module','ModuleController@index')->name('course.module');
 });

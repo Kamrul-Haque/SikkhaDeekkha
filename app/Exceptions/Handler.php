@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -59,18 +60,21 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
-        else if ($request->is('student') || $request->is('student/*'))
-        {
-            return redirect()->guest('/student/login')->with('toast_warning', 'Not authorized to access the page');
+
+        $guard = Array($exception->guards(), 0);
+
+        switch ($guard) {
+            case 'admin':
+                $login = 'admin.login';
+                break;
+            case 'instructor':
+                $login = 'instructor.login';
+                break;
+            default:
+                $login = 'student.login';
+                break;
         }
-        else if ($request->is('instructor') || $request->is('instructor/*')){
-            return redirect()->guest('/instructor/login')->with('toast_warning', 'Not Authorized to access the page');
-        }
-        else if ($request->is('admin') || $request->is('admin/*')) {
-            return redirect()->guest('/admin/login')->with('toast_warning', 'Not authorized to access the page');
-        }
-        else{
-            return redirect()->guest('/student/login')->with('toast_warning', 'Not authorized to access the page');
-        }
+
+        return redirect()->route($login);
     }
 }

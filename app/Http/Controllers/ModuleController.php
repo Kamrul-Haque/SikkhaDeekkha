@@ -21,7 +21,7 @@ class ModuleController extends Controller
         {
             if (!$course->hasStudent(Auth::user()->id))
             {
-                return redirect()->route('student.course.show', $course)->with('toast_warning','You need to enroll first');
+                return redirect()->route('course.show', $course)->with('toast_warning','You need to enroll first');
             }
             else
             {
@@ -55,11 +55,7 @@ class ModuleController extends Controller
         $module->course_id = $course->id;
         $module->save();
 
-        if (Auth::guard('admin')->check())
-        {
-            return redirect()->route('admin.course.module', $course)->with('toast_success','Successfully Created!');
-        }
-        return redirect()->route('instructor.course.module', $course)->with('toast_success','Successfully Created!');
+        return redirect()->route('course.module', $course)->with('toast_success','Successfully Created!');
     }
 
     public function show(Module $module)
@@ -92,11 +88,7 @@ class ModuleController extends Controller
         $module->module_name = $request->module_name;
         $module->save();
 
-        if (Auth::guard('admin')->check())
-        {
-            return redirect()->route('admin.course.module', $course)->with('toast_info','Successfully Updated!');
-        }
-        return redirect()->route('instructor.course.module', $course)->with('toast_info','Successfully Updated!');
+        return redirect()->route('course.module', $course)->with('toast_info','Successfully Updated!');
     }
 
     public function destroy(Course $course, Module $module)
@@ -104,10 +96,6 @@ class ModuleController extends Controller
         $module = Module::find($module->id);
         $module->delete();
 
-        if (Auth::guard('admin')->check())
-        {
-            return redirect()->route('admin.course.module', $course)->with('toast_error','Module Deleted!');
-        }
-        return redirect()->route('instructor.course.module', $course)->with('toast_error','Module Deleted!');
+        return redirect()->route('course.module', $course)->with('toast_error','Module Deleted!');
     }
 }
