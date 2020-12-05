@@ -1,4 +1,4 @@
-<div class="modal fade" id="dynamicModal">
+<div class="modal fade" id="{{ $id ?? '' }}">
     <div class="modal-dialog">
         <div class="modal-content">
             @if( isset($title) )
@@ -16,7 +16,9 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
                     <form {{ $action }} method="post">
-                        @method('DELETE')
+                        @isset($method)
+                        @method($method)
+                        @endisset
                         @csrf
                         <button type="submit" class="btn btn-danger btn-sm">Confirm</button>
                     </form>

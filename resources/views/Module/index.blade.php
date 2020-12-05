@@ -71,6 +71,7 @@
             @component('components.modal')
                 @slot('title') Delete Confirmation @endslot
                 @slot('type') danger @endslot
+                @slot('method') DELETE @endslot
                 @slot('action') action="{{ route('course.module.destroy', ['course'=>$course,'module'=>$module]) }}" @endslot
                 Do you really want to delete the Module? All Contents inside will be deleted as well!
             @endcomponent
@@ -83,6 +84,17 @@
         <div>
             <a href="{{ route('course.module.create',$course, $course) }}" class="btn btn-block btn-success"><strong>CREATE MODULE</strong></a>
         </div>
+        @else
+        <div>
+            <button type="button" class="btn btn-block btn-primary btn-lg mt-1 mb-1" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
+        </div>
         @endif
     </div>
+    @component('components.modal')
+        @slot('id') unEnroll @endslot
+        @slot('title') Un-Enrollment Confirmation @endslot
+        @slot('type') danger @endslot
+        @slot('action') action="{{ route('student.course.unenroll', $course) }}" @endslot
+        Do you really want to Un-Enroll the Course? Your progress will be deleted!
+    @endcomponent
 @endsection

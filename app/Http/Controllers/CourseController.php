@@ -245,16 +245,17 @@ class CourseController extends Controller
 
     public function enroll(Course $course)
     {
-        if ($course->hasStudent(Auth::user()->id))
-        {
-            return back()->with('toast_info','You are already Enrolled!');
-        }
-        else
-        {
-            $course = Course::find($course->id);
+        $course = Course::find($course->id);
 
-            $course->students()->syncWithoutDetaching(Auth::user()->id);
-            return redirect()->route('student.course.module', $course)->with('toast_success', 'Enrollment Successful!');
-        }
+        $course->students()->syncWithoutDetaching(Auth::user()->id);
+        return redirect()->route('course.module', $course)->with('toast_success', 'Enrollment Successful!');
+    }
+
+    public function unenroll(Course $course)
+    {
+        $course = Course::find($course->id);
+
+        $course->students()->detach(Auth::user()->id);
+        return redirect()->route('course.index', $course)->with('toast_info', 'Un-Enrolled from the Course');
     }
 }

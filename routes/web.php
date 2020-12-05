@@ -86,4 +86,5 @@ Route::group(['prefix'=>'/student', 'as'=>'student.', 'middleware'=>'auth:studen
     })->name('profile');
     Route::get('/home', 'HomeController@index')->name('home');
     Route::post('/course/{course}/enroll','CourseController@enroll')->name('course.enroll');
+    Route::post('/course/{course}/un-enroll','CourseController@unenroll')->name('course.unenroll');
 });

@@ -76,7 +76,7 @@
                                 <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
                                     <a href="{{ route('course.module', $course) }}" class="dropdown-item">Course Modules</a>
                                     <a href="{{ route('course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
-                                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#dynamicModal">Delete</button>
+                                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#delete">Delete</button>
                                     <a href="{{ route('course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
                                 </div>
                             </div>
@@ -87,10 +87,14 @@
                     <p class="font-weight-bolder pt-1"><span data-feather="star" class="pr-2" title="rating"></span><strong>8.6/10</strong> on <strong>2000</strong> ratings</p>
                     <div class="row">
                         <div class="col-md-3 pt-5">
-                            <form action="{{ route('student.course.enroll', $course) }}" method="post">
-                                @csrf
-                                <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>Enroll</strong></button>
-                            </form>
+                            @if(Auth::guard('student')->check() && $course->hasStudent(Auth::user()->id))
+                                <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
+                            @else
+                                <form action="{{ route('student.course.enroll', $course) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
+                                </form>
+                            @endif
                             <p class="font-weight-bolder"><strong>5000</strong> students currently enrolled</p>
                             <a href="#" class="text-danger pt-0" style="font-size: medium"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</a>
                         </div>
@@ -175,10 +179,20 @@
             </div>
         </section>
         @component('components.modal')
+            @slot('id') delete @endslot
             @slot('title') Delete Confirmation @endslot
             @slot('type') danger @endslot
             @slot('action') action="{{ route('course.destroy', $course) }}" @endslot
+            @slot('method') DELETE @endslot
             Do you really want to delete the Course? All Contents will be deleted as well!
+        @endcomponent
+
+        @component('components.modal')
+            @slot('id') unEnroll @endslot
+            @slot('title') Un-Enrollment Confirmation @endslot
+            @slot('type') danger @endslot
+            @slot('action') action="{{ route('student.course.unenroll', $course) }}" @endslot
+            Do you really want to Un-Enroll the Course? Your progress will be deleted!
         @endcomponent
     </div>
 @endsection

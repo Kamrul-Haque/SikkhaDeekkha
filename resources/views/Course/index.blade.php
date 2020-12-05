@@ -98,10 +98,14 @@
                             <p><span data-feather="calendar" class="pr-1" title="starts from"></span> {{ $course->date_starting }}</p>
                             <p><span data-feather="tag" class="pr-1 @if(!($course->fee)) disabled @endif" title="fee"></span> {{ ($course->fee) ? $course->fee." ".$course->currency : "Free"}}</p>
                             <p><span data-feather="award" class="pr-1 @if(!($course->has_certificate)) disabled @endif" title="certificate"></span> {{ ($course->has_certificate) ? "Offers Certificate" : "No Certificate"}}</p>
+                            @if(Auth::guard('student')->check() && $course->hasStudent(Auth::user()->id))
+                                <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
+                            @else
                             <form action="{{ route('student.course.enroll', $course) }}" method="post">
                                 @csrf
-                                <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>Enroll</strong></button>
+                                <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
                             </form>
+                            @endif
                             <a href="#" class="text-danger"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</a>
                         </div>
                     </div>
@@ -115,5 +119,12 @@
         <div class="col-sm-4 d-flex justify-content-center">
             {{ $courses->links() }}
         </div>
+        @component('components.modal')
+            @slot('id') unEnroll @endslot
+            @slot('title') Un-Enrollment Confirmation @endslot
+            @slot('type') danger @endslot
+            @slot('action') action="{{ route('student.course.unenroll', $course) }}" @endslot
+            Do you really want to Un-Enroll the Course? Your progress will be deleted!
+        @endcomponent
     </div>
 @endsection
