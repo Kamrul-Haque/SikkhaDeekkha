@@ -29,6 +29,11 @@ class Course extends Model
         return $this->hasMany(Module::class);
     }
 
+    public function contents()
+    {
+        return $this->hasManyThrough(Content::class, Module::class);
+    }
+
     public function getImagePathAttribute($value)
     {
         if ($value)

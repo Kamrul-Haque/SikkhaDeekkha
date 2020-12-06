@@ -201,6 +201,7 @@ class CourseController extends Controller
     {
         $course = Course::find($course->id);
         $image = $course->getOriginal('image_path');
+
         if (File::exists($image)) {
             File::delete($image);
         }

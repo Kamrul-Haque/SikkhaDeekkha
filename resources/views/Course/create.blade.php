@@ -79,7 +79,7 @@
                                 <option value="Beginner" @if( old('difficulty') === "Beginner") selected @endif>Beginner</option>
                                 <option value="Intermediate" @if( old('difficulty') === "Intermediate") selected @endif>Intermediate</option>
                                 <option value="Advanced" @if( old('difficulty') === "Advanced") selected @endif>Advanced</option>
-                                <option value="Advanced" @if( old('difficulty') === "Expert") selected @endif>Expert</option>
+                                <option value="Expert" @if( old('difficulty') === "Expert") selected @endif>Expert</option>
                             </select>
 
                             @error('difficulty')
@@ -306,14 +306,14 @@
                     $('#fee').attr('disabled', false);
                     $('#fee').val(null);
                     $('#currency').attr('disabled', false);
-                    $('#currency').val('disabled', null);
+                    $('#currency').val(null);
                 }
                 else
                 {
                     $('#fee').attr('disabled', true);
                     $('#fee').val(null);
                     $('#currency').attr('disabled', true);
-                    $('#currency').val('disabled', null);
+                    $('#currency').val(null);
                 }
             });
         });

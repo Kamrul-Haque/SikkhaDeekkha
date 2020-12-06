@@ -16,15 +16,10 @@
             width: 100%;
             padding: 0;
         }
-        .dropdown-button{
-            border: 0;
-            background: transparent;
-            color: black;
-        }
-        .dropdown-button:focus{
-            outline: none;
-            border: 0;
-            color: dodgerblue;
+        .feather-content{
+            width: 15px;
+            height: 15px;
+            vertical-align: middle;
         }
     </style>
 @endsection
@@ -50,9 +45,9 @@
                                     <span data-feather="tool"></span>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
-                                    <a href="#" class="dropdown-item">Create Content</a>
-                                    <a href="{{ route('course.module.edit', ['course'=>$course,'module'=>$module]) }}" class="dropdown-item">Edit Module</a>
-                                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#dynamicModal">Delete</button>
+                                    <a href="{{ route('content.create', $module) }}" class="dropdown-item">Create Content</a>
+                                    <a href="{{ route('module.edit', ['course'=>$course,'module'=>$module]) }}" class="dropdown-item">Edit Module</a>
+                                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#delete">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -60,19 +55,37 @@
                     </div>
                 </div>
                 <div class="card-body pl-0 pr-0">
-                    <h6 class="pl-4 pr-4">Content 1</h6>
+                    @forelse($module->contents as $content)
+                    <div class="row">
+                        <div class="col-md-10">
+                            <h5 class="pl-4">{{ $content->title }}</h5>
+                        </div>
+                        @if(Auth::guard('admin')->check() || Auth::guard('instructor')->check())
+                        <div class="col-md-2 row justify-content-end">
+                            <div class="d-flex mr-1">
+                                <a href="{{ route('content.edit', ['module'=>$module,'content'=>$content]) }}" class="btn btn-sm btn-primary"><span class="feather-content" data-feather="edit"></span></a>
+                                <form action="{{ route('content.destroy', ['module'=>$module,'content'=>$content]) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger ml-1"><span class="feather-content" data-feather="trash-2"></span></button>
+                                </form>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
                     <hr>
-                    <h6 class="pl-4 pr-4">Content 2</h6>
-                    <hr>
-                    <h6 class="pl-4 pr-4">Content 3</h6>
+                    @empty
+                    <h5 class="pl-4 pr-4">No Contents Yet</h5>
+                    @endforelse
                 </div>
             </div>
             <br>
             @component('components.modal')
+                @slot('id') delete @endslot
                 @slot('title') Delete Confirmation @endslot
                 @slot('type') danger @endslot
                 @slot('method') DELETE @endslot
-                @slot('action') action="{{ route('course.module.destroy', ['course'=>$course,'module'=>$module]) }}" @endslot
+                @slot('action') action="{{ route('module.destroy', ['course'=>$course,'module'=>$module]) }}" @endslot
                 Do you really want to delete the Module? All Contents inside will be deleted as well!
             @endcomponent
         @empty
@@ -82,7 +95,7 @@
         @endforelse
         @if(Auth::guard('admin')->check() || Auth::guard('instructor')->check())
         <div>
-            <a href="{{ route('course.module.create',$course, $course) }}" class="btn btn-block btn-success"><strong>CREATE MODULE</strong></a>
+            <a href="{{ route('module.create',$course) }}" class="btn btn-block btn-success"><strong>CREATE MODULE</strong></a>
         </div>
         @else
         <div>
@@ -97,4 +110,12 @@
         @slot('action') action="{{ route('student.course.unenroll', $course) }}" @endslot
         Do you really want to Un-Enroll the Course? Your progress will be deleted!
     @endcomponent
+@endsection
+
+@section('scripts')
+    <script type='text/javascript'>
+        $(function(){
+            $('.card-body>hr:last-child').remove();
+        });
+    </script>
 @endsection

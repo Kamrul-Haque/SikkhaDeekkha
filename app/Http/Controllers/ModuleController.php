@@ -12,7 +12,7 @@ class ModuleController extends Controller
 
     public function index(Course $course)
     {
-        if ($course->hasStudent(Auth::user()->id) || $course->hasInstructor(Auth::user()->id))
+        if ($course->hasStudent(Auth::user()->id) || Auth::guard('admin')->check() || $course->hasInstructor(Auth::user()->id))
         {
             $course = Course::find($course->id);
             return view('Module.index', compact('course'));
@@ -55,7 +55,7 @@ class ModuleController extends Controller
         $module->course_id = $course->id;
         $module->save();
 
-        return redirect()->route('course.module', $course)->with('toast_success','Successfully Created!');
+        return redirect()->route('module.index', $course)->with('toast_success','Successfully Created!');
     }
 
     public function show(Module $module)
@@ -88,7 +88,7 @@ class ModuleController extends Controller
         $module->module_name = $request->module_name;
         $module->save();
 
-        return redirect()->route('course.module', $course)->with('toast_info','Successfully Updated!');
+        return redirect()->route('module.index', $course)->with('toast_info','Successfully Updated!');
     }
 
     public function destroy(Course $course, Module $module)
@@ -96,6 +96,6 @@ class ModuleController extends Controller
         $module = Module::find($module->id);
         $module->delete();
 
-        return redirect()->route('course.module', $course)->with('toast_error','Module Deleted!');
+        return redirect()->route('module.index', $course)->with('toast_error','Module Deleted!');
     }
 }

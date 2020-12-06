@@ -27,18 +27,14 @@ Route::group(['middleware'=>['auth:admin,instructor']],function (){
     Route::resource('/course','CourseController')->except(['index','show']);
     Route::get('/course/add-instructor/{course}','CourseController@addInstructorForm')->name('course.add.instructor');
     Route::put('/course/add-instructor/{course}','CourseController@addInstructor')->name('course.instructor.store');
-    Route::get('/course/{course}/module','ModuleController@index')->name('course.module');
-    Route::get('/course/{course}/module/create','ModuleController@create')->name('course.module.create');
-    Route::post('/course/{course}/module/create','ModuleController@store')->name('course.module.store');
-    Route::get('/course/{course}/module/{module}/edit','ModuleController@edit')->name('course.module.edit');
-    Route::put('/course/{course}/module/{module}/edit','ModuleController@update')->name('course.module.update');
-    Route::delete('/course/{course}/module/{module}','ModuleController@destroy')->name('course.module.destroy');
+    Route::resource('/course/{course}/module','ModuleController')->except('index');
+    Route::resource('/module/{module}/content','ContentController');
 });
 
 Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
     Route::get('/course','CourseController@index')->name('course.index');
     Route::get('/course/{course}','CourseController@show')->name('course.show');
-    Route::get('/course/{course}/module','ModuleController@index')->name('course.module');
+    Route::get('/course/{course}/module','ModuleController@index')->name('module.index');
 });
 
 Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {

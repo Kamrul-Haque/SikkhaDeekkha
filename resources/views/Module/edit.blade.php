@@ -7,7 +7,7 @@
                 Create Module
             </div>
             <div class="card-body">
-                <form method="post" action="{{ route('course.module.update', ['course'=>$course,'module'=>$module]) }}">
+                <form method="post" action="{{ route('module.update', ['course'=>$course,'module'=>$module]) }}">
                     @method('PUT')
                     @csrf
                     <div class="form-group row">

@@ -74,7 +74,7 @@
                                     <span data-feather="settings"></span>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
-                                    <a href="{{ route('course.module', $course) }}" class="dropdown-item">Course Modules</a>
+                                    <a href="{{ route('module.index', $course) }}" class="dropdown-item">Course Modules</a>
                                     <a href="{{ route('course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
                                     <button type="button" class="dropdown-item" data-toggle="modal" data-target="#delete">Delete</button>
                                     <a href="{{ route('course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
