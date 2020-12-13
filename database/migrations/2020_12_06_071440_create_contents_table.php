@@ -19,7 +19,8 @@ class CreateContentsTable extends Migration
             $table->string('title');
             $table->string('type');
             $table->text('description')->nullable();
-            $table->string('content_link')->nullable();
+            $table->string('web_link')->nullable();
+            $table->string('video_link')->nullable();
             $table->string('file_path')->nullable();
             $table->boolean('is_protected')->default(false);
             $table->timestamps();

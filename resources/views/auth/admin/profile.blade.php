@@ -4,7 +4,7 @@
     <div class="container pt-5">
         <div class="row justify-content-center">
             <div class="card">
-                <div class="card-header bg-dark text-light">Admin Login</div>
+                <div class="card-header bg-dark text-light">Admin Profile</div>
 
                 <div class="card-body pl-4">
                     <div class="form-group row">

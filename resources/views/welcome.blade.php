@@ -136,7 +136,7 @@
                                 <button class="dropdown-button btn btn-block btn-success btn-lg" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Register
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu dropdown-menu-right bg-transparent border-0 text-right" aria-labelledby="dropdownMenuButton">
                                     <a href="{{ route('student.register.form') }}" class="dropdown-item bg-primary">Student Register</a>
                                     <a href="{{ route('instructor.register.form') }}" class="dropdown-item bg-success" title="edit">Instructor Register</a>
                                 </div>
@@ -145,7 +145,7 @@
                                 <button class="dropdown-button btn btn-block btn-primary btn-lg" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Login
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-left text-left" aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu dropdown-menu-left bg-transparent border-0 text-left" aria-labelledby="dropdownMenuButton">
                                     <a href="{{ route('student.login.form') }}" class="dropdown-item bg-primary">Student Login</a>
                                     <a href="{{ route('instructor.login.form') }}" class="dropdown-item bg-success" title="edit">Instructor Login</a>
                                 </div>

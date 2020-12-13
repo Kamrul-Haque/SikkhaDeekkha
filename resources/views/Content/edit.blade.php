@@ -41,6 +41,7 @@
                             <select id="type" name="type" type="text" class="form-control @error('type') is-invalid @enderror" required>
                                 <option value="" selected disabled>Please Select...</option>
                                 <option value="Text" @if( $content->type == "Text") selected @endif>Text</option>
+                                <option value="Link" @if( $content->type == "Link") selected @endif>Link</option>
                                 <option value="Video" @if( $content->type == "Video") selected @endif>Video</option>
                                 <option value="File" @if( $content->type == "File") selected @endif>File</option>
                             </select>
@@ -64,10 +65,10 @@
                             @enderror
                         </div>
 
-                        <div id="link" class="form-group">
-                            <label for="video-link">Video Link</label>
+                        <div id="web-link" class="form-group">
+                            <label for="link">Link</label>
 
-                            <input id="video-link" type="text" class="form-control @error('link') is-invalid @enderror" name="link" placeholder="youtube url" value="{{ $content->content_link }}">
+                            <input id="link" type="text" class="form-control @error('link') is-invalid @enderror" name="link" value="{{ $content->web_link }}">
 
                             @error('link')
                             <span class="invalid-feedback" role="alert">
@@ -76,12 +77,24 @@
                             @enderror
                         </div>
 
-                        <div id="file" class="form-group">
-                            <label for="content-file">Content File</label>
+                        <div id="video-link" class="form-group">
+                            <label for="video">Video Link</label>
 
-                            <div id="file" class="custom-file">
-                                <input id="content-file" name="file" type="file" class="custom-file-input @error('file') is-invalid @enderror">
-                                <label for="content-file" class="custom-file-label">File Name</label>
+                            <input id="video" type="text" class="form-control @error('video') is-invalid @enderror" name="video" placeholder="youtube or vimeo url" value="{{  $content->getOriginal('video_link') }}">
+
+                            @error('video')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div id="content-file" class="form-group">
+                            <label for="file-group">Content File</label>
+
+                            <div id="file-group" class="custom-file">
+                                <input id="file" name="file" type="file" class="custom-file-input @error('file') is-invalid @enderror">
+                                <label for="file" class="custom-file-label">File Name</label>
 
                                 @error('file')
                                 <span class="invalid-feedback" role="alert">
@@ -109,6 +122,7 @@
                                 <button type="submit" class="btn btn-success">
                                     Update
                                 </button>
+                                <a href="{{ route('module.index', $module->course) }}" class="btn btn-warning">Cancel</a>
                             </div>
                         </div>
                     </div>
@@ -121,42 +135,65 @@
 @section('scripts')
     <script type="text/javascript">
         $(function (){
-            if ( $('#type').val() == "Video" ){
-                $('#link').show();
-                $('#file').hide();
-                $('#editor').hide();
+            if ( $('#type').val() == "Link" ){
+                $('#web-link').show();
+                $('#video').val(null);
+                $('#video-link').hide();
+                $('#file').val(null);
+                $('#content-file').hide();
+            }
+            else if ( $('#type').val() == "Video" ){
+                $('#video-link').show();
+                $('#file').val(null);
+                $('#content-file').hide();
+                $('#link').val(null);
+                $('#web-link').hide();
             }
             else if( $('#type').val() == "File" ){
-                $('#file').show();
-                $('#link').hide();
-                $('#editor').hide();
+                $('#content-file').show();
+                $('#video').val(null);
+                $('#video-link').hide();
+                $('#link').val(null);
+                $('#web-link').hide();
             }
             else {
-                $('#link').hide();
-                $('#file').hide();
-                $('#editor').show();
+                $('#video').val(null);
+                $('#video-link').hide();
+                $('#file').val(null);
+                $('#content-file').hide();
+                $('#link').val(null);
+                $('#web-link').hide();
             }
         });
         $('#type').on('change',function (){
-            if ( $(this).val() == "Video" ){
-                $('#link').show();
-                $('#content-file').val(null);
-                $('#file').hide();
-                $('#description').val(null);
-                $('#editor').hide();
+            if ( $(this).val() == "Link" ){
+                $('#web-link').show();
+                $('#video').val(null);
+                $('#video-link').hide();
+                $('#file').val(null);
+                $('#content-file').hide();
+            }
+            else if ( $(this).val() == "Video" ){
+                $('#video-link').show();
+                $('#file').val(null);
+                $('#content-file').hide();
+                $('#link').val(null);
+                $('#web-link').hide();
             }
             else if( $(this).val() == "File" ){
-                $('#file').show();
-                $('#link').hide();
-                $('#video-link').val(null);
-                $('#editor').hide();
+                $('#content-file').show();
+                $('#video').val(null);
+                $('#video-link').hide();
+                $('#link').val(null);
+                $('#web-link').hide();
             }
             else {
-                $('#editor').show();
-                $('#video-link').val(null);
-                $('#link').hide();
-                $('#content-file').val(null);
-                $('#file').hide();
+                $('#video').val(null);
+                $('#video-link').hide();
+                $('#file').val(null);
+                $('#content-file').hide();
+                $('#link').val(null);
+                $('#web-link').hide();
             }
         });
         $(".custom-file-input").on("change", function() {

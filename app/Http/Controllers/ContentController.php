@@ -33,9 +33,10 @@ class ContentController extends Controller
         $request->validate([
            'title'=>'required|string|min:5',
            'type'=>'required|string',
-           'description'=>'required_without_all:file,link',
-           'link'=>'required_without_all:file,description',
-           'file'=>'required_without_all:link,description|file',
+           'description'=>'required_if:type,Text',
+           'link'=>'nullable|required_if:type,Link|url',
+           'video'=>'nullable|required_if:type,Video|url',
+           'file'=>'nullable|required_if:type,File|file',
         ]);
 
         $content = new Content;
@@ -43,12 +44,13 @@ class ContentController extends Controller
         $content->title = $request->title;
         $content->type = $request->type;
         $content->description = $request->description;
-        $content->content_link = $request->link;
+        $content->web_link = $request->link;
+        $content->video_link = $request->video;
         $content->is_protected = $request->has('protected');
 
         if ($request->hasFile('file'))
         {
-            $path = $request->file('file')->store($module->course->title);
+            $path = $request->file('file')->storeAs($module->course->title, $request->file('file')->getClientOriginalName());
             $content->file_path = 'storage/'.$path;
         }
         $content->save();
@@ -59,7 +61,8 @@ class ContentController extends Controller
 
     public function show(Module $module, Content $content)
     {
-        //
+        $content = Content::find($content->id);
+        return view('Content.show', compact('content','module'));
     }
 
     public function edit(Module $module, Content $content)
@@ -81,9 +84,10 @@ class ContentController extends Controller
         $request->validate([
             'title'=>'required|string|min:5',
             'type'=>'required|string',
-            'description'=>'required_without_all:file,link',
-            'link'=>'required_without_all:file,description',
-            'file'=>'required_without_all:link,description|file',
+            'description'=>'required_if:type,Text',
+            'link'=>'nullable|required_if:type,Link|url',
+            'video'=>'nullable|required_if:type,Video|url',
+            'file'=>'nullable|required_if:type,File|file',
         ]);
 
         $content = Content::find($content->id);
@@ -91,7 +95,8 @@ class ContentController extends Controller
         $content->title = $request->title;
         $content->type = $request->type;
         $content->description = $request->description;
-        $content->content_link = $request->link;
+        $content->web_link = $request->link;
+        $content->video_link = $request->video;
         $content->is_protected = $request->has('protected');
         $oldFile = $content->getOriginal('file_path');
 
@@ -101,7 +106,7 @@ class ContentController extends Controller
             {
                 File::delete($oldFile);
             }
-            $path = $request->file('file')->store($module->course->title);
+            $path = $request->file('file')->storeAs($module->course->title, $request->file('file')->getClientOriginalName());
             $content->file_path = 'storage/'.$path;
         }
         $content->save();

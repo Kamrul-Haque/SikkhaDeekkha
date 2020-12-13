@@ -78,6 +78,8 @@
                                     <a href="{{ route('course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
                                     <button type="button" class="dropdown-item" data-toggle="modal" data-target="#delete">Delete</button>
                                     <a href="{{ route('course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
+                                    <a href="{{ route('course.image.form', $course) }}" class="dropdown-item">Upload/Change Image</a>
+                                    <button type="button" class="dropdown-item text-danger" data-toggle="modal" data-target="#leave">Leave Course</button>
                                 </div>
                             </div>
                             @endif
@@ -89,11 +91,13 @@
                         <div class="col-md-3 pt-5">
                             @if(Auth::guard('student')->check() && $course->hasStudent(Auth::user()->id))
                                 <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
-                            @else
+                            @elseif(Auth::guard('student')->check())
                                 <form action="{{ route('student.course.enroll', $course) }}" method="post">
                                     @csrf
                                     <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
                                 </form>
+                            @else
+                                <button type="button" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
                             @endif
                             <p class="font-weight-bolder"><strong>5000</strong> students currently enrolled</p>
                             <a href="#" class="text-danger pt-0" style="font-size: medium"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</a>
@@ -193,6 +197,14 @@
             @slot('type') danger @endslot
             @slot('action') action="{{ route('student.course.unenroll', $course) }}" @endslot
             Do you really want to Un-Enroll the Course? Your progress will be deleted!
+        @endcomponent
+
+        @component('components.modal')
+            @slot('id') leave @endslot
+            @slot('title') Confirmation @endslot
+            @slot('type') danger @endslot
+            @slot('action') action="{{ route('course.instructor.leave', $course) }}" @endslot
+            Do you really want to leave the Course? Your uploaded contents will still be available!
         @endcomponent
     </div>
 @endsection

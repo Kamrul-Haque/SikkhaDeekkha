@@ -21,6 +21,10 @@
             height: 15px;
             vertical-align: middle;
         }
+        .content-link{
+            color: black;
+            font-size: large;
+        }
     </style>
 @endsection
 
@@ -58,7 +62,7 @@
                     @forelse($module->contents as $content)
                     <div class="row">
                         <div class="col-md-10">
-                            <h5 class="pl-4">{{ $content->title }}</h5>
+                            <a href="{{ route('content.show', ['module'=>$module,'content'=>$content]) }}" class="pl-4 content-link">{{ $content->title }}</a>
                         </div>
                         @if(Auth::guard('admin')->check() || Auth::guard('instructor')->check())
                         <div class="col-md-2 row justify-content-end">

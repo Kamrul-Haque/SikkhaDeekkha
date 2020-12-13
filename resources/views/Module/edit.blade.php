@@ -29,6 +29,7 @@
                             <button type="submit" class="btn btn-success">
                                 Edit
                             </button>
+                            <a href="{{ route('module.index', $course) }}" class="btn btn-warning">Cancel</a>
                         </div>
                     </div>
                 </form>

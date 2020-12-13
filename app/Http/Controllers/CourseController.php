@@ -244,19 +244,72 @@ class CourseController extends Controller
         }
     }
 
+    public function leaveCourse(Course $course)
+    {
+        if (Auth::guard('instructor')->check() && $course->hasInstructor(Auth::user()->id))
+        {
+            $course = Course::find($course->id);
+            $instructors = $course->instructors->count();
+
+            if ($instructors > 1)
+            {
+                $course->instructors()->detach(Auth::user()->id);
+                return redirect()->route('course.show', $course)->with('toast_error','You Left the Course');
+            }
+            else
+            {
+                return redirect()->route('course.show', $course)->with('toast_warning','You are the only instructor. You can not leave the course!');
+            }
+        }
+        else
+        {
+            return back()->with('toast_warning', 'Not authorized to access');
+        }
+    }
+
     public function enroll(Course $course)
     {
         $course = Course::find($course->id);
-
         $course->students()->syncWithoutDetaching(Auth::user()->id);
-        return redirect()->route('course.module', $course)->with('toast_success', 'Enrollment Successful!');
+
+        return redirect()->route('module.index', $course)->with('toast_success', 'Enrollment Successful!');
     }
 
     public function unenroll(Course $course)
     {
         $course = Course::find($course->id);
-
         $course->students()->detach(Auth::user()->id);
+
         return redirect()->route('course.index', $course)->with('toast_info', 'Un-Enrolled from the Course');
+    }
+
+    public function imageUploadForm(Course $course)
+    {
+        $course = Course::find($course->id);
+        return view('Course.upload-image', compact('course'));
+    }
+
+    public function imageUpload(Request $request, Course $course)
+    {
+        $request->validate([
+            'image'=>'required|file|mimes:jpeg,jpg,png|max:2024'
+        ]);
+
+        $course = Course::find($course->id);
+        $oldImage = $course->getOriginal('image_path');
+
+        if($request->hasFile('image'))
+        {
+            if (File::exists($oldImage))
+            {
+                File::delete($oldImage);
+            }
+            $path = $request->file('image')->store('CourseImage');
+            $course->image_path = 'storage/'.$path;
+        }
+
+        $course->save();
+
+        return redirect()->route('course.index')->with('toast_info','Successfully Uploaded!');
     }
 }

@@ -229,21 +229,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="image_file">Course image</label>
-
-                            <div id="image_file" class="custom-file">
-                                <input id="image" name="image" type="file" class="custom-file-input @error('image') is-invalid @enderror">
-                                <label for="image" class="custom-file-label">Image Name</label>
-
-                                @error('image')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group">
                             <div class="form-check">
                                 <input id="certificate" name="certificate" type="checkbox" class="form-check-input @error('certificate') is-invalid @enderror" {{ ($course->has_certificate) ? 'checked' : '' }}>
                                 <label for="certificate" class="form-check-label">the course offers certificate</label>
@@ -274,6 +259,7 @@
                                 <button type="submit" class="btn btn-success">
                                     Update
                                 </button>
+                                <a href="{{ route('course.show', $course) }}" class="btn btn-warning">Cancel</a>
                             </div>
                         </div>
                     </div>
@@ -318,10 +304,6 @@
                     $('#currency').val(null);
                 }
             });
-        });
-        $(".custom-file-input").on("change", function() {
-            var fileName = $(this).val().split("\\").pop();
-            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         });
     </script>
 @endsection
