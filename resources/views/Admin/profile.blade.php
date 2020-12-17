@@ -14,7 +14,7 @@
 @section('content')
     <div class="container py-4">
         <div class="card">
-            <div class="card-header bg-primary text-light">Student Profile</div>
+            <div class="card-header bg-dark text-light">Admin Profile</div>
 
             <div class="card-body pl-4">
                 <div class="d-flex row">
@@ -36,26 +36,18 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="study" class="col-md-5 text-right col-form-label">Currently Studying:</label>
+                    <label for="designation" class="col-md-5 text-right col-form-label">Employee ID:</label>
 
                     <div class="col-md-7">
-                        <label id="study" type="text" class="form-control-plaintext">{{ Auth::user()->study_level }}</label>
+                        <label id="designation" type="text" class="form-control-plaintext">{{ Auth::user()->employee_id }}</label>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="institution" class="col-md-5 text-right col-form-label">Institution:</label>
+                    <label for="job" class="col-md-5 text-right col-form-label">Job Title:</label>
 
                     <div class="col-md-7">
-                        <label id="institution" type="text" class="form-control-plaintext">{{ Auth::user()->institution }}</label>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="specialization" class="col-md-5 text-right col-form-label">Specialization:</label>
-
-                    <div class="col-md-7">
-                        <label id="specialization" type="text" class="form-control-plaintext">{{ Auth::user()->specialization }}</label>
+                        <label id="job" type="text" class="form-control-plaintext">{{ Auth::user()->job_title }}</label>
                     </div>
                 </div>
 
@@ -63,7 +55,7 @@
                     <label for="phone" class="col-md-5 text-right col-form-label">Phone:</label>
 
                     <div class="col-md-7">
-                        <label id="phone" type="text" class="form-control-plaintext">{{ (Auth::user()->phone) ? (Auth::user()->phone) : "no phone number given" }}</label>
+                        <label id="phone" type="text" class="form-control-plaintext">{{ Auth::user()->phone }}</label>
                     </div>
                 </div>
 
@@ -74,25 +66,17 @@
                         <label id="address" type="text" class="form-control-plaintext">{{ (Auth::user()->address) ? (Auth::user()->address) : "no address given" }}</label>
                     </div>
                 </div>
-
-                <div class="form-group row">
-                    <label for="interests" class="col-md-5 text-right col-form-label">Interests:</label>
-
-                    <div class="col-md-7">
-                        <label id="interests" type="text" class="form-control-plaintext">{{ Auth::user()->interests }}</label>
-                    </div>
-                </div>
                 <hr>
 
                 <div class="form-group row mb-0 justify-content-end">
                     <div class="pr-2 pl-2">
-                        <a href="#" class="btn btn-primary btn-sm">
+                        <a href="#" class="btn btn-dark btn-sm">
                             Edit Profile
                         </a>
-                        <a href="#" class="btn btn-primary btn-sm">
+                        <a href="#" class="btn btn-dark btn-sm">
                             Upload Profile Photo
                         </a>
-                        <a href="#" class="btn btn-primary btn-sm">
+                        <a href="#" class="btn btn-dark btn-sm">
                             Change Password
                         </a>
                     </div>

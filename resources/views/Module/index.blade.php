@@ -50,6 +50,7 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
                                     <a href="{{ route('content.create', $module) }}" class="dropdown-item">Create Content</a>
+                                    <a href="{{ route('assessment.create', $module) }}" class="dropdown-item">Create Assessment</a>
                                     <a href="{{ route('module.edit', ['course'=>$course,'module'=>$module]) }}" class="dropdown-item">Edit Module</a>
                                     <button type="button" class="dropdown-item" data-toggle="modal" data-target="#delete">Delete</button>
                                 </div>
@@ -81,6 +82,25 @@
                     @empty
                     <h5 class="pl-4 pr-4">No Contents Yet</h5>
                     @endforelse
+                    @foreach($module->assessments as $assessment)
+                    <div class="row">
+                        <div class="col-md-10">
+                            <a href="{{ route('assessment.show', ['module'=>$module,'assessment'=>$assessment]) }}" class="pl-4 content-link">{{ $assessment->title }}</a>
+                        </div>
+                        @if(Auth::guard('admin')->check() || Auth::guard('instructor')->check())
+                            <div class="col-md-2 row justify-content-end">
+                                <div class="d-flex mr-1">
+                                    <a href="{{ route('assessment.edit', ['module'=>$module,'assessment'=>$assessment]) }}" class="btn btn-sm btn-primary"><span class="feather-content" data-feather="edit"></span></a>
+                                    <form action="{{ route('assessment.destroy', ['module'=>$module,'assessment'=>$assessment]) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger ml-1"><span class="feather-content" data-feather="trash-2"></span></button>
+                                    </form>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                    @endforeach
                 </div>
             </div>
             <br>

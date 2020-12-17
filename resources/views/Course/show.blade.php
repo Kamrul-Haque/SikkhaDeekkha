@@ -68,37 +68,51 @@
                             <h3 class="display-4 course-title">{{ $course->title }}</h3>
                         </div>
                         <div class="col-md-1">
-                            @if((Auth::guard('admin')->check()) || (Auth::guard('instructor')->check() && $course->hasInstructor(Auth::user()->id)))
-                            <div class="dropdown">
-                                <button class="dropdown-button float-right pt-4" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span data-feather="settings"></span>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
-                                    <a href="{{ route('module.index', $course) }}" class="dropdown-item">Course Modules</a>
-                                    <a href="{{ route('course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
-                                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#delete">Delete</button>
-                                    <a href="{{ route('course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
-                                    <a href="{{ route('course.image.form', $course) }}" class="dropdown-item">Upload/Change Image</a>
-                                    <button type="button" class="dropdown-item text-danger" data-toggle="modal" data-target="#leave">Leave Course</button>
-                                </div>
-                            </div>
-                            @endif
+                            @guest
+                            @else
+                                @if(Auth::guard('admin')->check() || $course->hasInstructor(Auth::user()->id) || $course->hasStudent(Auth::user()->id))
+                                    <div class="dropdown">
+                                        <button class="dropdown-button float-right pt-4" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span data-feather="settings"></span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
+                                            <a href="{{ route('module.index', $course) }}" class="dropdown-item">Course Modules</a>
+                                            @if(Auth::guard('admin')->check() || $course->hasInstructor(Auth::user()->id))
+                                                <a href="{{ route('course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
+                                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#delete">Delete</button>
+                                                <a href="{{ route('course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
+                                                <a href="{{ route('course.image.form', $course) }}" class="dropdown-item">Upload/Change Image</a>
+                                                @if(!Auth::guard('admin')->check())
+                                                <button type="button" class="dropdown-item text-danger" data-toggle="modal" data-target="#leave">Leave Course</button>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
+                            @endguest
                         </div>
                     </div>
                     <h4>{{ $course->subtitle }}</h4>
                     <p class="font-weight-bolder pt-1"><span data-feather="star" class="pr-2" title="rating"></span><strong>8.6/10</strong> on <strong>2000</strong> ratings</p>
                     <div class="row">
                         <div class="col-md-3 pt-5">
-                            @if(Auth::guard('student')->check() && $course->hasStudent(Auth::user()->id))
-                                <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
-                            @elseif(Auth::guard('student')->check())
+                            @guest
                                 <form action="{{ route('student.course.enroll', $course) }}" method="post">
                                     @csrf
                                     <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
                                 </form>
                             @else
-                                <button type="button" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
-                            @endif
+                                @if($course->hasStudent(Auth::user()->id))
+                                    <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
+                                @elseif(Auth::guard('admin')->check() || Auth::guard('instructor')->check())
+                                    <button type="button" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" disabled><strong>ENROLL</strong></button>
+                                @else
+                                    <form action="{{ route('student.course.enroll', $course) }}" method="post">
+                                        @csrf
+                                        <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
+                                    </form>
+                                @endif
+                            @endguest
                             <p class="font-weight-bolder"><strong>5000</strong> students currently enrolled</p>
                             <a href="#" class="text-danger pt-0" style="font-size: medium"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</a>
                         </div>

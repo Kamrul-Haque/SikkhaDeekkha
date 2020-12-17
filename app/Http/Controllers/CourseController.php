@@ -146,7 +146,7 @@ class CourseController extends Controller
             'duration_unit'=>'required',
             'subject'=>'required',
             'topic'=>'required',
-            'date_starting'=>'required|after:today',
+            'date_starting'=>'required',
             'description'=>'required|string|min:150',
             'syllabus'=>'required|string|min:200',
             'prerequisites'=>'required|string|min:150',
@@ -174,18 +174,6 @@ class CourseController extends Controller
         $course->currency = $request->currency;
         $course->has_certificate = $request->has('certificate');
         $course->is_paid = $request->has('paid');
-        $oldImage = $course->getOriginal('image_path');
-
-        if($request->hasFile('image'))
-        {
-            if (File::exists($oldImage))
-            {
-                File::delete($oldImage);
-            }
-            $path = $request->file('image')->store('CourseImage');
-            $course->image_path = 'storage/'.$path;
-        }
-
         $course->save();
 
         return redirect()->route('course.index')->with('toast_info','Successfully Updated!');
@@ -246,7 +234,7 @@ class CourseController extends Controller
 
     public function leaveCourse(Course $course)
     {
-        if (Auth::guard('instructor')->check() && $course->hasInstructor(Auth::user()->id))
+        if ($course->hasInstructor(Auth::user()->id))
         {
             $course = Course::find($course->id);
             $instructors = $course->instructors->count();

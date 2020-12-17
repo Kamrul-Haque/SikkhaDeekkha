@@ -4,7 +4,7 @@
     <div class="container pt-4">
         <div class="card">
             <div class="card-header bg-success text-light">
-                Create Module
+                Edit Module
             </div>
             <div class="card-body">
                 <form method="post" action="{{ route('module.update', ['course'=>$course,'module'=>$module]) }}">

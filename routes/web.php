@@ -21,6 +21,7 @@ Route::get('/', function () {
 Route::get('/guest/course','CourseController@index')->name('guest.course.index')->middleware('guest');
 Route::get('/guest/course/{course}','CourseController@show')->name('guest.course.show')->middleware('guest');
 
+//Although we are not using default guard 'user', Auth routes are required for other guard authentication routes to work
 Auth::routes(['register'=>false]);
 
 Route::group(['middleware'=>['auth:admin,instructor']],function (){
@@ -32,6 +33,7 @@ Route::group(['middleware'=>['auth:admin,instructor']],function (){
     Route::put('/course/{course}/image-upload','CourseController@imageUpload')->name('course.image.upload');
     Route::resource('/course/{course}/module','ModuleController')->except(['index']);
     Route::resource('/course/module/{module}/content','ContentController')->except(['show']);
+    Route::resource('/course/module/{module}/assessment','AssessmentController')->except(['show']);
 });
 
 Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
@@ -39,6 +41,7 @@ Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
     Route::get('/course/{course}','CourseController@show')->name('course.show');
     Route::get('/course/{course}/module','ModuleController@index')->name('module.index');
     Route::get('/course/module/{module}/content/{content}','ContentController@show')->name('content.show');
+    Route::get('/course/module/{module}/assessment/{assessment}','AssessmentController@show')->name('assessment.show');
 });
 
 Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {
@@ -49,7 +52,7 @@ Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {
 
 Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], function (){
     Route::get('/', function () {
-        return view('auth.admin.profile');
+        return view('Admin.profile');
     })->name('profile');
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('/student', 'StudentController')->except(['create','store']);

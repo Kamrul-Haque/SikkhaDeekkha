@@ -8,6 +8,7 @@ class Content extends Model
 {
     protected $guarded = [];
 
+    //returns an accessible http url for the asset from the storage path stored in database
     public function getFilePathAttribute($value)
     {
         if ($value)
@@ -16,6 +17,7 @@ class Content extends Model
         }
     }
 
+    //parses the stored url to get only the video key needed for embedded player
     public function getVideoLinkAttribute($value)
     {
         if(strlen($value) > 11)

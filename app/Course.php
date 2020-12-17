@@ -4,10 +4,48 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Course extends Model
 {
     protected $guarded = [];
+
+    //returns an accessible http url for the asset from the storage path stored in database
+    public function getImagePathAttribute($value)
+    {
+        if ($value)
+        {
+            return asset($value);
+        }
+    }
+
+    //returns the date in custom format
+    public function getDateStartingAttribute($value)
+    {
+        $carbon = new Carbon($value);
+        return $carbon->format('d/m/Y');
+    }
+
+    //checks if the course belongs to the given instructor
+    public function hasInstructor($id)
+    {
+        if (Auth::guard('instructor')->check())
+        {
+            return $this->instructors->contains($id);
+        }
+        else
+            return false;
+    }
+
+    //checks if the given student is enrolled in the course
+    public function hasStudent($id)
+    {
+        if (Auth::guard('student')->check())
+        {
+            return $this->students->contains($id);
+        }
+            return false;
+    }
 
     public function subject()
     {
@@ -34,27 +72,8 @@ class Course extends Model
         return $this->hasManyThrough(Content::class, Module::class);
     }
 
-    public function getImagePathAttribute($value)
+    public function assessments()
     {
-        if ($value)
-        {
-            return asset($value);
-        }
-    }
-
-    public function getDateStartingAttribute($value)
-    {
-        $carbon = new Carbon($value);
-        return $carbon->format('d/m/Y');
-    }
-
-    public function hasInstructor($id)
-    {
-        return $this->instructors->contains($id);
-    }
-
-    public function hasStudent($id)
-    {
-        return $this->students->contains($id);
+        return $this->hasManyThrough(Assessment::class, Module::class);
     }
 }

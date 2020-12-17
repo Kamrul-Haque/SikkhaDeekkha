@@ -98,16 +98,23 @@
                             <p><span data-feather="calendar" class="pr-1" title="starts from"></span> {{ $course->date_starting }}</p>
                             <p><span data-feather="tag" class="pr-1 @if(!($course->fee)) disabled @endif" title="fee"></span> {{ ($course->fee) ? $course->fee." ".$course->currency : "Free"}}</p>
                             <p><span data-feather="award" class="pr-1 @if(!($course->has_certificate)) disabled @endif" title="certificate"></span> {{ ($course->has_certificate) ? "Offers Certificate" : "No Certificate"}}</p>
-                            @if(Auth::guard('student')->check() && $course->hasStudent(Auth::user()->id))
-                                <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
-                            @elseif(Auth::guard('student')->check())
-                            <form action="{{ route('student.course.enroll', $course) }}" method="post">
-                                @csrf
-                                <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
-                            </form>
+                            @guest
+                                <form action="{{ route('student.course.enroll', $course) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
+                                </form>
                             @else
-                                <button type="button" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
-                            @endif
+                                @if($course->hasStudent(Auth::user()->id))
+                                    <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
+                                @elseif(Auth::guard('admin')->check() || Auth::guard('instructor')->check())
+                                    <button type="button" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" disabled><strong>ENROLL</strong></button>
+                                @else
+                                <form action="{{ route('student.course.enroll', $course) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
+                                </form>
+                                @endif
+                            @endguest
                             <a href="#" class="text-danger"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</a>
                         </div>
                     </div>

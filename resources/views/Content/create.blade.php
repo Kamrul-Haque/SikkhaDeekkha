@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <div class="container p-4">
+    <div class="container py-4">
         <div class="card">
             <div class="card-header bg-success text-light">
                 <h4>Create Content</h4>

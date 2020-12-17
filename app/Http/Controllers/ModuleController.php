@@ -12,16 +12,14 @@ class ModuleController extends Controller
 
     public function index(Course $course)
     {
-        if ((Auth::guard('student')->check() && $course->hasStudent(Auth::user()->id))
-            || Auth::guard('admin')->check() ||
-            (Auth::guard('instructor')->check() && $course->hasInstructor(Auth::user()->id)))
+        if (($course->hasStudent(Auth::user()->id)) || Auth::guard('admin')->check() || $course->hasInstructor(Auth::user()->id))
         {
             $course = Course::find($course->id);
             return view('Module.index', compact('course'));
         }
         else
         {
-            if (Auth::guard('student')->check() && !($course->hasStudent(Auth::user()->id)))
+            if (Auth::guard('student')->check())
             {
                 return redirect()->route('course.show', $course)->with('toast_warning','You need to enroll first');
             }
