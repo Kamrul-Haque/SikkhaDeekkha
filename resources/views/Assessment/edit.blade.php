@@ -65,7 +65,7 @@
                         <div class="form-group">
                             <label for="deadline">Deadline</label>
 
-                            <input id="deadline" type="date" class="form-control @error('deadline') is-invalid @enderror" name="deadline" value="{{ $assessment->deadline }}" required>
+                            <input id="deadline" type="date" class="form-control @error('deadline') is-invalid @enderror" name="deadline" value="{{ $assessment->deadline }}">
 
                             @error('deadline')
                             <span class="invalid-feedback" role="alert">

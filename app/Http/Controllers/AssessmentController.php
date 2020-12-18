@@ -42,7 +42,7 @@ class AssessmentController extends Controller
         $assessment->description = $request->description;
         $assessment->deadline = $request->deadline;
         $assessment->total_marks = 0;
-        $assessment->peer_graded = $request->has('peer');
+        $assessment->is_peer_graded = $request->has('peer');
 
         if ($request->hasFile('attachment'))
         {
@@ -79,7 +79,7 @@ class AssessmentController extends Controller
     {
         $request->validate([
             'title'=>'required|string|min:5',
-            'deadline'=>'required|after:today',
+            'deadline'=>'nullable|after:today',
             'attachment'=>'nullable|file',
         ]);
 
@@ -87,8 +87,8 @@ class AssessmentController extends Controller
         $assessment->module_id = $module->id;
         $assessment->title = $request->title;
         $assessment->description = $request->description;
-        $assessment->deadline = $request->deadline;
-        $assessment->peer_graded = $request->has('peer');
+        $assessment->deadline = $request->deadline ?? $assessment->getOriginal('deadline');
+        $assessment->is_peer_graded = $request->has('peer');
         $oldFile = $assessment->getOriginal('attachment_path');
 
         if ($request->hasFile('attachment'))

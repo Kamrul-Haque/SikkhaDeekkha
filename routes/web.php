@@ -34,6 +34,7 @@ Route::group(['middleware'=>['auth:admin,instructor']],function (){
     Route::resource('/course/{course}/module','ModuleController')->except(['index']);
     Route::resource('/course/module/{module}/content','ContentController')->except(['show']);
     Route::resource('/course/module/{module}/assessment','AssessmentController')->except(['show']);
+    Route::resource('/course/module/{module}/assessment/{assessment}/question','QuestionController')->except(['index','show']);
 });
 
 Route::group(['middleware'=>['auth:admin,instructor,student']],function (){

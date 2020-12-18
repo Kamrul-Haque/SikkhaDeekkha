@@ -83,6 +83,7 @@
                     <h5 class="pl-4 pr-4">No Contents Yet</h5>
                     @endforelse
                     @foreach($module->assessments as $assessment)
+                    @if(!(Auth::guard('student')->check() && !($assessment->is_published)))
                     <div class="row">
                         <div class="col-md-10">
                             <a href="{{ route('assessment.show', ['module'=>$module,'assessment'=>$assessment]) }}" class="pl-4 content-link">{{ $assessment->title }}</a>
@@ -100,6 +101,7 @@
                             </div>
                         @endif
                     </div>
+                    @endif
                     @endforeach
                 </div>
             </div>

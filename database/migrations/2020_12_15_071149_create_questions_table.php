@@ -19,6 +19,7 @@ class CreateQuestionsTable extends Migration
             $table->string('type');
             $table->string('question');
             $table->float('marks',5,2);
+            $table->boolean('needs_review')->default(true);
             $table->timestamps();
 
             $table->foreign('assessment_id')->references('id')->on('assessments')->onDelete('cascade');

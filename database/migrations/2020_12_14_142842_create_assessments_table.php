@@ -21,8 +21,8 @@ class CreateAssessmentsTable extends Migration
             $table->float('total_marks',5,2);
             $table->string('attachment_path')->nullable();
             $table->string('deadline');
-            $table->boolean('needs_review')->default(true);
-            $table->boolean('peer_graded')->default(false);
+            $table->boolean('is_peer_graded')->default(false);
+            $table->boolean('is_published')->default(false);
             $table->timestamps();
 
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
