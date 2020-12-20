@@ -42,6 +42,7 @@ class QuestionController extends Controller
         $question->question = $request->question;
         $question->type = $request->type;
         $question->marks = $request->marks;
+
         if ($request->type == 'MCQ')
             $question->needs_review =  false;
         else

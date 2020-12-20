@@ -61,8 +61,22 @@ class ContentController extends Controller
 
     public function show(Module $module, Content $content)
     {
-        $content = Content::find($content->id);
-        return view('Content.show', compact('content','module'));
+        if (($module->course->hasStudent(Auth::user()->id)) || Auth::guard('admin')->check() || $module->course->hasInstructor(Auth::user()->id))
+        {
+            $content = Content::find($content->id);
+            return view('Content.show', compact('content','module'));
+        }
+        else
+        {
+            if (Auth::guard('student')->check())
+            {
+                return redirect()->route('course.show', $module->course)->with('toast_warning','You need to enroll first');
+            }
+            else
+            {
+                return back()->with('toast_warning','Not authorized to access the page');
+            }
+        }
     }
 
     public function edit(Module $module, Content $content)

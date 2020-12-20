@@ -57,8 +57,22 @@ class AssessmentController extends Controller
 
     public function show(Module $module, Assessment $assessment)
     {
-        $assessment = Assessment::find($assessment->id);
-        return view('Assessment.show', compact('assessment','module'));
+        if (($module->course->hasStudent(Auth::user()->id)) || Auth::guard('admin')->check() || $module->course->hasInstructor(Auth::user()->id))
+        {
+            $assessment = Assessment::find($assessment->id);
+            return view('Assessment.show', compact('assessment', 'module'));
+        }
+        else
+        {
+            if (Auth::guard('student')->check())
+            {
+                return redirect()->route('course.show', $module->course)->with('toast_warning','You need to enroll first');
+            }
+            else
+            {
+                return back()->with('toast_warning','Not authorized to access the page');
+            }
+        }
     }
 
     public function edit(Module $module, Assessment $assessment)
@@ -118,5 +132,14 @@ class AssessmentController extends Controller
         $assessment->delete();
 
         return redirect()->route('module.index', $module->course)->with('toast_error','Assessment Deleted');
+    }
+
+    public function publish(Module $module, Assessment $assessment)
+    {
+        $assessment = Assessment::find($assessment->id);
+        $assessment->is_published = true;
+        $assessment->save();
+
+        return redirect()->route('module.index', $module->course)->with('toast_info','Assessment Published');
     }
 }

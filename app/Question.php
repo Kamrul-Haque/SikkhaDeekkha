@@ -18,6 +18,16 @@ class Question extends Model
         return $this->hasMany(Answer::class);
     }
 
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
+    }
+
+    public function responseAnswers()
+    {
+        return $this->hasManyThrough(ResponseAnswer::class,Response::class);
+    }
+
     //check if the question has multiple correct answers
     public function hasMultipleAnswers()
     {

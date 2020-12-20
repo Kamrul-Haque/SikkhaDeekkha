@@ -39,4 +39,9 @@ class Assessment extends Model
     {
         return $this->hasManyThrough(Answer::class,Question::class);
     }
+
+    public function responses()
+    {
+        return $this->hasManyThrough(Response::class,Question::class);
+    }
 }

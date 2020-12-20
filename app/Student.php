@@ -42,4 +42,9 @@ class Student extends Authenticatable
     {
         return $this->belongsToMany(Course::class)->withPivot('total_marks_obtained', 'has_completed');
     }
+
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
+    }
 }

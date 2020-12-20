@@ -34,7 +34,10 @@ Route::group(['middleware'=>['auth:admin,instructor']],function (){
     Route::resource('/course/{course}/module','ModuleController')->except(['index']);
     Route::resource('/course/module/{module}/content','ContentController')->except(['show']);
     Route::resource('/course/module/{module}/assessment','AssessmentController')->except(['show']);
+    Route::post('/course/module/{module}/assessment/{assessment}','AssessmentController@publish')->name('assessment.publish');
     Route::resource('/course/module/{module}/assessment/{assessment}/question','QuestionController')->except(['index','show']);
+    Route::resource('/course/module/{module}/assessment/{assessment}/question/{question}/response','ResponseController')->except(['create','store']);
+    Route::post('/course/module/{module}/assessment/{assessment}/question/{question}/response/{response}/grade','ResponseController@grade')->name('response.grade');
 });
 
 Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
@@ -43,6 +46,7 @@ Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
     Route::get('/course/{course}/module','ModuleController@index')->name('module.index');
     Route::get('/course/module/{module}/content/{content}','ContentController@show')->name('content.show');
     Route::get('/course/module/{module}/assessment/{assessment}','AssessmentController@show')->name('assessment.show');
+    Route::post('/course/module/{module}/assessment/{assessment}/question/{question}/response','ResponseController@store')->name('response.store');
 });
 
 Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {
