@@ -14,7 +14,8 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        //
+        $subjects = Subject::orderBy('subject_name')->paginate(10);
+        return view('Subject.index',compact('subjects'));
     }
 
     /**
@@ -24,7 +25,7 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('Subject.create');
     }
 
     /**
@@ -35,7 +36,15 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+           'subject'=>'required|string|min:3|unique:subjects,subject_name'
+        ]);
+
+        $subject = new Subject;
+        $subject->subject_name = $request->subject;
+        $subject->save();
+
+        return redirect()->route('admin.subject.index')->with('toast_success','Created Successfully');
     }
 
     /**
@@ -57,7 +66,8 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
-        //
+        $subject = Subject::find($subject->id);
+        return view('Subject.edit', compact('subject'));
     }
 
     /**
@@ -69,7 +79,15 @@ class SubjectController extends Controller
      */
     public function update(Request $request, Subject $subject)
     {
-        //
+        $request->validate([
+            'subject'=>'required|string|min:3|unique:subjects,subject_name,'.$subject->id,
+        ]);
+
+        $subject = Subject::find($subject->id);
+        $subject->subject_name = $request->subject;
+        $subject->save();
+
+        return redirect()->route('admin.subject.index')->with('toast_info','Updated Successfully');
     }
 
     /**
@@ -80,6 +98,9 @@ class SubjectController extends Controller
      */
     public function destroy(Subject $subject)
     {
-        //
+        $subject = Subject::find($subject->id);
+        $subject->delete();
+
+        return redirect()->route('admin.subject.index')->with('toast_error','Record Deleted');
     }
 }

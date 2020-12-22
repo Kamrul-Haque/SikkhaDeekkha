@@ -26,8 +26,8 @@ Auth::routes(['register'=>false]);
 
 Route::group(['middleware'=>['auth:admin,instructor']],function (){
     Route::resource('/course','CourseController')->except(['index','show']);
-    Route::get('/course/add-instructor/{course}','CourseController@addInstructorForm')->name('course.add.instructor');
-    Route::put('/course/add-instructor/{course}','CourseController@addInstructor')->name('course.instructor.store');
+    Route::get('/course/{course}/add-instructor','CourseController@addInstructorForm')->name('course.add.instructor');
+    Route::put('/course/{course}/add-instructor','CourseController@addInstructor')->name('course.instructor.store');
     Route::post('/course/{course}/leave','CourseController@leaveCourse')->name('course.instructor.leave');
     Route::get('/course/{course}/image-upload','CourseController@imageUploadForm')->name('course.image.form');
     Route::put('/course/{course}/image-upload','CourseController@imageUpload')->name('course.image.upload');
@@ -60,9 +60,13 @@ Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], f
         return view('Admin.profile');
     })->name('profile');
     Route::get('/home', 'HomeController@index')->name('home');
-    Route::resource('/student', 'StudentController')->except(['create','store']);
-    Route::resource('/instructor','InstructorController')->except(['create','store']);
+    Route::resource('/admin', 'AdminController');
+    Route::resource('/student', 'StudentController');
+    Route::resource('/instructor','InstructorController');
     Route::resource('/institution','InstitutionController');
+    Route::resource('/subject','SubjectController');
+    Route::get('/course/{course}/assign-institution/','CourseController@assignInstitutionForm')->name('course.assign.institution');
+    Route::post('/course/{course}/assign-institution/','CourseController@assignInstitution')->name('course.institution.store');
 });
 
 Route::group(['prefix'=>'/instructor', 'as'=>'instructor.'], function () {
@@ -95,4 +99,10 @@ Route::group(['prefix'=>'/student', 'as'=>'student.', 'middleware'=>'auth:studen
     Route::get('/home', 'HomeController@index')->name('home');
     Route::post('/course/{course}/enroll','CourseController@enroll')->name('course.enroll');
     Route::post('/course/{course}/un-enroll','CourseController@unenroll')->name('course.unenroll');
+    Route::get('/course/{course}/rating/','CourseController@ratingForm')->name('course.rating');
+    Route::post('/course/{course}/rating/','CourseController@rating')->name('course.rating.store');
+    Route::get('/course/{course}/rating/{rating}','CourseController@editRatingForm')->name('course.rating.edit');
+    Route::put('/course/{course}/rating/{rating}','CourseController@editRating')->name('course.rating.update');
+    Route::post('course/{course}/wishlist','WishlistController@wishlist')->name('wishlist');
+    Route::delete('course/remove-wishlist/{wishlist}','WishlistController@remove')->name('wishlist.remove');
 });

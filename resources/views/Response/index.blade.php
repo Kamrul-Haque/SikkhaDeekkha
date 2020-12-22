@@ -14,7 +14,7 @@
 
 @section('content')
     <div class="container py-4">
-        @forelse($question->responses as $response)
+        @forelse($responses as $response)
             <div class="card">
                 <div class="card-header pl-0 pr-0">
                     <div class="row">
@@ -47,6 +47,7 @@
                     </div>
                     <br>
                     @if($question->needs_review)
+                    <hr>
                     <form action="{{ route('response.grade',['module'=>$module,'assessment'=>$assessment,'question'=>$question,'response'=>$response]) }}" method="post">
                         @csrf
                         <div class="form-group row pl-2">
@@ -61,13 +62,23 @@
                         </div>
                     </form>
                     @endif
-                    <hr>
-                    <a href="{{ route('assessment.show', ['module'=>$module,'assessment'=>$assessment]) }}" class="btn btn-light ml-4">Back</a>
                 </div>
             </div>
             <br>
         @empty
             <div class="display-4 text-center">No Responses Yet</div>
         @endforelse
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <a href="{{ route('assessment.show', ['module'=>$module,'assessment'=>$assessment]) }}" class="btn btn-light ml-4">Back</a>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-center">
+                        <span>{{ $responses->links() }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

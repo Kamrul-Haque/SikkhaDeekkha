@@ -40,14 +40,14 @@
                     @endif
                         @csrf
                         <div class="form-group">
-                            <label for="answer">{{ $question->question }}</label>
+                            <label for="answer">{{$loop->iteration}}. {{ $question->question }}</label>
                             <span class="float-right text-muted">{{ $question->marks }} marks</span>
                             @if($question->type == 'MCQ')
                                 @if($question->hasMultipleAnswers())
                                     @foreach($question->answers as $answer)
-                                        <div class="form-check">
-                                            <input id="option" type="checkbox" name="options[]" class="form-check-input @error('options') is-invalid @enderror" value="{{ $answer->answer }}">
-                                            <label for="option" class="form-check-label">{{ $answer->answer }}</label>
+                                        <div class="custom-control custom-checkbox">
+                                            <input id="option{{$loop->iteration}}" type="checkbox" name="options[]" class="custom-control-input @error('options') is-invalid @enderror" value="{{ $answer->answer }}">
+                                            <label for="option{{$loop->iteration}}" class="custom-control-label">{{ $answer->answer }}</label>
 
                                             @error('options')
                                             <span class="invalid-feedback" role="alert">
@@ -58,9 +58,9 @@
                                     @endforeach
                                 @else
                                     @foreach($question->answers as $answer)
-                                        <div class="form-check">
-                                            <input id="answer" type="radio" name="answer" class="form-check-input @error('answer') is-invalid @enderror" value="{{ $answer->answer }}" required>
-                                            <label for="answer" class="form-check-label">{{ $answer->answer }}</label>
+                                        <div class="custom-control custom-radio">
+                                            <input id="answer{{$loop->iteration}}" type="radio" name="answer" class="custom-control-input @error('answer') is-invalid @enderror" value="{{ $answer->answer }}" required>
+                                            <label for="answer{{$loop->iteration}}" class="custom-control-label">{{ $answer->answer }}</label>
 
                                             @error('answer')
                                             <span class="invalid-feedback" role="alert">
@@ -122,8 +122,9 @@
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-danger ml-1"><span data-feather="trash-2" class="feather-content"></span></button>
                                 </form>
-                                @endif
+                                @else
                                 <a href="{{ route('response.index',['module'=>$module,'assessment'=>$assessment,'question'=>$question]) }}" class="btn btn-sm btn-success ml-1"><span data-feather="eye" class="feather-content"></span> Responses</a>
+                                @endif
                             </div>
                         @endif
                     @if(Auth::guard('student')->check())
@@ -136,17 +137,17 @@
                     <br>
                     <a href="{{ route('question.create',['module'=>$module,'assessment'=>$assessment]) }}" class="btn btn-success">Create Question</a>
                     @endif
-                    <hr>
-                    <div class="d-flex">
-                        <a href="{{ route('module.index', $module->course) }}" class="btn btn-light">Back</a>
-                        @if(!($assessment->is_published))
-                        <form action="{{ route('assessment.publish', ['module'=>$module,'assessment'=>$assessment]) }}" method="post">
-                            @csrf
-                            <button class="btn btn-primary ml-1">Publish</button>
-                        </form>
-                        @endif
-                    </div>
                 @endif
+                <hr>
+                <div class="d-flex">
+                    <a href="{{ route('module.index', $module->course) }}" class="btn btn-light">Back</a>
+                    @if(!($assessment->is_published) && !(Auth::guard('student')->check()))
+                    <form action="{{ route('assessment.publish', ['module'=>$module,'assessment'=>$assessment]) }}" method="post">
+                        @csrf
+                        <button class="btn btn-primary ml-1">Publish</button>
+                    </form>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

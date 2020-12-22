@@ -15,7 +15,7 @@ class ResponseController extends Controller
 
     public function index(Module $module, Assessment $assessment, Question $question)
     {
-        $responses = Response::paginate(10);
+        $responses = Response::where('question_id',$question->id)->paginate(1);
         return view('Response.index',compact('responses','module','assessment','question'));
     }
 

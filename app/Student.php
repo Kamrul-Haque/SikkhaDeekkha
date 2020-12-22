@@ -47,4 +47,14 @@ class Student extends Authenticatable
     {
         return $this->hasMany(Response::class);
     }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }

@@ -5,12 +5,12 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header bg-success text-light">
-                        <h4>Instructor Registration</h4>
+                    <div class="card-header @guest bg-success @else bg-dark @endguest text-light">
+                        <h4>@guest Instructor Registration @else Create Instructor @endif</h4>
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('instructor.register') }}">
+                        <form method="POST" @guest action="{{ route('instructor.register') }}" @else action="{{ route('admin.instructor.store') }}" @endguest>
                             @csrf
 
                             <div class="form-group row">
@@ -154,7 +154,7 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="submit" class="btn @guest btn-success @else btn-dark @endguest">Submit</button>
                                 </div>
                             </div>
                         </form>

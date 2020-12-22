@@ -34,7 +34,6 @@
             display: block;
             max-height: 75px;
             left: 0;
-            filter: invert(70%);
         }
         .course-image{
             width: 250px;
@@ -46,6 +45,15 @@
         }
         a.course-title:hover,a.course-title:focus{
             text-decoration: none;
+        }
+        .wishlist-button{
+            outline: none;
+            background: transparent;
+            border: none;
+            padding-left: 0;
+        }
+        .wishlist-button:hover{
+            text-decoration: underline;
         }
     </style>
 @endsection
@@ -64,10 +72,10 @@
                     <div class="row">
                         <div class="col-md-3">
                             <img src="{{ ($course->image_path) ?  $course->image_path : asset('images/No_Image_Available.jpg') }}" class="rounded float-left mb-4 course-image" alt="">
-                            <p title="rating"><span data-feather="star" class="pr-2" title="rating"></span> 8.6/10</p>
-                            <p title="reviewers"><span data-feather="trending-up" class="pr-2" title="reviewers"></span> 2000</p>
-                            <p title="enrolled"><span data-feather="users" class="pr-2" title="enrolled"></span> 1000</p>
-                            <p title="completed"><span data-feather="check-circle" class="pr-2" title="completed"></span> 5500</p>
+                            <p title="rating"><span data-feather="star" class="pr-2" title="rating"></span>{{ number_format($course->ratings()->avg('rating'), 2, '.', ',') }}/10</p>
+                            <p title="reviewers"><span data-feather="trending-up" class="pr-2" title="reviewers"></span> {{ $course->ratings()->count() }}</p>
+                            <p title="enrolled"><span data-feather="users" class="pr-2" title="enrolled"></span> {{ $course->students()->count() }}</p>
+                            <p title="completed"><span data-feather="check-circle" class="pr-2" title="completed"></span> {{ $course->students()->where('has_completed', true)->count() }}</p>
                         </div>
                         <div class="col-md-7">
                             @guest
@@ -85,10 +93,12 @@
                             <h6 class="mt-3">Offered by <strong>@foreach($course->instructors as $instructor){{ $instructor->name }} @endforeach</strong></h6>
                             <br><br>
                             <div>
-                                <h5>This Course is Certified by <strong>Institution</strong></h5>
+                                @if($course->institution)
+                                <h5>This Course is Certified by <strong>{{ $course->institution->name }}</strong></h5>
                                 <div>
-                                    <img src="{{ asset('icons/noun_university_213486.svg') }}" class="logo" alt="">
+                                    <img src="{{ $course->institution->logo_path }}" class="logo" alt="">
                                 </div>
+                                @endif
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -115,7 +125,20 @@
                                 </form>
                                 @endif
                             @endguest
-                            <a href="#" class="text-danger"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</a>
+                            @if(Auth::guard('student')->check())
+                                @if(!($course->wishlists()->where('student_id', Auth::user()->id)->first()))
+                                <form action="{{ route('student.wishlist', $course) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="text-danger wishlist-button"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</button>
+                                </form>
+                                @else
+                                <form action="{{ route('student.wishlist.remove', $course->wishlists()->where('student_id', Auth::user()->id)->first()) }}" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="text-danger wishlist-button">remove from wishlist</button>
+                                </form>
+                                @endif
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -69,13 +69,13 @@
                                 <div class="col-md-6">
                                     <select id="study" type="text" class="form-control @error('study') is-invalid @enderror" name="study" required>
                                         <option value="" selected disabled>Please Select...</option>
-                                        <option value="High School">High School</option>
-                                        <option value="Secondary">Secondary</option>
-                                        <option value="Higher Secondary">Higher Secondary</option>
-                                        <option value="Diploma">Diploma</option>
-                                        <option value="Undergraduate">Undergraduate</option>
-                                        <option value="Graduate">Graduate</option>
-                                        <option value="Post-Graduate">Post-Graduate</option>
+                                        <option value="High School" @if( old('study') === "High School") selected @endif>High School</option>
+                                        <option value="Secondary" @if( old('study') === "Secondary") selected @endif>Secondary</option>
+                                        <option value="Higher Secondary" @if( old('study') === "Higher Secondary") selected @endif>Higher Secondary</option>
+                                        <option value="Diploma" @if( old('study') === "Diploma") selected @endif>Diploma</option>
+                                        <option value="Undergraduate" @if( old('study') === "Undergraduate") selected @endif>Undergraduate</option>
+                                        <option value="Graduate" @if( old('study') === "Graduate") selected @endif>Graduate</option>
+                                        <option value="Post-Graduate" @if( old('study') === "Post-Graduate") selected @endif>Post-Graduate</option>
                                     </select>
 
                                     @error('study')

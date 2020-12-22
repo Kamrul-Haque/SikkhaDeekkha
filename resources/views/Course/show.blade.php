@@ -33,7 +33,6 @@
         .logo{
             display: block;
             max-height: 75px;
-            filter: invert(70%);
         }
         .card{
             filter: drop-shadow(0px 1px 1px darkgray);
@@ -54,6 +53,15 @@
         }
         button::-moz-focus-inner{
             border: 0!important;
+        }
+        .wishlist-button{
+            outline: none;
+            background: transparent;
+            border: none;
+            padding-left: 0;
+        }
+        .wishlist-button:hover{
+            text-decoration: underline;
         }
     </style>
 @endsection
@@ -77,6 +85,13 @@
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
                                             <a href="{{ route('module.index', $course) }}" class="dropdown-item">Course Modules</a>
+                                            @if(Auth::guard('student')->check())
+                                                @if(!$course->ratings()->where('student_id',Auth::user()->id)->first())
+                                                <a href="{{ route('student.course.rating', $course) }}" class="dropdown-item">Rate/Review this Course</a>
+                                                @else
+                                                <a href="{{ route('student.course.rating.edit',['course'=>$course,'rating'=>$course->ratings()->where('student_id',Auth::user()->id)->first()]) }}" class="dropdown-item">Edit Rating/Review</a>
+                                                @endif
+                                            @endif
                                             @if(Auth::guard('admin')->check() || $course->hasInstructor(Auth::user()->id))
                                                 <a href="{{ route('course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
                                                 <button type="button" class="dropdown-item" data-toggle="modal" data-target="#delete">Delete</button>
@@ -84,6 +99,9 @@
                                                 <a href="{{ route('course.image.form', $course) }}" class="dropdown-item">Upload/Change Image</a>
                                                 @if(!Auth::guard('admin')->check())
                                                 <button type="button" class="dropdown-item text-danger" data-toggle="modal" data-target="#leave">Leave Course</button>
+                                                @endif
+                                                @if(Auth::guard('admin')->check() && !($course->institution_id))
+                                                    <a href="{{ route('admin.course.assign.institution', $course) }}" class="dropdown-item">Assign Institution</a>
                                                 @endif
                                             @endif
                                         </div>
@@ -93,7 +111,7 @@
                         </div>
                     </div>
                     <h4>{{ $course->subtitle }}</h4>
-                    <p class="font-weight-bolder pt-1"><span data-feather="star" class="pr-2" title="rating"></span><strong>8.6/10</strong> on <strong>2000</strong> ratings</p>
+                    <p class="font-weight-bolder pt-1"><span data-feather="star" class="pr-2" title="rating"></span><strong>{{ number_format($course->ratings()->avg('rating'), 2, '.', ',') }}/10</strong> on <strong>{{ $course->ratings()->count() }}</strong> ratings</p>
                     <div class="row">
                         <div class="col-md-3 pt-5">
                             @guest
@@ -113,17 +131,32 @@
                                     </form>
                                 @endif
                             @endguest
-                            <p class="font-weight-bolder"><strong>5000</strong> students currently enrolled</p>
-                            <a href="#" class="text-danger pt-0" style="font-size: medium"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</a>
+                            <p class="font-weight-bolder"><strong>{{ $course->students()->count() }}</strong> students currently enrolled</p>
+                            @if(Auth::guard('student')->check())
+                                @if(!($course->wishlists()->where('student_id', Auth::user()->id)->first()))
+                                    <form action="{{ route('student.wishlist', $course) }}" method="post">
+                                        @csrf
+                                        <button type="submit" class="text-danger wishlist-button"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('student.wishlist.remove', $course->wishlists()->where('student_id', Auth::user()->id)->first()) }}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="text-danger wishlist-button">remove from wishlist</button>
+                                    </form>
+                                @endif
+                            @endif
                         </div>
                         <div class="col-md-5 pt-5">
 
                         </div>
                         <div class="col-md-4 pt-5 text-right">
-                            <h5>This Course is Offered/Certified by <strong>Institution Name</strong></h5>
+                            @if($course->institution)
+                            <h5>This Course is Certified by<br><strong>{{ $course->institution->name }}</strong></h5>
                             <div class="d-flex justify-content-end">
-                                <img src="{{ asset('icons/noun_university_213486.svg') }}" class="logo" alt="">
+                                <img src="{{ $course->institution->logo_path }}" class="logo" alt="">
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -164,6 +197,20 @@
                                 <p>{{ $instructor->designation }}, {{ $instructor->institution }}<br>{{ $instructor->about }}</p>
                             </div>
                         </div>
+                        @endforeach
+                        <br>
+                        <h2 class="pb-2 headings">Reviews</h2>
+                        @foreach($course->ratings as $rating)
+                            <div class="row">
+                                <div class="col-md-1 text-right">
+                                    <img src="{{ ($rating->student->profile_photo_path) ? $rating->student->profile_photo_path : asset('images/No_Image_Available.jpg') }}" alt="" class="rounded-circle" width="25px" height="25px">
+                                </div>
+                                <div class="col-md-5">
+                                    <h5><strong>{{ $rating->student->name }}</strong></h5>
+                                    <small class="text-muted">{{ $rating->date }}</small>
+                                    <p>{{ $rating->review }}</p>
+                                </div>
+                            </div>
                         @endforeach
                     </div>
                     <div class="col-md-3">

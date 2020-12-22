@@ -30,6 +30,7 @@
                                     <button type="submit" class="btn btn-success">
                                         Add
                                     </button>
+                                    <a href="{{ route('course.show', $course) }}" class="btn btn-warning">Cancel</a>
                                 </div>
                             </div>
                         </form>

@@ -5,12 +5,12 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header @if(Auth::guard('admin')->check()) bg-dark @else bg-success @endif text-light">
-                        <h4>@if(Auth::guard('admin')->check()) Edit Instructor @else Update Account @endif</h4>
+                    <div class="card-header bg-dark text-light">
+                        <h4>Edit Admin</h4>
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" @guest action="{{ route('instructor.update' ,$instructor) }}" @else action="{{ route('admin.instructor.update' ,$instructor) }}" @endif>
+                        <form method="POST" action="{{ route('admin.admin.update', $admin) }}">
                             @method('PUT')
                             @csrf
 
@@ -18,7 +18,7 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $instructor->name }}" required autofocus>
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $admin->name }}" required autofocus>
 
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -32,7 +32,7 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $instructor->email }}" required>
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $admin->email }}" required>
 
                                     @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -42,41 +42,27 @@
                                 </div>
                             </div>
 
-                            <div id="degree" class="form-group row">
-                                <label for="designation" class="col-md-4 col-form-label text-md-right">Designation</label>
-
-                                <div class="col-md-6">
-                                    <input id="designation" type="text" class="form-control @error('designation') is-invalid @enderror" name="designation" value="{{ $instructor->designation }}">
-
-                                    @error('designation')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div id="degree" class="form-group row">
-                                <label for="department" class="col-md-4 col-form-label text-md-right">Department</label>
-
-                                <div class="col-md-6">
-                                    <input id="department" type="text" class="form-control @error('department') is-invalid @enderror" name="department" value="{{ $instructor->department }}">
-
-                                    @error('department')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
                             <div class="form-group row">
-                                <label for="institution" class="col-md-4 col-form-label text-md-right">Institution</label>
+                                <label for="employee_id" class="col-md-4 col-form-label text-md-right">Employee ID</label>
 
                                 <div class="col-md-6">
-                                    <input id="institution" type="text" class="form-control @error('institution') is-invalid @enderror" name="institution" value="{{ $instructor->institution }}" required>
+                                    <input id="employee_id" type="text" class="form-control @error('employee_id') is-invalid @enderror" name="employee_id" value="{{ $admin->employee_id }}" required>
 
-                                    @error('institution')
+                                    @error('employee_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div id="degree" class="form-group row">
+                                <label for="job_title" class="col-md-4 col-form-label text-md-right">Job Title</label>
+
+                                <div class="col-md-6">
+                                    <input id="job_title" type="text" class="form-control @error('job_title') is-invalid @enderror" name="job_title" value="{{ $admin->job_title }}">
+
+                                    @error('job_title')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -92,7 +78,7 @@
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">+880</div>
                                         </div>
-                                        <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ $instructor->phone }}" required>
+                                        <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ $admin->phone }}" required>
 
                                         @error('phone')
                                         <span class="invalid-feedback" role="alert">
@@ -107,7 +93,7 @@
                                 <label for="address" class="col-md-4 col-form-label text-md-right">Address</label>
 
                                 <div class="col-md-6">
-                                    <textarea id="address" class="form-control @error('address') is-invalid @enderror" name="address">{{ $instructor->address }}</textarea>
+                                    <textarea id="address" class="form-control @error('address') is-invalid @enderror" name="address" rows="2">{{ $admin->address }}</textarea>
 
                                     @error('address')
                                     <span class="invalid-feedback" role="alert">
@@ -117,25 +103,10 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="about" class="col-md-4 col-form-label text-md-right">About</label>
-
-                                <div class="col-md-6">
-                                    <textarea id="about" class="form-control @error('about') is-invalid @enderror" name="about" rows="2" placeholder="this will be shown in your courses">{{ $instructor->about }}</textarea>
-
-                                    @error('about')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
-
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn @if(Auth::guard('admin')->check()) btn-dark @else btn-success @endif">
-                                        Submit
-                                    </button>
+                                    <button type="submit" class="btn btn-dark">Update</button>
+                                    <a href="{{ route('admin.admin.index') }}" class="btn btn-warning">Cancel</a>
                                 </div>
                             </div>
                         </form>

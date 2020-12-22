@@ -6,6 +6,7 @@ use App\Instructor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class InstructorController extends Controller
 {
@@ -47,9 +48,11 @@ class InstructorController extends Controller
            'department'=>'required',
            'institution'=>'required',
            'phone'=>'required|digits:10|unique:instructors',
+           'about'=>'required|string|min:5',
         ]);
 
         $instructor = new Instructor;
+        $instructor->UUID = str::uuid()->toString();
         $instructor->name = $request->name;
         $instructor->email = $request->email;
         $instructor->password = Hash::make($request->password);
@@ -58,10 +61,11 @@ class InstructorController extends Controller
         $instructor->institution = $request->institution;
         $instructor->phone = $request->phone;
         $instructor->address = $request->address;
+        $instructor->about = $request->about;
         $instructor->is_verified = false;
         $instructor->save();
 
-        return redirect('/instructor');
+        return redirect()->route('admin.instructor.index')->with('toast_success','Created Successfully');
     }
 
     /**
@@ -72,7 +76,8 @@ class InstructorController extends Controller
      */
     public function show(Instructor $instructor)
     {
-
+        $instructor = Instructor::find($instructor->id);
+        return view('Instructor.show', compact('instructor'));
     }
 
     /**
@@ -113,9 +118,10 @@ class InstructorController extends Controller
         $instructor->institution = $request->institution;
         $instructor->phone = $request->phone;
         $instructor->address = $request->address;
+        $instructor->about = $request->about;
         $instructor->save();
 
-        return redirect('/instructor');
+        return redirect()->route('admin.instructor.index')->with('toast_info','Updated Successfully');
     }
 
     /**

@@ -76,4 +76,19 @@ class Course extends Model
     {
         return $this->hasManyThrough(Assessment::class, Module::class);
     }
+
+    public function institution()
+    {
+        return $this->belongsTo(Institution::class);
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Institution;
 use App\Instructor;
+use App\Rating;
 use App\Subject;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -92,7 +95,7 @@ class CourseController extends Controller
             $course->instructors()->syncWithoutDetaching(Auth::user()->id);
         }
 
-        return redirect()->route('course.index')->with('toast_success','Successfully Created!');
+        return redirect()->route('course.show', $course)->with('toast_success','Successfully Created!');
     }
 
     /**
@@ -176,7 +179,7 @@ class CourseController extends Controller
         $course->is_paid = $request->has('paid');
         $course->save();
 
-        return redirect()->route('course.index')->with('toast_info','Successfully Updated!');
+        return redirect()->route('course.show', $course)->with('toast_info','Successfully Updated!');
     }
 
     /**
@@ -224,7 +227,7 @@ class CourseController extends Controller
             $course = Course::find($course->id);
             $course->instructors()->syncWithoutDetaching($instructor->id);
 
-            return redirect()->route('course.index')->with('toast_info', 'Instructor Added!');
+            return redirect()->route('course.show',$course)->with('toast_info', 'Instructor Added!');
         }
         else
         {
@@ -242,7 +245,7 @@ class CourseController extends Controller
             if ($instructors > 1)
             {
                 $course->instructors()->detach(Auth::user()->id);
-                return redirect()->route('course.show', $course)->with('toast_error','You Left the Course');
+                return redirect()->route('course.index')->with('toast_error','You Left the Course');
             }
             else
             {
@@ -298,6 +301,66 @@ class CourseController extends Controller
 
         $course->save();
 
-        return redirect()->route('course.index')->with('toast_info','Successfully Uploaded!');
+        return redirect()->route('course.show', $course)->with('toast_info','Successfully Uploaded!');
+    }
+
+    public function assignInstitutionForm(Course $course)
+    {
+        $institutions = Institution::all();
+        return view('Course.assign-institution', compact('institutions','course'));
+    }
+
+    public function assignInstitution(Request $request, Course $course)
+    {
+        $course = Course::find($course->id);
+        $course->institution_id = $request->institution;
+        $course->save();
+
+        return redirect()->route('course.show', $course)->with('toast_info','Assigned Successfully!');
+    }
+
+    public function ratingForm(Course $course)
+    {
+        return view('Course.rating',compact('course'));
+    }
+
+    public function rating(Request $request, Course $course)
+    {
+        $request->validate([
+           'rating'=>'required',
+           'review'=>'nullable|string|min:20',
+        ]);
+
+        $rating = new Rating;
+        $rating->course_id = $course->id;
+        $rating->student_id = Auth::user()->id;
+        $rating->rating = $request->rating;
+        $rating->review = $request->review;
+        $rating->date = Carbon::today()->toDateString();
+        $rating->save();
+
+        return redirect()->route('course.show', $course)->with('toast_success','Rated Successfully!');
+    }
+
+    public function editRatingForm(Course $course, Rating $rating)
+    {
+        $rating = Rating::find($rating->id);
+        return view('Course.edit-rating',compact('course','rating'));
+    }
+
+    public function editRating(Request $request, Course $course, Rating $rating)
+    {
+        $request->validate([
+            'rating'=>'required',
+            'review'=>'nullable|string|min:20',
+        ]);
+
+        $rating = Rating::find($rating->id);
+        $rating->rating = $request->rating;
+        $rating->review = $request->review;
+        $rating->date = Carbon::today()->toDateString();
+        $rating->save();
+
+        return redirect()->route('course.show', $course)->with('toast_info','Rating Updated');
     }
 }
