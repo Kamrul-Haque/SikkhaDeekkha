@@ -71,7 +71,7 @@
             <div class="card-footer">
                 <div class="row">
                     <div class="col-sm-4">
-                        <a href="{{ route('admin.instructor.index') }}" class="btn btn-light">Back</a>
+                        <a href="{{ route('admin.home') }}" class="btn btn-light">Back</a>
                     </div>
                     <div class="col-sm-4 d-flex justify-content-center">
                         {{ $instructors->links() }}
