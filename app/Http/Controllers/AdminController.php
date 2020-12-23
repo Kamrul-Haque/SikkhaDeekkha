@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Admin;
+use App\Course;
+use App\Institution;
+use App\Instructor;
+use App\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -11,7 +15,11 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        return view('Admin.dashboard');
+        $institutions = Institution::all();
+        $students = Student::all();
+        $courses = Course::all();
+        $instructors = Instructor::all();
+        return view('Admin.dashboard',compact('institutions','instructors','students','courses'));
     }
     /**
      * Display a listing of the resource.

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Notifications\InstructorResetPasswordNotification;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -50,5 +51,10 @@ class Instructor extends Authenticatable
     public function courses()
     {
         return $this->belongsToMany(Course::class);
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new InstructorResetPasswordNotification($token));
     }
 }

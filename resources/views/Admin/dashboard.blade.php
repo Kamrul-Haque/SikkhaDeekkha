@@ -33,24 +33,24 @@
         <div class="row pt-5">
             <div class="col-md-6">
                 <div class="">
-                    <a href="{{ route('admin.institution.create') }}" class="btn btn-block btn-success green button">Create Institution</a>
+                    <a href="#" class="btn btn-block btn-success green button">{{ $institutions->count() }} Institutions</a>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="">
-                    <a href="{{ route('admin.institution.create') }}" class="btn btn-block btn-primary button blue">Create Subject</a>
+                    <a href="#" class="btn btn-block btn-primary button blue">{{ $courses->count() }} Courses</a>
                 </div>
             </div>
         </div>
         <div class="row pt-5">
             <div class="col-md-6">
                 <div class="">
-                    <a href="{{ route('admin.instructor.create') }}" class="btn btn-block btn-danger red button">Create Instructor</a>
+                    <a href="#" class="btn btn-block btn-danger red button">{{ $instructors->count() }} Instructors</a>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="">
-                    <a href="{{ route('admin.student.create') }}" class="btn btn-block btn-dark button black">Create Student</a>
+                    <a href="#" class="btn btn-block btn-dark button black">{{ $students->count() }} Students</a>
                 </div>
             </div>
         </div>
