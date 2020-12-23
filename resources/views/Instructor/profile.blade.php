@@ -20,7 +20,7 @@
             <div class="card-body pl-4">
                 <div class="d-flex row">
                     <div class="col-md-4">
-                        <img src="{{ asset('images/No_Image_Available.jpg') }}" alt="" width="85px" height="85px" class="rounded">
+                        <img src="{{ Auth::user()->profile_photo_path ?? asset('images/No_Image_Available.jpg') }}" alt="" width="85px" height="85px" class="rounded">
                     </div>
                     <div class="text-right bottom col-md-8">
                         <h4 class="font-weight-bolder">{{ Auth::user()->name }}</h4>
@@ -95,10 +95,10 @@
 
                 <div class="form-group row mb-0 justify-content-end">
                     <div class="pr-2 pl-2">
-                        <a href="#" class="btn btn-success btn-sm">
+                        <a href="{{ route('instructor.edit', Auth::user()) }}" class="btn btn-success btn-sm">
                             Edit Profile
                         </a>
-                        <a href="#" class="btn btn-success btn-sm">
+                        <a href="{{ route('instructor.photo.upload.form', Auth::user()) }}" class="btn btn-success btn-sm">
                             Upload Profile Photo
                         </a>
                         <a href="#" class="btn btn-success btn-sm">

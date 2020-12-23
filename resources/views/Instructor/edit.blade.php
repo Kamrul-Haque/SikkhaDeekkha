@@ -6,11 +6,11 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header @if(Auth::guard('admin')->check()) bg-dark @else bg-success @endif text-light">
-                        <h4>@if(Auth::guard('admin')->check()) Edit Instructor @else Update Account @endif</h4>
+                        <h4>@if(Auth::guard('admin')->check()) Edit Instructor @else Update Profile @endif</h4>
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" @guest action="{{ route('instructor.update' ,$instructor) }}" @else action="{{ route('admin.instructor.update' ,$instructor) }}" @endif>
+                        <form method="POST" @if(Auth::guard('admin')->check()) action="{{ route('admin.instructor.update' ,$instructor) }}" @else action="{{ route('instructor.update' ,$instructor) }}" @endif>
                             @method('PUT')
                             @csrf
 

@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+    public function dashboard()
+    {
+        return view('Admin.dashboard');
+    }
     /**
      * Display a listing of the resource.
      *

@@ -29,10 +29,18 @@
                 font-weight: 200;
                 margin: 0;
             }
+            @if(Auth::guard('admin')->check())
+                .content-wrapper{
+                    padding-top: 35px;
+                /* Space for fixed navbar */
+                    padding-left: 200px;
+                }
+            @else
             .content-wrapper{
                 padding-top: 35px;
                 /* Space for fixed navbar */
             }
+            @endif
             .btn.btn-light{
                 background-color: #ebebeb;
             }
@@ -46,6 +54,9 @@
         <div id="app">
             @include('layouts.navbar')
             @include('sweetalert::alert')
+            @if(Auth::guard('admin')->check())
+                @include('layouts.side-bar')
+            @endif
             <main class="pt-4">
                 <div class="content-wrapper">
                     @yield('content')

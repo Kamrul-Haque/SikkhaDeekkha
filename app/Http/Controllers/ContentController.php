@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Content;
+use App\Course;
 use App\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -64,7 +65,9 @@ class ContentController extends Controller
         if (($module->course->hasStudent(Auth::user()->id)) || Auth::guard('admin')->check() || $module->course->hasInstructor(Auth::user()->id))
         {
             $content = Content::find($content->id);
-            return view('Content.show', compact('content','module'));
+            $course = Course::find($module->course->id);
+
+            return view('Content.show', compact('content','module','course'));
         }
         else
         {

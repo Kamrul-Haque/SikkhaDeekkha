@@ -7,7 +7,7 @@
             color: whitesmoke;
         }
         .custom-container{
-            width: 75%;
+            width: 85%;
         }
     </style>
 @endsection

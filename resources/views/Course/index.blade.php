@@ -125,7 +125,7 @@
                                 </form>
                                 @endif
                             @endguest
-                            @if(Auth::guard('student')->check())
+                            @if(Auth::guard('student')->check() && !($course->hasStudent(Auth::user()->id)))
                                 @if(!($course->wishlists()->where('student_id', Auth::user()->id)->first()))
                                 <form action="{{ route('student.wishlist', $course) }}" method="post">
                                     @csrf

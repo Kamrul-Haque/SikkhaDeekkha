@@ -261,6 +261,12 @@ class CourseController extends Controller
     public function enroll(Course $course)
     {
         $course = Course::find($course->id);
+
+        if ($course->wishlists()->where('student_id',Auth::user()->id)->first())
+        {
+            $course->wishlists()->where('student_id',Auth::user()->id)->first()->delete();
+        }
+
         $course->students()->syncWithoutDetaching(Auth::user()->id);
 
         return redirect()->route('module.index', $course)->with('toast_success', 'Enrollment Successful!');

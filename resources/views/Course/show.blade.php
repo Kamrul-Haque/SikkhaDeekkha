@@ -132,7 +132,7 @@
                                 @endif
                             @endguest
                             <p class="font-weight-bolder"><strong>{{ $course->students()->count() }}</strong> students currently enrolled</p>
-                            @if(Auth::guard('student')->check())
+                            @if(Auth::guard('student')->check() && !($course->hasStudent(Auth::user()->id)))
                                 @if(!($course->wishlists()->where('student_id', Auth::user()->id)->first()))
                                     <form action="{{ route('student.wishlist', $course) }}" method="post">
                                         @csrf

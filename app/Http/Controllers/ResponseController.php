@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Assessment;
+use App\Course;
 use App\Module;
 use App\Question;
 use App\Response;
@@ -16,12 +17,8 @@ class ResponseController extends Controller
     public function index(Module $module, Assessment $assessment, Question $question)
     {
         $responses = Response::where('question_id',$question->id)->paginate(1);
-        return view('Response.index',compact('responses','module','assessment','question'));
-    }
-
-    public function create()
-    {
-        //
+        $course = Course::find($module->course->id);
+        return view('Response.index',compact('responses','module','assessment','question','course'));
     }
 
     public function store(Module $module, Assessment $assessment, Question $question, Request $request)
@@ -121,28 +118,6 @@ class ResponseController extends Controller
         }
 
         return redirect()->route('assessment.show',['module'=>$module,'assessment'=>$assessment])->with('toast_success','Submitted Successfully!');
-    }
-
-
-    public function show(Response $response)
-    {
-        //
-    }
-
-    public function edit(Response $response)
-    {
-        //
-    }
-
-
-    public function update(Request $request, Response $response)
-    {
-        //
-    }
-
-    public function destroy(Response $response)
-    {
-        //
     }
 
     public function grade(Module $module, Assessment $assessment, Question $question, Response $response, Request $request)

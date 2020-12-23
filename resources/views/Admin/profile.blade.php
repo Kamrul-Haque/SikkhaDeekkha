@@ -17,14 +17,7 @@
             <div class="card-header bg-dark text-light">Admin Profile</div>
 
             <div class="card-body pl-4">
-                <div class="d-flex row">
-                    <div class="col-md-4">
-                        <img src="{{ asset('images/No_Image_Available.jpg') }}" alt="" width="75px" height="75px" class="rounded">
-                    </div>
-                    <div class="text-right bottom col-md-8">
-                        <h4 class="font-weight-bolder">{{ Auth::user()->name }}</h4>
-                    </div>
-                </div>
+                <h4 class="font-weight-bolder">{{ Auth::user()->name }}</h4>
                 <hr>
 
                 <div class="form-group row">
@@ -70,11 +63,8 @@
 
                 <div class="form-group row mb-0 justify-content-end">
                     <div class="pr-2 pl-2">
-                        <a href="#" class="btn btn-dark btn-sm">
+                        <a href="{{ route('admin.admin.edit', Auth::user()) }}" class="btn btn-dark btn-sm">
                             Edit Profile
-                        </a>
-                        <a href="#" class="btn btn-dark btn-sm">
-                            Upload Profile Photo
                         </a>
                         <a href="#" class="btn btn-dark btn-sm">
                             Change Password

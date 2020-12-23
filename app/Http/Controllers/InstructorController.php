@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\Instructor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class InstructorController extends Controller
 {
+    public function dashboard()
+    {
+        $instructor = Instructor::find(Auth::user()->id);
+        return view('Instructor.dashboard', compact('instructor'));
+    }
     /**
      * Display a listing of the resource.
      *
@@ -121,7 +127,7 @@ class InstructorController extends Controller
         $instructor->about = $request->about;
         $instructor->save();
 
-        return redirect()->route('admin.instructor.index')->with('toast_info','Updated Successfully');
+        return redirect('/')->with('toast_info','Updated Successfully');
     }
 
     /**
@@ -135,7 +141,7 @@ class InstructorController extends Controller
         $instructor = Instructor::find($instructor->id);
         $instructor->delete();
 
-        return redirect('/instructor');
+        return redirect('instructor')->with('toast_error','Record Deleted');
     }
 
     public function instructorLogout(Request $request)
@@ -147,5 +153,35 @@ class InstructorController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/instructor/login');
+    }
+
+    public function uploadPhotoForm(Instructor $instructor)
+    {
+        $instructor = Instructor::find($instructor->id);
+        return view('Instructor.upload-photo', compact('instructor'));
+    }
+
+    public function uploadPhoto(Request $request, Instructor $instructor)
+    {
+        $request->validate([
+            'image'=>'required|file|mimes:jpeg,jpg,png|max:2024'
+        ]);
+
+        $instructor = Instructor::find($instructor->id);
+        $oldPhoto = $instructor->getOriginal('profile_photo_path');
+
+        if ($request->file('image'))
+        {
+            if (File::exists($oldPhoto))
+            {
+                File::delete($oldPhoto);
+            }
+
+            $path = $request->file('image')->store('ProfilePhotos');
+            $instructor->profile_photo_path = 'storage/'.$path;
+        }
+        $instructor->save();
+
+        return redirect()->route('instructor.profile')->with('toast_info', 'Successfully Uploaded');
     }
 }

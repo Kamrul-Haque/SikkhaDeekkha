@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Assessment;
+use App\Course;
 use App\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,7 +61,8 @@ class AssessmentController extends Controller
         if (($module->course->hasStudent(Auth::user()->id)) || Auth::guard('admin')->check() || $module->course->hasInstructor(Auth::user()->id))
         {
             $assessment = Assessment::find($assessment->id);
-            return view('Assessment.show', compact('assessment', 'module'));
+            $course = Course::find($module->course->id);
+            return view('Assessment.show', compact('assessment', 'module','course'));
         }
         else
         {

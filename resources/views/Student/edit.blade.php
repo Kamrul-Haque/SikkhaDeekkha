@@ -5,12 +5,12 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header bg-primary text-light">
-                        <h4>Edit Student Data</h4>
+                    <div class="card-header @if(Auth::guard('admin')->check()) bg-dark @else bg-primary @endif text-light">
+                        <h4>@if(Auth::guard('admin')->check()) Edit Student @else Update Profile @endif</h4>
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('admin.student.update', $student) }}">
+                        <form method="POST" @if(Auth::guard('admin')->check()) action="{{ route('admin.student.update', $student) }}" @else action="{{ route('student.update', $student) }}" @endif>
                             @csrf
                             @method('PUT')
 
@@ -164,8 +164,8 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        Submit
+                                    <button type="submit" class="btn @if(Auth::guard('admin')->check()) btn-dark @else btn-primary @endif">
+                                        Update
                                     </button>
                                 </div>
                             </div>

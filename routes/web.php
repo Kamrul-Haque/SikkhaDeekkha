@@ -59,7 +59,7 @@ Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], f
     Route::get('/', function () {
         return view('Admin.profile');
     })->name('profile');
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/dashboard', 'AdminController@dashboard')->name('home');
     Route::resource('/admin', 'AdminController');
     Route::resource('/student', 'StudentController');
     Route::resource('/instructor','InstructorController');
@@ -81,7 +81,11 @@ Route::group(['prefix'=>'/instructor', 'as'=>'instructor.', 'middleware'=>'auth:
     Route::get('/', function () {
         return view('Instructor.profile');
     })->name('profile');
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/dashboard', 'InstructorController@dashboard')->name('home');
+    Route::get('/update/{instructor}','InstructorController@edit')->name('edit');
+    Route::put('/update/{instructor}','InstructorController@update')->name('update');
+    Route::get('/upload-photo/{instructor}','InstructorController@uploadPhotoForm')->name('photo.upload.form');
+    Route::post('/upload-photo/{instructor}','InstructorController@uploadPhoto')->name('photo.upload');
 });
 
 Route::group(['prefix'=>'/student', 'as'=>'student.'], function () {
@@ -96,13 +100,18 @@ Route::group(['prefix'=>'/student', 'as'=>'student.', 'middleware'=>'auth:studen
     Route::get('/', function () {
         return view('Student.profile');
     })->name('profile');
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/update/{student}','StudentController@edit')->name('edit');
+    Route::put('/update/{student}','StudentController@update')->name('update');
+    Route::get('/upload-photo/{student}','StudentController@uploadPhotoForm')->name('photo.upload.form');
+    Route::post('/upload-photo/{student}','StudentController@uploadPhoto')->name('photo.upload');
+    Route::get('/dashboard', 'StudentController@dashboard')->name('home');
     Route::post('/course/{course}/enroll','CourseController@enroll')->name('course.enroll');
     Route::post('/course/{course}/un-enroll','CourseController@unenroll')->name('course.unenroll');
     Route::get('/course/{course}/rating/','CourseController@ratingForm')->name('course.rating');
     Route::post('/course/{course}/rating/','CourseController@rating')->name('course.rating.store');
     Route::get('/course/{course}/rating/{rating}','CourseController@editRatingForm')->name('course.rating.edit');
     Route::put('/course/{course}/rating/{rating}','CourseController@editRating')->name('course.rating.update');
+    Route::get('course/wishlist','WishlistController@index')->name('wishlist.index');
     Route::post('course/{course}/wishlist','WishlistController@wishlist')->name('wishlist');
     Route::delete('course/remove-wishlist/{wishlist}','WishlistController@remove')->name('wishlist.remove');
 });

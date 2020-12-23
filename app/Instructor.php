@@ -38,6 +38,15 @@ class Instructor extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //returns an accessible http url for the asset from the storage path stored in database
+    public function getProfilePhotoPathAttribute($value)
+    {
+        if ($value)
+        {
+            return asset($value);
+        }
+    }
+
     public function courses()
     {
         return $this->belongsToMany(Course::class);

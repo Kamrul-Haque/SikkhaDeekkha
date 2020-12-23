@@ -42,9 +42,11 @@
                             <a class="nav-link" href="{{ route('course.create') }}">Create Course</a>
                         </li>
                     @endif
+                    @if(!Auth::guard('admin')->check())
                     <li>
                         <a class="nav-link" href="{{ route('course.index') }}">Courses</a>
                     </li>
+                    @endif
                 @endif
             </ul>
             <!-- Right Side Of Navbar -->
@@ -82,6 +84,7 @@
                                     @csrf
                                 </form>
                             @else
+                                <a href="{{ route('student.wishlist.index') }}" class="dropdown-item">Wishlists</a>
                                 <a href="{{ route('student.profile') }}" class="dropdown-item">My Account</a>
                                 <a class="dropdown-item" href="{{ route('student.logout') }}"
                                    onclick="event.preventDefault();
