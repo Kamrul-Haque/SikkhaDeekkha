@@ -14,9 +14,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->middleware(['guest','guest:admin','guest:student','guest:instructor']);
+Route::get('/','HomeController@index')->middleware(['guest','guest:admin','guest:student','guest:instructor']);
 
 Route::get('/guest/course','CourseController@index')->name('guest.course.index')->middleware('guest');
 Route::get('/guest/course/{course}','CourseController@show')->name('guest.course.show')->middleware('guest');

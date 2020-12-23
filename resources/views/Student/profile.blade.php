@@ -92,9 +92,6 @@
                         <a href="{{ route('student.photo.upload.form', Auth::user()) }}" class="btn btn-primary btn-sm">
                             Upload Profile Photo
                         </a>
-                        <a href="#" class="btn btn-primary btn-sm">
-                            Change Password
-                        </a>
                     </div>
                 </div>
             </div>

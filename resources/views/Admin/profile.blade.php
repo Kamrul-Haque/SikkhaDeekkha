@@ -66,9 +66,6 @@
                         <a href="{{ route('admin.admin.edit', Auth::user()) }}" class="btn btn-dark btn-sm">
                             Edit Profile
                         </a>
-                        <a href="#" class="btn btn-dark btn-sm">
-                            Change Password
-                        </a>
                     </div>
                 </div>
             </div>

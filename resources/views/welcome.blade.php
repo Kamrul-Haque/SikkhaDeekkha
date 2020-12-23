@@ -15,7 +15,7 @@
             z-index: -1;
             width: 100%;
         }
-        img{
+        .img-background{
             height: 300px;
             width: inherit;
             opacity: 0.2;
@@ -67,7 +67,7 @@
             color: black;
             position: absolute;
             z-index: 5;
-            padding-left: 90px;
+            padding-left: 120px;
             padding-top: 165px;
         }
         .thirdsection{
@@ -156,7 +156,7 @@
                 </div>
             </div>
             <div class="background">
-                <img src="{{ asset('images/blackhole_spacetime_curve.png') }}" alt="">
+                <img src="{{ asset('images/blackhole_spacetime_curve.png') }}" alt="" class="img-background">
             </div>
             <div id="particles-js"></div>
         </section>
@@ -211,7 +211,7 @@
                 <ul class="list-group-horizontal-md d-flex justify-content-center list-unstyled">
                     <li class="list-inline-item p-3">
                         <div class="img-container text-center">
-                            <h5 class="num num-student"><strong>80000</strong></h5>
+                            <h5 class="num num-student"><strong>{{ $students->count() }}</strong></h5>
                             <iframe class="second-frame" src="{{ asset('icons/student.svg') }}"></iframe>
                         </div>
                         <div class="text-center">
@@ -220,7 +220,7 @@
                     </li>
                     <li class="list-inline-item p-3">
                         <div class="img-container text-center">
-                            <h5 class="num num-courses"><strong>8778</strong></h5>
+                            <h5 class="num num-courses"><strong>{{ $courses->count() }}</strong></h5>
                             <iframe class="second-frame" src="{{ asset('icons/noun_online learning course_2485285.svg') }}"></iframe>
                         </div>
                         <div class="text-center">
@@ -229,7 +229,7 @@
                     </li>
                     <li class="list-inline-item p-3">
                         <div class="img-container text-center">
-                            <h5 class="num num-instructors"><strong>2000</strong></h5>
+                            <h5 class="num num-instructors"><strong>{{ $instructors->count() }}</strong></h5>
                             <iframe class="second-frame" src="{{ asset('icons/teacher.svg') }}"></iframe>
                         </div>
                         <div class="text-center">
@@ -238,7 +238,7 @@
                     </li>
                     <li class="list-inline-item p-3">
                         <div class="img-container text-center">
-                            <h5 class="num num-institutions"><strong>10000</strong></h5>
+                            <h5 class="num num-institutions"><strong>{{ $institutions->count() }}</strong></h5>
                             <iframe class="second-frame" src="{{ asset('icons/noun_city hall_2152676.svg') }}"></iframe>
                         </div>
                         <div class="text-center">
@@ -250,38 +250,15 @@
         </section>
         <section class="partner-logos">
             <ul class="list-group-horizontal-md d-flex justify-content-center list-unstyled">
+                @foreach($institutions as $institution)
                 <li class="list-inline-item">
-                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
+                    <img src="{{$institution->logo_path ?? asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
                 </li>
-                <li class="list-inline-item  pl-5">
-                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
-                </li>
-                <li class="list-inline-item pl-5">
-                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
-                </li>
-                <li class="list-inline-item  pl-5">
-                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
-                </li>
-                <li class="list-inline-item  pl-5">
-                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
-                </li>
-                <li class="list-inline-item  pl-5">
-                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
-                </li>
-                <li class="list-inline-item pl-5">
-                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
-                </li>
-                <li class="list-inline-item  pl-5">
-                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
-                </li>
-                <li class="list-inline-item  pl-5">
-                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
-                </li>
-                <li class="list-inline-item  pl-5">
-                    <img src="{{asset('icons/noun_university_213486.svg')}}" alt="" style="max-height: 70px">
-                </li>
+                @endforeach
             </ul>
-            <a class="font-weight-bold text-center text-dark">And 100 More Institutions</a>
+            <div class="text-center">
+                <a class="font-weight-bold  text-dark">And 100 More Institutions</a>
+            </div>
         </section>
         <section class="contact pb-4">
             <h1 class="text-center text-primary pt-4"><strong>Contact us</strong></h1>

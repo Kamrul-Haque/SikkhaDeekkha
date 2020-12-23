@@ -2,9 +2,6 @@
 
 @section('styles')
     <style>
-        .row{
-            padding-top: 200px;
-        }
        .button{
            line-height: 200px;
            font-size: xx-large;
@@ -33,7 +30,7 @@
 
 @section('content')
     <div class="container py-4">
-        <div class="row">
+        <div class="row pt-5">
             <div class="col-md-6">
                 <div class="">
                     <a href="{{ route('admin.institution.create') }}" class="btn btn-block btn-success green button">Create Institution</a>
@@ -48,12 +45,12 @@
         <div class="row pt-5">
             <div class="col-md-6">
                 <div class="">
-                    <a href="#" class="btn btn-block btn-danger red button">Create Institution</a>
+                    <a href="{{ route('admin.instructor.create') }}" class="btn btn-block btn-danger red button">Create Instructor</a>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="">
-                    <a href="#" class="btn btn-block btn-dark button black">Create Subject</a>
+                    <a href="{{ route('admin.student.create') }}" class="btn btn-block btn-dark button black">Create Student</a>
                 </div>
             </div>
         </div>
