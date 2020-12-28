@@ -1,10 +1,16 @@
 <style>
-    a {
+    a.sidebar {
         -webkit-transition: .3s all ease;
         -o-transition: .3s all ease;
         transition: .3s all ease;
         color: dodgerblue;
         font-size: 20px;
+    }
+    a.child {
+        -webkit-transition: .3s all ease;
+        -o-transition: .3s all ease;
+        transition: .3s all ease;
+        font-size: 14px;
     }
     a:hover, a:focus {
         text-decoration: none !important;
@@ -12,7 +18,6 @@
         -webkit-box-shadow: none;
         box-shadow: none;
     }
-
     #sidebar {
         position: fixed;
         padding-top: 35px;
@@ -74,68 +79,68 @@
         <div class="p-3">
             <ul class="list-unstyled components mb-5 pt-2">
                 <li>
-                    <a href="#subjectSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Subject</a>
+                    <a href="#subjectSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Subject</a>
                     <ul class="collapse list-unstyled" id="subjectSubmenu">
                         <li>
-                            <a href="{{ route('admin.subject.index') }}">Index</a>
+                            <a href="{{ route('admin.subject.index') }}" class="child">Index</a>
                         </li>
                         <li>
-                            <a href="{{ route('admin.subject.create') }}">Create</a>
+                            <a href="{{ route('admin.subject.create') }}" class="child">Create</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#institutionSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Institution</a>
+                    <a href="#institutionSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Institution</a>
                     <ul class="collapse list-unstyled" id="institutionSubmenu">
                         <li>
-                            <a href="{{ route('admin.institution.index') }}">Index</a>
+                            <a href="{{ route('admin.institution.index') }}" class="child">Index</a>
                         </li>
                         <li>
-                            <a href="{{ route('admin.institution.create') }}">Create</a>
+                            <a href="{{ route('admin.institution.create') }}" class="child">Create</a>
                         </li>
                     </ul>
                 </li>
                 <li class="active">
-                    <a href="#instructorSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Instructor</a>
+                    <a href="#instructorSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Instructor</a>
                     <ul class="collapse list-unstyled" id="instructorSubmenu">
                         <li>
-                            <a href="{{ route('admin.instructor.index') }}">Index</a>
+                            <a href="{{ route('admin.instructor.index') }}" class="child">Index</a>
                         </li>
                         <li>
-                            <a href="{{ route('admin.instructor.create') }}">Create</a>
+                            <a href="{{ route('admin.instructor.create') }}" class="child">Create</a>
                         </li>
                     </ul>
                 </li>
                 <li class="active">
-                    <a href="#courseSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Course</a>
+                    <a href="#courseSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Course</a>
                     <ul class="collapse list-unstyled" id="courseSubmenu">
                         <li>
-                            <a href="{{ route('course.index') }}">Index</a>
+                            <a href="{{ route('course.index') }}" class="child">Index</a>
                         </li>
                         <li>
-                            <a href="{{ route('course.create') }}">Create</a>
+                            <a href="{{ route('course.create') }}" class="child">Create</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#studentSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Student</a>
+                    <a href="#studentSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Student</a>
                     <ul class="collapse list-unstyled" id="studentSubmenu">
                         <li>
-                            <a href="{{ route('admin.student.index') }}">Index</a>
+                            <a href="{{ route('admin.student.index') }}" class="child">Index</a>
                         </li>
                         <li>
-                            <a href="{{ route('admin.student.create') }}">Create</a>
+                            <a href="{{ route('admin.student.create') }}" class="child">Create</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle last text-danger">Admin</a>
+                    <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar last text-danger">Admin</a>
                     <ul class="collapse list-unstyled" id="adminSubmenu">
                         <li>
-                            <a href="{{ route('admin.admin.index') }}">Index</a>
+                            <a href="{{ route('admin.admin.index') }}" class="child">Index</a>
                         </li>
                         <li>
-                            <a href="{{ route('admin.admin.create') }}">Create</a>
+                            <a href="{{ route('admin.admin.create') }}" class="child">Create</a>
                         </li>
                     </ul>
                 </li>

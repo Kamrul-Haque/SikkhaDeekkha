@@ -30,11 +30,11 @@
                 margin: 0;
             }
             @if(Auth::guard('admin')->check())
-                .content-wrapper{
-                    padding-top: 35px;
-                /* Space for fixed navbar */
-                    padding-left: 200px;
-                }
+            .content-wrapper{
+                padding-top: 35px;
+            /* Space for fixed navbar */
+                padding-left: 200px;
+            }
             @else
             .content-wrapper{
                 padding-top: 35px;
