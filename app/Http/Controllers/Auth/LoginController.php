@@ -45,7 +45,7 @@ class LoginController extends Controller
 
     public function showStudentLoginForm()
     {
-        return view('auth.login');
+        return view('auth.student-login');
     }
 
     public function studentLogin(Request $request)
@@ -64,7 +64,7 @@ class LoginController extends Controller
 
     public function showInstructorLoginForm()
     {
-        return view('auth.login', ['url' => 'instructor']);
+        return view('auth.instructor-login');
     }
 
     public function instructorLogin(Request $request)
@@ -83,7 +83,7 @@ class LoginController extends Controller
 
     public function showAdminLoginForm()
     {
-        return view('Admin.login');
+        return view('auth.admin-login');
     }
 
     public function adminLogin(Request $request)

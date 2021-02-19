@@ -1,25 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container pt-4">
+<div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header text-light @isset($url) bg-success @else bg-primary @endisset">@isset($url) Instructor @endisset {{ __('Login') }}</div>
+                <div class="card-header bg-dark text-light">Admin Login</div>
 
                 <div class="card-body">
-                    @isset($url)
-                    <form method="POST" action="{{ route('instructor.login') }}">
-                    @else
-                    <form method="POST" action="{{ route('student.login') }}">
-                    @endisset
+                    <form method="POST" action="{{ route('admin.login') }}">
                         @csrf
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autofocus>
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -30,7 +26,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
@@ -57,25 +53,10 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                @isset($url)
-                                    <button type="submit" class="btn btn-success">
-                                        {{ __('Login') }}
-                                    </button>
-                                @else
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Login') }}
-                                    </button>
-                                @endisset
-
-                                @isset($url)
-                                    <a class="btn btn-link" href="{{ route('instructor.register.form') }}">
-                                        don't have account? register here.
-                                    </a>
-                                @else
-                                    <a class="btn btn-link" href="{{ route('student.register.form') }}">
-                                        don't have account? register here.
-                                    </a>
-                                @endisset
+                                <button type="submit" class="btn btn-dark">
+                                    {{ __('Login') }}
+                                </button>
+                                <span class="float-right"><a href="{{ route('admin.password.request') }}" class="text-custom">Forgot Your Password?</a></span>
                             </div>
                         </div>
                     </form>

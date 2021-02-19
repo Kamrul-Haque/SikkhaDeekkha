@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 
 class AdminForgotPasswordController extends Controller
@@ -20,6 +18,7 @@ class AdminForgotPasswordController extends Controller
     | your application to your users. Feel free to explore this trait.
     |
     */
+
     use SendsPasswordResetEmails;
 
     public function __construct()
@@ -27,13 +26,13 @@ class AdminForgotPasswordController extends Controller
         $this->middleware('guest:admin');
     }
 
-    public function broker()
+    protected function broker()
     {
         return Password::broker('admins');
     }
 
     public function showLinkRequestForm()
     {
-        return view('Admin.email');
+        return view('auth.passwords.admin-email');
     }
 }

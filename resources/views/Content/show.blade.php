@@ -84,60 +84,42 @@
 @endsection
 
 @section('content')
-    @if(!Auth::guard('admin')->check())
-    <section>
-        <div class="wrapper d-flex align-items-stretch">
-            <nav id="sidebar" style="height: 100%">
-                <div class="px-3">
-                    <ul class="list-unstyled components mb-5">
-                        <li>
-                            @foreach($course->modules as $module)
-                                <a href="#submenu{{ $loop->index }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">{{ $module->module_name }}</a>
-                                <ul class="collapse list-unstyled" id="submenu{{ $loop->index }}">
-                                    @foreach($module->contents as $contentLink)
-                                    <li>
-                                        <a href="{{ route('content.show', ['module'=>$module,'content'=>$contentLink]) }}" class="text-dark child">{{ $contentLink->title }}</a>
-                                    </li>
-                                    @endforeach
-                                    @foreach($module->assessments as $assessmentLink)
-                                        <li>
-                                            <a href="{{ route('assessment.show', ['module'=>$module,'assessment'=>$assessmentLink]) }}" class="text-dark child">{{ $assessmentLink->title }}</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endforeach
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+    <div class="row">
+        <div class="col-md-2">
+            <section>
+                @if (!auth()->guard('admin')->check())
+                    @include('layouts.content-nav')
+                @endif
+            </section>
         </div>
-    </section>
-    @endif
-    <section>
-        <div class="container py-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="display-4">{{ $content->title }}</h4>
-                    <hr>
-                    <h5>{!! $content->description !!}</h5>
-                    <br>
-                    <div class="d-flex justify-content-center">
-                        @if($content->type == 'Video')
-                            <iframe src="http://www.youtube.com/embed/{{ $content->video_link }}" allowfullscreen></iframe>
-                        @elseif($content->type == 'File')
-                            <div class="row">
-                                <span data-feather="file-text"></span>
-                                <a href="{{ $content->file_path }}" class="pl-1">{{ basename($content->file_path) }}</a>
+        <div class="col-md-10">
+            <section>
+                <div class="container py-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="display-4">{{ $content->title }}</h4>
+                            <hr>
+                            <h5>{!! $content->description !!}</h5>
+                            <br>
+                            <div class="d-flex justify-content-center">
+                                @if($content->type == 'Video')
+                                    <iframe src="http://www.youtube.com/embed/{{ $content->video_link }}" allowfullscreen></iframe>
+                                @elseif($content->type == 'File')
+                                    <div class="row">
+                                        <span data-feather="file-text"></span>
+                                        <a href="{{ $content->file_path }}" class="pl-1">{{ basename($content->file_path) }}</a>
+                                    </div>
+                                @elseif($content->type == 'Link')
+                                    <a href="{{ $content->web_link }}" class="link">{{ $content->web_link }}</a>
+                                @endif
                             </div>
-                        @elseif($content->type == 'Link')
-                            <a href="{{ $content->web_link }}" class="link">{{ $content->web_link }}</a>
-                        @endif
+                            <br>
+                            <hr>
+                            <a href="{{ route('module.index', $module->course) }}" class="btn btn-light">Back</a>
+                        </div>
                     </div>
-                    <br>
-                    <hr>
-                    <a href="{{ route('module.index', $module->course) }}" class="btn btn-light">Back</a>
                 </div>
-            </div>
+            </section>
         </div>
-    </section>
+    </div>
 @endsection

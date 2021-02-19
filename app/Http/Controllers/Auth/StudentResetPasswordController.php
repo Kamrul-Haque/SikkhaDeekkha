@@ -29,26 +29,26 @@ class StudentResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/student';
 
     public function __construct()
     {
         $this->middleware('guest:student');
     }
 
-    public function broker()
-    {
-        return Password::broker('students');
-    }
-
-    public function guard()
+    protected function guard()
     {
         return Auth::guard('student');
     }
 
+    protected function broker()
+    {
+        return Password::broker('students');
+    }
+
     public function showResetForm(Request $request, $token = null)
     {
-        return view('Student.reset')->with(
+        return view('auth.passwords.student-reset')->with(
             ['token' => $token, 'email' => $request->email]
         );
     }
