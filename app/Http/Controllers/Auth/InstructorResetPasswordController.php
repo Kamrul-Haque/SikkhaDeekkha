@@ -29,26 +29,26 @@ class InstructorResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/instructor';
 
     public function __construct()
     {
         $this->middleware('guest:instructor');
     }
 
-    public function broker()
-    {
-        return Password::broker('instructors');
-    }
-
-    public function guard()
+    protected function guard()
     {
         return Auth::guard('instructor');
     }
 
+    protected function broker()
+    {
+        return Password::broker('instructors');
+    }
+
     public function showResetForm(Request $request, $token = null)
     {
-        return view('Instructor.reset')->with(
+        return view('auth.passwords.instructor-reset')->with(
             ['token' => $token, 'email' => $request->email]
         );
     }

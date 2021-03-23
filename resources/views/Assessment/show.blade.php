@@ -87,35 +87,6 @@
 @endsection
 
 @section('content')
-    @if(!Auth::guard('admin')->check())
-        <section>
-            <div class="wrapper d-flex align-items-stretch">
-                <nav id="sidebar" style="height: 100%">
-                    <div class="px-3">
-                        <ul class="list-unstyled components mb-5">
-                            <li>
-                                @foreach($course->modules as $module)
-                                    <a href="#submenu{{ $loop->index }}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">{{ $module->module_name }}</a>
-                                    <ul class="collapse list-unstyled" id="submenu{{ $loop->index }}">
-                                        @foreach($module->contents as $contentLink)
-                                            <li>
-                                                <a href="{{ route('content.show', ['module'=>$module,'content'=>$contentLink]) }}" class="text-dark child">{{ $contentLink->title }}</a>
-                                            </li>
-                                        @endforeach
-                                        @foreach($module->assessments as $assessmentLink)
-                                            <li>
-                                                <a href="{{ route('assessment.show', ['module'=>$module,'assessment'=>$assessmentLink]) }}" class="text-dark child">{{ $assessmentLink->title }}</a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @endforeach
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </section>
-    @endif
     <div class="container py-4">
         <div class="card">
             <div class="card-body">

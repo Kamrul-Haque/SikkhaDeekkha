@@ -18,6 +18,7 @@ class InstructorForgotPasswordController extends Controller
     | your application to your users. Feel free to explore this trait.
     |
     */
+
     use SendsPasswordResetEmails;
 
     public function __construct()
@@ -25,13 +26,13 @@ class InstructorForgotPasswordController extends Controller
         $this->middleware('guest:instructor');
     }
 
-    public function broker()
+    protected function broker()
     {
         return Password::broker('instructors');
     }
 
     public function showLinkRequestForm()
     {
-        return view('Instructor.email');
+        return view('auth.passwords.instructor-email');
     }
 }
