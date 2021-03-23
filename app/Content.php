@@ -37,4 +37,9 @@ class Content extends Model
     {
         return $this->belongsTo(Module::class);
     }
+
+    public function threads()
+    {
+        return $this->hasMany(Thread::class);
+    }
 }

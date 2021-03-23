@@ -36,6 +36,7 @@ Route::group(['middleware'=>['auth:admin,instructor']],function (){
     Route::resource('/course/module/{module}/assessment/{assessment}/question','QuestionController')->except(['index','show']);
     Route::resource('/course/module/{module}/assessment/{assessment}/question/{question}/response','ResponseController')->except(['create','store']);
     Route::post('/course/module/{module}/assessment/{assessment}/question/{question}/response/{response}/grade','ResponseController@grade')->name('response.grade');
+    Route::resource('/course/{course}/announcement','AnnouncementController')->except('index','show');
 });
 
 Route::group(['middleware'=>['auth:admin,instructor,student']],function (){

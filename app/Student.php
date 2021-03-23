@@ -68,6 +68,16 @@ class Student extends Authenticatable
         return $this->hasMany(Wishlist::class);
     }
 
+    public function threads()
+    {
+        return $this->hasMany(Thread::class);
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
+
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new StudentResetPasswordNotification($token));

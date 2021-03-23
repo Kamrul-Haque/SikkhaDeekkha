@@ -91,4 +91,14 @@ class Course extends Model
     {
         return $this->hasMany(Wishlist::class);
     }
+
+    public function discussionPanel()
+    {
+        return $this->hasOne(DiscussionPanel::class);
+    }
+
+    public function announcements()
+    {
+        return $this->hasMany(Announcement::class);
+    }
 }
