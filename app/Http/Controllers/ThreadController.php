@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
+use App\DiscussionPanel;
 use App\Thread;
 use Illuminate\Http\Request;
 
@@ -12,9 +14,10 @@ class ThreadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Course $course, DiscussionPanel $discussionPanel)
     {
-        //
+        $threads = $discussionPanel->threads()->latest()->paginate(4);
+        return view('Thread.index', compact('threads','course', 'discussionPanel'));
     }
 
     /**
@@ -22,9 +25,9 @@ class ThreadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Course $course, DiscussionPanel $discussionPanel)
     {
-        //
+        return view('Thread.create', compact('course','discussionPanel'));
     }
 
     /**
@@ -33,9 +36,30 @@ class ThreadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Course $course, DiscussionPanel $discussionPanel)
     {
-        //
+        $request->validate([
+            'select'=>'required',
+            'subject'=>'required|string|max:30',
+            'message'=>'required|string'
+        ]);
+
+        $thread = new Thread();
+        $thread->discussion_panel_id = $discussionPanel->id;
+        $thread->content_id = $request->select;
+        $thread->subject = $request->subject;
+        $thread->body = $request->message;
+
+        if (auth()->guard('student')->check())
+            $thread->student_id = auth()->user()->id;
+        elseif(auth()->guard('instructor')->check())
+            $thread->instructor_id = auth()->user()->id;
+
+        $thread->save();
+
+        return redirect()
+            ->route('thread.show', ['course'=>$course, 'discussionPanel'=>$course->discussionPanel, 'thread'=>$thread])
+            ->with('toast_success','Post Created Successfully!');
     }
 
     /**
@@ -44,9 +68,9 @@ class ThreadController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show(Thread $thread)
+    public function show(Course $course, DiscussionPanel $discussionPanel, Thread $thread)
     {
-        //
+        return view('Thread.show', compact('course','discussionPanel','thread'));
     }
 
     /**
@@ -55,9 +79,9 @@ class ThreadController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function edit(Thread $thread)
+    public function edit(Course $course, DiscussionPanel $discussionPanel, Thread $thread)
     {
-        //
+        return view('Thread.edit',compact('course','discussionPanel','thread'));
     }
 
     /**
@@ -67,9 +91,20 @@ class ThreadController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Thread $thread)
+    public function update(Request $request, Course $course, DiscussionPanel $discussionPanel, Thread $thread)
     {
-        //
+        $request->validate([
+            'subject'=>'required|string|max:30',
+            'message'=>'required|string'
+        ]);
+
+        $thread->subject = $request->subject;
+        $thread->body = $request->message;
+        $thread->save();
+
+        return redirect()
+            ->route('thread.show', ['course'=>$course, 'discussionPanel'=>$course->discussionPanel, 'thread'=>$thread])
+            ->with('toast_info','Post Updated Successfully');
     }
 
     /**
@@ -78,8 +113,12 @@ class ThreadController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy(Course $course, DiscussionPanel $discussionPanel, Thread $thread)
     {
-        //
+        $thread->delete();
+
+        return redirect()
+            ->route('thread.index', ['course'=>$course, 'discussionPanel'=>$course->discussionPanel])
+            ->with('toast_error','Post Deleted');
     }
 }

@@ -37,6 +37,7 @@ Route::group(['middleware'=>['auth:admin,instructor']],function (){
     Route::resource('/course/module/{module}/assessment/{assessment}/question/{question}/response','ResponseController')->except(['create','store']);
     Route::post('/course/module/{module}/assessment/{assessment}/question/{question}/response/{response}/grade','ResponseController@grade')->name('response.grade');
     Route::resource('/course/{course}/announcement','AnnouncementController')->except('index','show');
+    Route::resource('/course/{course}/discussion-panel/{discussionPanel}/thread','ThreadController')->except('index','show','create','store');
 });
 
 Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
@@ -46,6 +47,7 @@ Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
     Route::get('/course/module/{module}/content/{content}','ContentController@show')->name('content.show');
     Route::get('/course/module/{module}/assessment/{assessment}','AssessmentController@show')->name('assessment.show');
     Route::post('/course/module/{module}/assessment/{assessment}/question/{question}/response','ResponseController@store')->name('response.store');
+    Route::resource('/course/{course}/discussion-panel/{discussionPanel}/thread','ThreadController')->only('index','show','create','store');
 });
 
 Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {

@@ -37,6 +37,20 @@
         .delete-button:hover{
             text-decoration: underline;
         }
+        .dropdown-button{
+            border: 0;
+            background: transparent;
+            color: black;
+        }
+        .dropdown-button:focus{
+            outline: none;
+            border: 0;
+            color: dodgerblue;
+        }
+        em{
+            font-style: normal;
+            font-weight: bold;
+        }
     </style>
 @endsection
 
@@ -44,7 +58,26 @@
     <div class="container pb-4">
         <div class="jumbotron">
             <div class="container">
-                <h4 class="display-4">{{ $course->title }}</h4>
+                <div class="row">
+                    <div class="col-md-11">
+                        <h4 class="display-4">{{ $course->title }}</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="dropdown">
+                            <button class="dropdown-button float-right pt-4" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span data-feather="settings"></span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
+                                @if(auth()->guard('admin')->check() || auth()->guard('instructor')->check())
+                                    <a href="{{ route('module.create',$course) }}" class="dropdown-item">Create Module</a>
+                                    <a href="{{ route('announcement.create',$course) }}" class="dropdown-item">Create Announcement</a>
+                                @else
+                                    <button type="button" class="dropdown-item text-danger" data-toggle="modal" data-target="#unEnroll">Un-Enroll</button>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         @if($course->announcements->count())
@@ -81,10 +114,23 @@
             <br>
             <br>
         @endif
+        <div class="card border-primary">
+            <div class="card-header bg-primary text-light">
+                <h3>Discussion Panel</h3>
+            </div>
+            <div class="card-body">
+                <p>Discussion panel is the medium of communication between students & course instructors in our fully online course platform.
+                    Any disrespectful behaviour will not be tolerated and will be addressed as soon as possible.<em class="text-danger">
+                    Anyone using hate speech will be punished and may be banned permanently from the platform.</em></p>
+                <br>
+                <a href="{{ route('thread.index', ['course'=>$course, 'discussionPanel'=>$course->discussionPanel]) }}" class="btn btn-block btn-primary">Open Discussion Panel</a>
+            </div>
+        </div>
+        <br>
         @forelse($course->modules as $module)
             <div class="card">
                 <div class="card-header">
-                    <div class="row">
+                    <div class="row d-flex">
                         <div class="col-md-11">
                             <h3>{{ $module->module_name }}</h3>
                         </div>
@@ -166,15 +212,6 @@
                 <h4>No Module Yet</h4>
             </div>
         @endforelse
-        @if(auth()->guard('admin')->check() || auth()->guard('instructor')->check())
-        <div>
-            <a href="{{ route('module.create',$course) }}" class="btn btn-block btn-success"><strong>CREATE MODULE</strong></a>
-        </div>
-        @else
-        <div>
-            <button type="button" class="btn btn-block btn-primary btn-lg mt-1 mb-1" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
-        </div>
-        @endif
     </div>
     @component('components.modal')
         @slot('id') unEnroll @endslot
