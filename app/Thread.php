@@ -8,15 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class Thread extends Model
 {
     protected $guarded = [];
-/*
-    //returns the date in custom format
-    public function getCreatedAtAttribute($value)
-    {
-        $value = $this->created_at->toDateString();
 
-        $carbon = new Carbon($value);
-        return $carbon->format('d/m/Y');
-    }*/
+    public function getCreatedAtAttribute($date)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('d/m/Y');
+    }
+
+    public function createdAtTime()
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $this->getOriginal('created_at'))->format('h:ia');
+    }
+
+    public function hasSolution()
+    {
+        foreach ($this->replies as $reply)
+        {
+            if ($reply->is_solution)
+                return $reply->id;
+        }
+
+        return false;
+    }
 
     public function discussionPanel()
     {
@@ -26,11 +38,6 @@ class Thread extends Model
     public function replies()
     {
         return $this->hasMany(Reply::class);
-    }
-
-    public function solution()
-    {
-        return $this->hasOneThrough(Solution::class, Reply::class);
     }
 
     public function content()

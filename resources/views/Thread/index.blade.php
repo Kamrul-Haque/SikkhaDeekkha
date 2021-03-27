@@ -11,10 +11,11 @@
             height: 200px;
             background-color: ghostwhite;
             filter: drop-shadow(0px 2px 2px darkgray);
-            background-image: linear-gradient(to left, rgba(255,255,255,0.8) 0%,rgba(255,255,255,0.8) 100%), url("{{ asset('images/discussion.jpg') }}");
+            background-image: linear-gradient(to left, rgba(255,255,255,0.85) 0%,rgba(255,255,255,0.85) 100%), url("{{ asset('images/discussion.jpg') }}");
             background-position: top;
             background-repeat: no-repeat;
             background-size: cover;
+            text-shadow: 1px 1px dimgrey!important;
         }
     </style>
 @endsection
@@ -55,8 +56,8 @@
                             @forelse($threads as $thread)
                             <div>
                                 <a href="{{ route('thread.show', ['course'=>$course, 'discussionPanel'=>$discussionPanel, 'thread'=>$thread]) }}" class="content-link">{{ $thread->subject }}</a>
-                                <span class="text-success">solved!</span>
-                                <span class="float-right text-muted"><small>{{ date('d/m/Y', strtotime($thread->created_at->toDateString())) }}</small></span>
+                                @if($thread->hasSolution()) <span class="text-success ml-1"><i>solved!</i></span> @endif
+                                <span class="float-right text-muted"><small>{{ $thread->createdAtTime() }} &#9679; {{ $thread->created_at }}</small></span>
                                 <br>
                                 <span class="text-muted">posted by @if( $thread->student_id ) {{ $thread->student->name }} @elseif( $thread->instructor_id ) {{ $thread->instructor->name }} @else <em class="text-danger">Admin</em> @endif</span>
                                 <p>{!! Str::limit($thread->body,250) !!}</p>

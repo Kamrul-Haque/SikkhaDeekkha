@@ -19,6 +19,7 @@ class CreateRepliesTable extends Migration
             $table->unsignedBigInteger('student_id')->nullable();
             $table->unsignedBigInteger('instructor_id')->nullable();
             $table->text('message');
+            $table->boolean('is_solution')->default(false);
             $table->timestamps();
 
             $table->foreign('student_id')->on('students')->references('id')->onDelete('cascade');

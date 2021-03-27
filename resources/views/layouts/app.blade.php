@@ -73,5 +73,10 @@
     <script type="text/javascript">
         $('textarea.editor').ckeditor();
     </script>
+    <script type="text/javascript">
+        $(function (){
+            $("[data-toggle=popover]").popover();
+        });
+    </script>
     @yield('scripts')
 </html>

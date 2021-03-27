@@ -47,7 +47,7 @@
                         <button type="submit" class="btn btn-success">
                             Create
                         </button>
-                        <a href="{{ route('module.index', $course) }}" class="btn btn-warning">Cancel</a>
+                        <a href="{{ route('thread.index', ['course'=>$course,'discussionPanel'=>$discussionPanel]) }}" class="btn btn-warning">Cancel</a>
                     </div>
                 </form>
             </div>

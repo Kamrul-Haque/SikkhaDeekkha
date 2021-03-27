@@ -16,7 +16,7 @@ class ThreadController extends Controller
      */
     public function index(Course $course, DiscussionPanel $discussionPanel)
     {
-        $threads = $discussionPanel->threads()->latest()->paginate(4);
+        $threads = $discussionPanel->threads()->latest()->paginate(3);
         return view('Thread.index', compact('threads','course', 'discussionPanel'));
     }
 
@@ -58,7 +58,7 @@ class ThreadController extends Controller
         $thread->save();
 
         return redirect()
-            ->route('thread.show', ['course'=>$course, 'discussionPanel'=>$course->discussionPanel, 'thread'=>$thread])
+            ->route('thread.show', ['course'=>$course, 'discussionPanel'=>$discussionPanel, 'thread'=>$thread])
             ->with('toast_success','Post Created Successfully!');
     }
 
@@ -103,7 +103,7 @@ class ThreadController extends Controller
         $thread->save();
 
         return redirect()
-            ->route('thread.show', ['course'=>$course, 'discussionPanel'=>$course->discussionPanel, 'thread'=>$thread])
+            ->route('thread.show', ['course'=>$course, 'discussionPanel'=>$discussionPanel, 'thread'=>$thread])
             ->with('toast_info','Post Updated Successfully');
     }
 
@@ -118,7 +118,7 @@ class ThreadController extends Controller
         $thread->delete();
 
         return redirect()
-            ->route('thread.index', ['course'=>$course, 'discussionPanel'=>$course->discussionPanel])
+            ->route('thread.index', ['course'=>$course, 'discussionPanel'=>$discussionPanel])
             ->with('toast_error','Post Deleted');
     }
 }
