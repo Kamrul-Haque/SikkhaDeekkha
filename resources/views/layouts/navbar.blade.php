@@ -30,7 +30,7 @@
         background: transparent;
     }
     .search-box{
-        background: gray;
+        background: transparent;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
         border-right: 0;
@@ -90,14 +90,14 @@
                 @else
                     <div class="nav-item mt-1 mr-3">
                         <form class="d-flex">
-                            <input class="form-control search-box me-2" type="search" placeholder="Course Title" aria-label="Search">
+                            <input class="form-control search-box me-2" type="search" placeholder="Search Course..." aria-label="Search">
                             <button class="btn btn-outline-light btn-search btn-sm" type="submit"><span data-feather="search" class="p-1"></span></button>
                         </form>
                     </div>
                     <div class="nav-item dropdown">
                         <a class="nav-link notification-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span data-feather="bell" class="notification-icon"></span>
-                            <span class="badge badge-light">3</span>
+                            <span class="badge badge-primary">3</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right bg-dark border-0" aria-labelledby="dropdownMenuButton">
                             <span class="dropdown-item text-light">Notification 1</span>
@@ -105,6 +105,8 @@
                             <span class="dropdown-item text-light">Notification 2</span>
                             <hr>
                             <span class="dropdown-item text-light">Notification 3</span>
+                            <hr>
+                            <span class="dropdown-item text-light">see all notifications</span>
                         </div>
                     </div>
                     <li class="nav-item dropdown">

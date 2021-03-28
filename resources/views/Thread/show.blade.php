@@ -43,10 +43,12 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <h4 class="display-4">{{ $thread->subject }}</h4>
+                    @can('modify', $thread)
                     <div class="dropdown">
                         <a class="text-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span data-feather="more-horizontal"></span>
                         </a>
+
                         <div class="dropdown-menu dropdown-menu-right bg-dark border-0" aria-labelledby="dropdownMenuButton">
                             <a href="{{ route('thread.edit', ['course'=>$course, 'discussionPanel'=>$discussionPanel, 'thread'=>$thread]) }}" class="dropdown-item dropdown-button text-info text-right">Edit</a>
                             <hr>
@@ -57,6 +59,7 @@
                             </form>
                         </div>
                     </div>
+                    @endcan
                 </div>
                 <h6 class="text-muted pb-2">{{ $thread->content->title ?? "General Discussion" }}</h6>
                 <span>
@@ -97,10 +100,15 @@
                                                 <span data-feather="more-horizontal" class="feather-content"></span>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-sm-left bg-dark border-0" aria-labelledby="dropdownMenuButton">
-                                                <form action="{{ route('mark.solution', $reply) }}" method="post">
-                                                    @csrf
-                                                    <button type="submit" class="dropdown-item text-light dropdown-button">mark as solution</button>
-                                                </form>
+                                                @can('modify', $thread)
+                                                    @if(!$reply->is_solution)
+                                                    <form action="{{ route('mark.solution', $reply) }}" method="post">
+                                                        @csrf
+                                                        <button type="submit" class="dropdown-item text-light dropdown-button">mark as solution</button>
+                                                    </form>
+                                                    @endif
+                                                @endcan
+                                                @can('modify', $reply)
                                                 <a id="edit" class="dropdown-item text-light dropdown-button" data-target="updateForm{{$loop->iteration}}" data-linked="message{{$loop->iteration}}" data-button="updateButton{{$loop->iteration}}" data-cancel="cancel{{$loop->iteration}}">
                                                     <small>edit</small>
                                                 </a>
@@ -108,6 +116,11 @@
                                                     @method('DELETE')
                                                     @csrf
                                                     <button type="submit" class="dropdown-item text-light dropdown-button"><small>delete</small></button>
+                                                </form>
+                                                @endcan
+                                                <form action="#" method="post">
+                                                    @csrf
+                                                    <button type="submit" class="dropdown-item text-danger dropdown-button"><small>report</small></button>
                                                 </form>
                                             </div>
                                         </div>

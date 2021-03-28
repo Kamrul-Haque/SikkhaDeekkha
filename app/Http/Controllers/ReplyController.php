@@ -90,6 +90,8 @@ class ReplyController extends Controller
      */
     public function update(Request $request, Course $course, DiscussionPanel $discussionPanel, Thread $thread, Reply $reply)
     {
+        $this->authorizeForUser(auth()->user(),'modify',$reply);
+
         $request->validate([
             'message'=>'required|string|max:255'
         ]);
@@ -111,6 +113,8 @@ class ReplyController extends Controller
      */
     public function destroy(Course $course, DiscussionPanel $discussionPanel, Thread $thread, Reply $reply)
     {
+        $this->authorizeForUser(auth()->user(),'modify',$reply);
+
         $reply->delete();
 
         return redirect()
@@ -120,6 +124,8 @@ class ReplyController extends Controller
 
     public function markSolution(Reply $reply)
     {
+        $this->authorizeForUser(auth()->user(),'modify', $reply->thread);
+
         $id = $reply->thread->hasSolution();
 
         if ($id)

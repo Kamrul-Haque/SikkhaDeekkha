@@ -12,6 +12,9 @@
             background-repeat: no-repeat;
             background-size: cover;
         }
+        .display-4{
+            text-shadow: 1px 1px deepskyblue!important;
+        }
         .dropdown-button{
             border: 0;
             background: transparent;

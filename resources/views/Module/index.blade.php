@@ -12,6 +12,9 @@
             background-repeat: no-repeat;
             background-size: cover;
         }
+        .display-4{
+            text-shadow: 1px 1px dimgrey!important;
+        }
         hr{
             width: 100%;
             padding: 0;

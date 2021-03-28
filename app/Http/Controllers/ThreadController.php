@@ -81,6 +81,7 @@ class ThreadController extends Controller
      */
     public function edit(Course $course, DiscussionPanel $discussionPanel, Thread $thread)
     {
+        $this->authorizeForUser(auth()->user(),'modify', $thread);
         return view('Thread.edit',compact('course','discussionPanel','thread'));
     }
 
@@ -93,6 +94,8 @@ class ThreadController extends Controller
      */
     public function update(Request $request, Course $course, DiscussionPanel $discussionPanel, Thread $thread)
     {
+        $this->authorizeForUser(auth()->user(),'modify', $thread);
+
         $request->validate([
             'subject'=>'required|string|max:30',
             'message'=>'required|string'
@@ -115,6 +118,8 @@ class ThreadController extends Controller
      */
     public function destroy(Course $course, DiscussionPanel $discussionPanel, Thread $thread)
     {
+        $this->authorizeForUser(auth()->user(),'modify', $thread);
+
         $thread->delete();
 
         return redirect()
