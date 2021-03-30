@@ -13,7 +13,7 @@
                         <label for="select">Content</label>
                         <select id="select" name="select" id="" class="form-control" required>
                             <option value="" disabled selected>Please Select...</option>
-                            <option value="">General Discussion</option>
+                            <option value="0">General Discussion</option>
                             @foreach($course->modules as $module)
                                 <option value="" disabled>{{ $module->module_name }}</option>
                                 @foreach($module->contents as $content)

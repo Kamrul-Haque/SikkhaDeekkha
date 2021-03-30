@@ -33,7 +33,7 @@
                     <div class="list-group">
                         <h4>Filter</h4>
                         <div class="list-group-item">
-                            <a href="#" class="content-link">General Discussion</a>
+                            <a href="{{ route('thread.filter', ['course'=>$course, 'discussionPanel'=>$discussionPanel, 'content'=>'0']) }}" class="content-link">General Discussion</a>
                         </div>
                         @foreach($course->modules as $module)
                             <div class="list-group-item px-0">
@@ -41,7 +41,7 @@
                                 <hr>
                                 @foreach($module->contents as $content)
                                 <div class="pl-4">
-                                    <a href="#" class="content-link pl-2">{{ $content->title }}</a>
+                                    <a href="{{ route('thread.filter',['course'=>$course, 'discussionPanel'=>$discussionPanel, 'content'=>$content->id]) }}" class="content-link pl-2">{{ $content->title }}</a>
                                 </div>
                                 <hr>
                                 @endforeach

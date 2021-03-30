@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Content;
 use App\Course;
 use App\DiscussionPanel;
 use App\Thread;
@@ -46,7 +47,7 @@ class ThreadController extends Controller
 
         $thread = new Thread();
         $thread->discussion_panel_id = $discussionPanel->id;
-        $thread->content_id = $request->select;
+        if ($request->select) $thread->content_id = $request->select;
         $thread->subject = $request->subject;
         $thread->body = $request->message;
 
@@ -125,5 +126,18 @@ class ThreadController extends Controller
         return redirect()
             ->route('thread.index', ['course'=>$course, 'discussionPanel'=>$discussionPanel])
             ->with('toast_error','Post Deleted');
+    }
+
+    public function filter(Course $course, DiscussionPanel $discussionPanel, $content)
+    {
+        if($content)
+        {
+            $threads = Thread::where('content_id', $content)->paginate(10);
+        }
+        else
+        {
+            $threads = Thread::where('content_id', null)->paginate(10);
+        }
+        return view('Thread.index', compact('threads','course', 'discussionPanel'));
     }
 }
