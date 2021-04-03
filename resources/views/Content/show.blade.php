@@ -80,6 +80,14 @@
             -ms-transform: translateY(-50%);
             transform: translateY(-50%);
         }
+        .btn-blue{
+            background: deepskyblue;
+            color: white;
+        }
+        .btn-blue:hover{
+            background: dodgerblue;
+            color: white;
+        }
     </style>
 @endsection
 
@@ -118,6 +126,41 @@
                             <a href="{{ route('module.index', $module->course) }}" class="btn btn-light">Back</a>
                         </div>
                     </div>
+                </div>
+            </section>
+            <section>
+                <div class="container pt-4">
+                    <h5 class="mb-3 text-center"><strong>Post on Discussion Panel</strong></h5>
+                    <form method="post" action="{{ route('thread.store', ['course'=>$course,'discussionPanel'=>$course->discussionPanel]) }}">
+                        @csrf
+                        <input type="text" name="select" value="{{ $content->id }}" hidden>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" class="form-control @error('subject') is-invalid @enderror" value="{{ old('subject') ?? '' }}" required>
+
+                            @error('subject')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" type="text" class="mt-2 editor form-control @error('message') is-invalid @enderror" name="message" required>{{ old('message') ?? '' }}</textarea>
+
+                            @error('message')
+                            <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-block btn-blue">
+                                <strong>Post</strong>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </section>
         </div>

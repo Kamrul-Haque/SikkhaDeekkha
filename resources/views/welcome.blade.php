@@ -127,7 +127,7 @@
             <div class="section">
                 <div class="jumbotron jumbotron-intro">
                     <div class="content">
-                        <h4 class="display-4">SikkhaDeekkha</h4>
+                        <h4 class="display-4">Sikkha Deekkha</h4>
                         <h6 class="text-dark"><i>World Class Online Education Platform First Ever In Bangladesh!</i></h6>
                         <hr class="line">
                         <div class="row">
@@ -264,7 +264,7 @@
             <h1 class="text-center text-primary pt-4"><strong>Contact us</strong></h1>
             <div class="container-fluid" style="width: 1450px">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <form id="contact-form" action="#" name="contact-form" method="POST">
                             <div class="row">
                                 <div class="form-group col-md-6">
@@ -288,19 +288,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <div>
-                                        <label for="usertype" class="formtext">You're a(n)?</label>
-                                        <select type="text" id="usertype" name="usertype" class="form-control">
-                                            <option value="" selected disabled>Please Select...</option>
-                                            <option value="Instructor">Instructor</option>
-                                            <option value="Institution Management Authority">Institution Management Authority</option>
-                                            <option value="Student">Student</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-12">
                                     <label for="subject" class="formtext">Subject</label>
                                     <input type="text" id="subject" name="subject" class="form-control">
                                 </div>
@@ -314,7 +301,7 @@
                             <button type="submit" class="btn btn-outline-success">Enquire</button>
                         </form>
                     </div>
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-4 text-center">
                         <div class="pt-5">
                             <iframe class="pt-4 border-0" src="{{ asset('icons/noun_contact_918754.svg') }}" style="filter: invert(35%) grayscale(100%)"></iframe>
                             <br>
@@ -337,24 +324,20 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="d-block float-right text-right">
                             <h2 class="text-light">
                                 <strong>Code Breakers</strong>
                             </h2>
                             <br>
                             <div class="text-light">
-                                <h5><span data-feather="phone" class="text-success"></span> +88 01521479924</h5>
-                                <h5><span data-feather="phone" class="text-success"></span> +88 01784086002</h5>
-                                <h5><span data-feather="phone" class="text-success"></span> +88 01786543641</h5>
-                                <h5><span data-feather="phone" class="text-success"></span> +88 01302570934</h5>
+                                <h5><span data-feather="phone" class="text-success"></span> +88 01521-479924</h5>
+                                <h5><span data-feather="phone" class="text-success"></span> +88 01521-214410</h5>
                             </div>
                             <br>
                             <div class="text-light">
+                                <h5><span data-feather="mail" class="text-info"></span> showaive35-263@diu.edu.bd</h5>
                                 <h5><span data-feather="mail" class="text-info"></span> kamrul35-255@diu.edu.bd</h5>
-                                <h5><span data-feather="mail" class="text-info"></span> eshan35-268@diu.edu.bd</h5>
-                                <h5><span data-feather="mail" class="text-info"></span> razwan35-2233@diu.edu.bd</h5>
-                                <h5><span data-feather="mail" class="text-info"></span> masud35-254@diu.edu.bd</h5>
                             </div>
                             <br>
                             <div>

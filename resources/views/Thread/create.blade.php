@@ -17,7 +17,7 @@
                             @foreach($course->modules as $module)
                                 <option value="" disabled>{{ $module->module_name }}</option>
                                 @foreach($module->contents as $content)
-                                    <option value="{{ $content->id }}" class="">&nbsp;&nbsp;{{ $content->title }}</option>
+                                    <option value="{{ $content->id }}">&nbsp;&nbsp;{{ $content->title }}</option>
                                 @endforeach
                             @endforeach
                         </select>
