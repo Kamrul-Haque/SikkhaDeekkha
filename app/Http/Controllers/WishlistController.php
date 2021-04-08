@@ -32,7 +32,6 @@ class WishlistController extends Controller
 
     public function remove(Wishlist $wishlist)
     {
-        $wishlist = Wishlist::find($wishlist->id);
         $wishlist->delete();
 
         return back()->with('toast_error', 'Removed from Wishlist!');

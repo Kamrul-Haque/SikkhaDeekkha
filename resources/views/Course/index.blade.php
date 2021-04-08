@@ -99,7 +99,7 @@
                                 @if($course->institution)
                                 <h5>This Course is Certified by <strong>{{ $course->institution->name }}</strong></h5>
                                 <div>
-                                    <img src="{{ $course->institution->logo_path }}" class="logo" alt="">
+                                    <img src="{{ $course->institution->logo_path ?? asset('images/No_Image_Available.jpg') }}" class="logo" alt="{{ $course->institution->name }}">
                                 </div>
                                 @endif
                             </div>
@@ -111,37 +111,30 @@
                             <p><span data-feather="calendar" class="pr-1" title="starts from"></span> {{ $course->date_starting }}</p>
                             <p><span data-feather="tag" class="pr-1 @if(!($course->fee)) disabled @endif" title="fee"></span> {{ ($course->fee) ? $course->fee." ".$course->currency : "Free"}}</p>
                             <p><span data-feather="award" class="pr-1 @if(!($course->has_certificate)) disabled @endif" title="certificate"></span> {{ ($course->has_certificate) ? "Offers Certificate" : "No Certificate"}}</p>
-                            @guest
-                                <form action="{{ route('student.course.enroll', $course) }}" method="post">
-                                    @csrf
-                                    <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
-                                </form>
+
+                            @canany(['access','modify'], $course)
+                                <div>
+                                    <a href="{{ route('module.index', $course) }}" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>RESUME</strong></a>
+                                </div>
                             @else
-                                @if($course->hasStudent(Auth::user()->id))
-                                    <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
-                                @elseif(Auth::guard('admin')->check() || Auth::guard('instructor')->check())
-                                    <button type="button" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" disabled><strong>ENROLL</strong></button>
-                                @else
                                 <form action="{{ route('student.course.enroll', $course) }}" method="post">
                                     @csrf
                                     <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
                                 </form>
-                                @endif
-                            @endguest
-                            @if(Auth::guard('student')->check() && !($course->hasStudent(Auth::user()->id)))
-                                @if(!($course->wishlists()->where('student_id', Auth::user()->id)->first()))
+                            @endcanany
+
+                            @can('wishlist', $course)
                                 <form action="{{ route('student.wishlist', $course) }}" method="post">
                                     @csrf
                                     <button type="submit" class="text-danger wishlist-button"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</button>
                                 </form>
-                                @else
+                            @elsecan('removeWishlist', $course)
                                 <form action="{{ route('student.wishlist.remove', $course->wishlists()->where('student_id', Auth::user()->id)->first()) }}" method="post">
                                     @method('DELETE')
                                     @csrf
                                     <button type="submit" class="text-danger wishlist-button">remove from wishlist</button>
                                 </form>
-                                @endif
-                            @endif
+                            @endcan
                         </div>
                     </div>
                 </div>
@@ -154,12 +147,6 @@
         <div class="col-sm-4 d-flex justify-content-center">
             {{ $courses->links() }}
         </div>
-        @component('components.modal')
-            @slot('id') unEnroll @endslot
-            @slot('title') Un-Enrollment Confirmation @endslot
-            @slot('type') danger @endslot
-            @slot('action') action="{{ route('student.course.unenroll', $course) }}" @endslot
-            Do you really want to Un-Enroll the Course? Your progress will be deleted!
-        @endcomponent
+
     </div>
 @endsection

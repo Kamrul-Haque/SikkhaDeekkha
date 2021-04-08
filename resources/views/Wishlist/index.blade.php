@@ -108,35 +108,17 @@
                                 <p><span data-feather="calendar" class="pr-1" title="starts from"></span> {{ $wishlist->course->date_starting }}</p>
                                 <p><span data-feather="tag" class="pr-1 @if(!($wishlist->course->fee)) disabled @endif" title="fee"></span> {{ ($wishlist->course->fee) ? $wishlist->course->fee." ".$wishlist->course->currency : "Free"}}</p>
                                 <p><span data-feather="award" class="pr-1 @if(!($wishlist->course->has_certificate)) disabled @endif" title="certificate"></span> {{ ($wishlist->course->has_certificate) ? "Offers Certificate" : "No Certificate"}}</p>
-                                @guest
-                                    <form action="{{ route('student.course.enroll', $wishlist->course) }}" method="post">
-                                        @csrf
-                                        <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
-                                    </form>
-                                @else
-                                    @if($wishlist->course->hasStudent(Auth::user()->id))
-                                        <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
-                                    @elseif(Auth::guard('admin')->check() || Auth::guard('instructor')->check())
-                                        <button type="button" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" disabled><strong>ENROLL</strong></button>
-                                    @else
-                                        <form action="{{ route('student.course.enroll', $wishlist->course) }}" method="post">
-                                            @csrf
-                                            <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
-                                        </form>
-                                    @endif
-                                @endguest
-                                @if(Auth::guard('student')->check() && !($wishlist->where('student_id', Auth::user()->id)->first()))
-                                    <form action="{{ route('student.wishlist', $wishlist->course) }}" method="post">
-                                        @csrf
-                                        <button type="submit" class="text-danger wishlist-button"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('student.wishlist.remove', $wishlist->where('student_id', Auth::user()->id)->first()) }}" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit" class="text-danger wishlist-button">remove from wishlist</button>
-                                    </form>
-                                @endif
+
+                                <form action="{{ route('student.course.enroll', $wishlist->course) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
+                                </form>
+
+                                <form action="{{ route('student.wishlist.remove', $wishlist->where('student_id', auth()->user()->id)->first()) }}" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="text-danger wishlist-button">remove from wishlist</button>
+                                </form>
                             </div>
                         </div>
                     </div>
