@@ -4,27 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Answer;
 use App\Assessment;
+use App\Course;
 use App\Module;
 use App\Question;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
-    public function create(Module $module,Assessment $assessment)
+    public function create(Course $course, Module $module, Assessment $assessment)
     {
-        if (Auth::guard('admin')->check() || $module->course->hasInstructor(Auth::user()->id))
-        {
-            return view('Question.create', compact('module','assessment'));
-        }
-        else
-        {
-            return back()->with('toast_warning','Not authorized to access the page');
-        }
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
+        return view('Question.create', compact('module','assessment','course'));
     }
 
-    public function store(Module $module,Assessment $assessment,Request $request)
+    public function store(Course $course, Module $module, Assessment $assessment, Request $request)
     {
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
         $request->validate([
             'question'=>'required|string|min:5',
             'type'=>'required|string',
@@ -69,28 +66,20 @@ class QuestionController extends Controller
             $answer->save();
         }
 
-        return redirect()->route('assessment.show', ['module'=>$module,'assessment'=>$assessment])->with('toast_success','Created Successfully!');
+        return redirect()->route('assessment.show', ['course'=>$course,'module'=>$module,'assessment'=>$assessment])->with('toast_success','Created Successfully!');
     }
 
-    public function show(Module $module,Assessment $assessment,Question $question)
+    public function edit(Course $course, Module $module, Assessment $assessment, Question $question)
     {
-        //
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
+        return view('Question.edit', compact('course','module','assessment','question'));
     }
 
-    public function edit(Module $module,Assessment $assessment,Question $question)
+    public function update(Course $course, Module $module, Assessment $assessment, Question $question, Request $request)
     {
-        if (Auth::guard('admin')->check() || $module->course->hasInstructor(Auth::user()->id))
-        {
-            return view('Question.edit', compact('module','assessment','question'));
-        }
-        else
-        {
-            return back()->with('toast_warning','Not authorized to access the page');
-        }
-    }
+        $this->authorizeForUser(auth()->user(),'modify', $course);
 
-    public function update(Module $module,Assessment $assessment,Request $request, Question $question)
-    {
         $request->validate([
             'question'=>'required|string|min:5',
             'type'=>'required|string',
@@ -103,7 +92,6 @@ class QuestionController extends Controller
             ]
         );
 
-        $question = Question::find($question->id);
         $question->assessment_id = $assessment->id;
         $question->question = $request->question;
         $question->type = $request->type;
@@ -139,14 +127,13 @@ class QuestionController extends Controller
         }
         $question->save();
 
-        return redirect()->route('assessment.show', ['module'=>$module,'assessment'=>$assessment])->with('toast_info','Successfully Updated');
+        return redirect()->route('assessment.show', ['course'=>$course,'module'=>$module,'assessment'=>$assessment])->with('toast_info','Successfully Updated');
     }
 
-    public function destroy(Module $module,Assessment $assessment,Question $question)
+    public function destroy(Course $course, Module $module, Assessment $assessment, Question $question)
     {
-        $question = Question::find($question->id);
         $question->delete();
 
-        return redirect()->route('assessment.show', ['module'=>$module,'assessment'=>$assessment])->with('toast_error','Record Deleted');
+        return redirect()->route('assessment.show', ['course'=>$course,'module'=>$module,'assessment'=>$assessment])->with('toast_error','Record Deleted');
     }
 }

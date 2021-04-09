@@ -118,7 +118,7 @@
                     <br>
                     @if($question->needs_review)
                     <hr>
-                    <form action="{{ route('response.grade',['module'=>$module,'assessment'=>$assessment,'question'=>$question,'response'=>$response]) }}" method="post">
+                    <form action="{{ route('response.grade',['course'=>$course,'module'=>$module,'assessment'=>$assessment,'question'=>$question,'response'=>$response]) }}" method="post">
                         @csrf
                         <div class="form-group row pl-2">
                             <label for="marks" class="col-form-label col-md-1 text-right">Marks</label>
@@ -138,12 +138,15 @@
         @empty
             <div class="display-4 text-center">No Responses Yet</div>
         @endforelse
-        <div class="row">
-            <div class="col-md-4">
-                <a href="{{ route('assessment.show', ['module'=>$module,'assessment'=>$assessment]) }}" class="btn btn-light ml-4">Back</a>
+        <div class="d-flex justify-content-between">
+            <div class="flex-column">
+                <a href="{{ route('assessment.show', ['course'=>$course,'module'=>$module,'assessment'=>$assessment]) }}" class="btn btn-light">Back</a>
             </div>
-            <div class="col-md-4 d-flex justify-content-center">
+            <div class="flex-column justify-content-center">
                 <span>{{ $responses->links() }}</span>
+            </div>
+            <div class="flex-column">
+
             </div>
         </div>
     </div>

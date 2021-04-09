@@ -112,16 +112,23 @@
                             <p><span data-feather="tag" class="pr-1 @if(!($course->fee)) disabled @endif" title="fee"></span> {{ ($course->fee) ? $course->fee." ".$course->currency : "Free"}}</p>
                             <p><span data-feather="award" class="pr-1 @if(!($course->has_certificate)) disabled @endif" title="certificate"></span> {{ ($course->has_certificate) ? "Offers Certificate" : "No Certificate"}}</p>
 
-                            @canany(['access','modify'], $course)
-                                <div>
-                                    <a href="{{ route('module.index', $course) }}" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>RESUME</strong></a>
-                                </div>
-                            @else
+                            @guest
                                 <form action="{{ route('student.course.enroll', $course) }}" method="post">
                                     @csrf
                                     <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
                                 </form>
-                            @endcanany
+                            @else
+                                @can('enroll', $course)
+                                    <form action="{{ route('student.course.enroll', $course) }}" method="post">
+                                        @csrf
+                                        <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
+                                    </form>
+                                @elsecan('access', $course)
+                                    <a href="{{ route('module.index', $course) }}" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>RESUME</strong></a>
+                                @else
+                                    <button type="button" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" disabled><strong>ENROLL</strong></button>
+                                @endif
+                            @endguest
 
                             @can('wishlist', $course)
                                 <form action="{{ route('student.wishlist', $course) }}" method="post">
@@ -129,7 +136,7 @@
                                     <button type="submit" class="text-danger wishlist-button"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</button>
                                 </form>
                             @elsecan('removeWishlist', $course)
-                                <form action="{{ route('student.wishlist.remove', $course->wishlists()->where('student_id', Auth::user()->id)->first()) }}" method="post">
+                                <form action="{{ route('student.wishlist.remove', $course->wishlists()->where('student_id', auth()->user()->id)->first()) }}" method="post">
                                     @method('DELETE')
                                     @csrf
                                     <button type="submit" class="text-danger wishlist-button">remove from wishlist</button>
@@ -147,6 +154,5 @@
         <div class="col-sm-4 d-flex justify-content-center">
             {{ $courses->links() }}
         </div>
-
     </div>
 @endsection

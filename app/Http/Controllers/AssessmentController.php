@@ -11,26 +11,17 @@ use Illuminate\Support\Facades\File;
 
 class AssessmentController extends Controller
 {
-    public function index(Module $module)
+    public function create(Course $course, Module $module)
     {
-        //
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
+        return view('Assessment.create', compact('module','course'));
     }
 
-    public function create(Module $module)
+    public function store(Request $request, Course $course, Module $module)
     {
-        if (Auth::guard('admin')->check() || $module->course->hasInstructor(Auth::user()->id))
-        {
-            $module = Module::find($module->id);
-            return view('Assessment.create', compact('module'));
-        }
-        else
-        {
-            return back()->with('toast_warning','Not authorized to access the page');
-        }
-    }
+        $this->authorizeForUser(auth()->user(),'modify', $course);
 
-    public function store(Request $request, Module $module)
-    {
         $request->validate([
             'title'=>'required|string|min:5',
             'deadline'=>'required|after:today',
@@ -47,59 +38,39 @@ class AssessmentController extends Controller
 
         if ($request->hasFile('attachment'))
         {
-            $path = $request->file('attachment')->storeAs($module->course->title, $request->file('attachment')->getClientOriginalName());
+            $path = $request->file('attachment')->storeAs($course->title, $request->file('attachment')->getClientOriginalName());
             $assessment->attachment_path = 'storage/'.$path;
         }
         $assessment->save();
 
-        return redirect()->route('module.index', $module->course)->with('toast_success','Assessment Created Successfully!');
+        return redirect()->route('module.index', $course)->with('toast_success','Assessment Created Successfully!');
     }
 
 
-    public function show(Module $module, Assessment $assessment)
+    public function show(Course $course, Module $module, Assessment $assessment)
     {
-        if (($module->course->hasStudent(Auth::user()->id)) || Auth::guard('admin')->check() || $module->course->hasInstructor(Auth::user()->id))
-        {
-            $assessment = Assessment::find($assessment->id);
-            $course = Course::find($module->course->id);
-            return view('Assessment.show', compact('assessment', 'module','course'));
-        }
-        else
-        {
-            if (Auth::guard('student')->check())
-            {
-                return redirect()->route('course.show', $module->course)->with('toast_warning','You need to enroll first');
-            }
-            else
-            {
-                return back()->with('toast_warning','Not authorized to access the page');
-            }
-        }
+        $this->authorizeForUser(auth()->user(),'access', $course);
+
+        return view('Assessment.show', compact('assessment', 'module','course'));
     }
 
-    public function edit(Module $module, Assessment $assessment)
+    public function edit(Course $course, Module $module, Assessment $assessment)
     {
-        if (Auth::guard('admin')->check() || $module->course->hasInstructor(Auth::user()->id))
-        {
-            $module = Module::find($module->id);
-            $assessment = Assessment::find($assessment->id);
-            return view('Assessment.edit', compact('module','assessment'));
-        }
-        else
-        {
-            return back()->with('toast_warning','Not authorized to access the page');
-        }
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
+        return view('Assessment.edit', compact('module','assessment','course'));
     }
 
-    public function update(Request $request, Module $module, Assessment $assessment)
+    public function update(Request $request, Course $course, Module $module, Assessment $assessment)
     {
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
         $request->validate([
             'title'=>'required|string|min:5',
             'deadline'=>'nullable|after:today',
             'attachment'=>'nullable|file',
         ]);
 
-        $assessment = Assessment::find($assessment->id);
         $assessment->module_id = $module->id;
         $assessment->title = $request->title;
         $assessment->description = $request->description;
@@ -113,17 +84,18 @@ class AssessmentController extends Controller
             {
                 File::delete($oldFile);
             }
-            $path = $request->file('attachment')->storeAs($module->course->title, $request->file('attachment')->getClientOriginalName());
+            $path = $request->file('attachment')->storeAs($course->title, $request->file('attachment')->getClientOriginalName());
             $assessment->attachment_path = 'storage/'.$path;
         }
         $assessment->save();
 
-        return redirect()->route('module.index', $module->course)->with('toast_info','Assessment Updated');
+        return redirect()->route('module.index', $course)->with('toast_info','Assessment Updated');
     }
 
-    public function destroy(Module $module, Assessment $assessment)
+    public function destroy(Course $course, Module $module, Assessment $assessment)
     {
-        $assessment = Assessment::find($assessment->id);
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
         $oldFile = $assessment->getOriginal('attachment_path');
 
         if (File::exists($oldFile))
@@ -133,15 +105,16 @@ class AssessmentController extends Controller
 
         $assessment->delete();
 
-        return redirect()->route('module.index', $module->course)->with('toast_error','Assessment Deleted');
+        return redirect()->route('module.index', $course)->with('toast_error','Assessment Deleted');
     }
 
-    public function publish(Module $module, Assessment $assessment)
+    public function publish(Course $course, Module $module, Assessment $assessment)
     {
-        $assessment = Assessment::find($assessment->id);
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
         $assessment->is_published = true;
         $assessment->save();
 
-        return redirect()->route('module.index', $module->course)->with('toast_info','Assessment Published');
+        return redirect()->route('module.index', $course)->with('toast_info','Assessment Published');
     }
 }

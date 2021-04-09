@@ -18,7 +18,7 @@
                 <h4>Edit Question</h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('question.update', ['module'=>$module,'assessment'=>$assessment,'question'=>$question]) }}" method="post">
+                <form action="{{ route('question.update', ['course'=>$course,'module'=>$module,'assessment'=>$assessment,'question'=>$question]) }}" method="post">
                     @method('PUT')
                     @csrf
                     <div class="form-group">
@@ -128,7 +128,7 @@
                             <button type="submit" class="btn btn-success">
                                 Update
                             </button>
-                            <a href="{{ route('assessment.show', ['module'=>$module,'assessment'=>$assessment]) }}" class="btn btn-warning">Cancel</a>
+                            <a href="{{ route('assessment.show', ['course'=>$course,'module'=>$module,'assessment'=>$assessment]) }}" class="btn btn-warning">Cancel</a>
                         </div>
                     </div>
                 </form>

@@ -47,6 +47,11 @@ class Course extends Model
             return false;
     }
 
+    public function rated()
+    {
+        return $this->ratings()->where('student_id',auth()->user()->id)->first();
+    }
+
     public function subject()
     {
         return $this->belongsTo(Subject::class);

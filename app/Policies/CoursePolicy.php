@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Course;
+use App\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CoursePolicy
@@ -27,10 +28,14 @@ class CoursePolicy
         else return false;
     }
 
-    public function assignInstitution()
+    public function assignInstitution($user, Course $course)
     {
         if (auth()->guard('admin')->check())
-            return true;
+        {
+            if (!$course->institution->first())
+                return true;
+            else return $this->deny('Institution is already assigned.');
+        }
     }
 
     public function leaveCourse($user, Course $course)
@@ -50,8 +55,17 @@ class CoursePolicy
 
     public function access($user, Course $course)
     {
-        if(auth()->guard('student')->check())
-            return $course->students->contains($user);
+        if (auth()->guard('admin')->check())
+            return true;
+        else if(auth()->guard('instructor')->check())
+            return $course->instructors->contains($user);
+        else if(auth()->guard('student')->check())
+        {
+            if ($course->students->contains($user))
+                return true;
+            else return $this->deny('You need to Enroll first!', redirect()->route('course.show', $course));
+        }
+        else return false;
     }
 
     public function wishlist($user, Course $course)
@@ -70,5 +84,11 @@ class CoursePolicy
             if ($course->wishlists()->where('student_id', $user->id)->first())
                 return true;
         }
+    }
+
+    public function rate($user, Course $course)
+    {
+        if (auth()->guard('student')->check())
+            return $course->students->contains($user);
     }
 }

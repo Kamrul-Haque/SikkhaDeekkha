@@ -11,26 +11,17 @@ use Illuminate\Support\Facades\File;
 
 class ContentController extends Controller
 {
-    public function index(Module $module)
+    public function create(Course $course, Module $module)
     {
-        //
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
+        return view('Content.create', compact('module','course'));
     }
 
-    public function create(Module $module)
+    public function store(Request $request, Course $course, Module $module)
     {
-        if (Auth::guard('admin')->check() || $module->course->hasInstructor(Auth::user()->id))
-        {
-            $module = Module::find($module->id);
-            return view('Content.create', compact('module'));
-        }
-        else
-        {
-            return back()->with('toast_warning','Not authorized to access the page');
-        }
-    }
+        $this->authorizeForUser(auth()->user(),'modify', $course);
 
-    public function store(Request $request, Module $module)
-    {
         $request->validate([
            'title'=>'required|string|min:5',
            'type'=>'required|string',
@@ -51,53 +42,33 @@ class ContentController extends Controller
 
         if ($request->hasFile('file'))
         {
-            $path = $request->file('file')->storeAs($module->course->title, $request->file('file')->getClientOriginalName());
+            $path = $request->file('file')->storeAs($course->title, $request->file('file')->getClientOriginalName());
             $content->file_path = 'storage/'.$path;
         }
         $content->save();
 
-        return redirect()->route('module.index', $module->course)->with('toast_success','Content Created Successfully!');
+        return redirect()->route('module.index', $course)->with('toast_success','Content Created Successfully!');
     }
 
 
-    public function show(Module $module, Content $content)
+    public function show(Course $course, Module $module, Content $content)
     {
-        if (($module->course->hasStudent(Auth::user()->id)) || Auth::guard('admin')->check() || $module->course->hasInstructor(Auth::user()->id))
-        {
-            $content = Content::find($content->id);
-            $course = Course::find($module->course->id);
+        $this->authorizeForUser(auth()->user(),'access', $course);
 
-            return view('Content.show', compact('content','module','course'));
-        }
-        else
-        {
-            if (Auth::guard('student')->check())
-            {
-                return redirect()->route('course.show', $module->course)->with('toast_warning','You need to enroll first');
-            }
-            else
-            {
-                return back()->with('toast_warning','Not authorized to access the page');
-            }
-        }
+        return view('Content.show', compact('content','module','course'));
     }
 
-    public function edit(Module $module, Content $content)
+    public function edit(Course $course, Module $module, Content $content)
     {
-        if (Auth::guard('admin')->check() || $module->course->hasInstructor(Auth::user()->id))
-        {
-            $module = Module::find($module->id);
-            $content = Content::find($content->id);
-            return view('Content.edit', compact('module','content'));
-        }
-        else
-        {
-            return back()->with('toast_warning','Not authorized to access the page');
-        }
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
+        return view('Content.edit', compact('module','content','course'));
     }
 
-    public function update(Request $request, Module $module, Content $content)
+    public function update(Request $request, Course $course, Module $module, Content $content)
     {
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
         $request->validate([
             'title'=>'required|string|min:5',
             'type'=>'required|string',
@@ -107,7 +78,6 @@ class ContentController extends Controller
             'file'=>'nullable|required_if:type,File|file',
         ]);
 
-        $content = Content::find($content->id);
         $content->module_id = $module->id;
         $content->title = $request->title;
         $content->type = $request->type;
@@ -123,17 +93,18 @@ class ContentController extends Controller
             {
                 File::delete($oldFile);
             }
-            $path = $request->file('file')->storeAs($module->course->title, $request->file('file')->getClientOriginalName());
+            $path = $request->file('file')->storeAs($course->title, $request->file('file')->getClientOriginalName());
             $content->file_path = 'storage/'.$path;
         }
         $content->save();
 
-        return redirect()->route('module.index', $module->course)->with('toast_info','Content Updated');
+        return redirect()->route('module.index', $course)->with('toast_info','Content Updated');
     }
 
-    public function destroy(Module $module, Content $content)
+    public function destroy(Course $course, Module $module, Content $content)
     {
-        $content = Content::find($content->id);
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
         $oldFile = $content->getOriginal('file_path');
 
         if (File::exists($oldFile))
@@ -143,6 +114,6 @@ class ContentController extends Controller
 
         $content->delete();
 
-        return redirect()->route('module.index', $module->course)->with('toast_error','Content Deleted');
+        return redirect()->route('module.index', $course)->with('toast_error','Content Deleted');
     }
 }

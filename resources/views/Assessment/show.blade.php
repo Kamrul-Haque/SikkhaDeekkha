@@ -106,7 +106,7 @@
                 <br>
                 @foreach($assessment->questions as $question)
                     @if(Auth::guard('student')->check())
-                    <form action="{{ route('response.store',['module'=>$module,'assessment'=>$assessment,'question'=>$question]) }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('response.store',['course'=>$course,'module'=>$module,'assessment'=>$assessment,'question'=>$question]) }}" method="post" enctype="multipart/form-data">
                     @endif
                         @csrf
                         <div class="form-group">
@@ -178,22 +178,22 @@
                             @endif
                         </div>
                         @if(Auth::guard('student')->check())
-                            @if($question->responses()->where('student_id',Auth::user()->id)->first())
-                            <span class="font-weight-bold">Marks Obtained: {{ $question->responses()->where('student_id',Auth::user()->id)->first()->obtained_marks ?? 'Pending Review' }}</span>
+                            @if($question->responses()->where('student_id',auth()->user()->id)->first())
+                            <span class="font-weight-bold">Marks Obtained: {{ $question->responses()->where('student_id',auth()->user()->id)->first()->obtained_marks ?? 'Pending Review' }}</span>
                             @else
                             <button type="submit" class="btn btn-primary btn-sm">Submit</button>
                             @endif
                         @else
                             <div class="d-flex">
                                 @if(!($assessment->is_published))
-                                <a href="{{ route('question.edit',['module'=>$module,'assessment'=>$assessment,'question'=>$question]) }}" class="btn btn-sm btn-primary"><span data-feather="edit" class="feather-content"></span></a>
-                                <form action="{{ route('question.destroy',['module'=>$module,'assessment'=>$assessment,'question'=>$question]) }}" method="post">
+                                <a href="{{ route('question.edit',['course'=>$course,'module'=>$module,'assessment'=>$assessment,'question'=>$question]) }}" class="btn btn-sm btn-primary"><span data-feather="edit" class="feather-content"></span></a>
+                                <form action="{{ route('question.destroy',['course'=>$course,'module'=>$module,'assessment'=>$assessment,'question'=>$question]) }}" method="post">
                                     @method('DELETE')
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-danger ml-1"><span data-feather="trash-2" class="feather-content"></span></button>
                                 </form>
                                 @else
-                                <a href="{{ route('response.index',['module'=>$module,'assessment'=>$assessment,'question'=>$question]) }}" class="btn btn-sm btn-success ml-1"><span data-feather="eye" class="feather-content"></span> Responses</a>
+                                <a href="{{ route('response.index',['course'=>$course,'module'=>$module,'assessment'=>$assessment,'question'=>$question]) }}" class="btn btn-sm btn-success ml-1"><span data-feather="eye" class="feather-content"></span> Responses</a>
                                 @endif
                             </div>
                         @endif
@@ -205,14 +205,14 @@
                 @if(!(Auth::guard('student')->check()))
                     @if(!($assessment->is_published))
                     <br>
-                    <a href="{{ route('question.create',['module'=>$module,'assessment'=>$assessment]) }}" class="btn btn-success">Create Question</a>
+                    <a href="{{ route('question.create',['course'=>$course,'module'=>$module,'assessment'=>$assessment]) }}" class="btn btn-success">Create Question</a>
                     @endif
                 @endif
                 <hr>
                 <div class="d-flex">
                     <a href="{{ route('module.index', $module->course) }}" class="btn btn-light">Back</a>
-                    @if(!($assessment->is_published) && !(Auth::guard('student')->check()))
-                    <form action="{{ route('assessment.publish', ['module'=>$module,'assessment'=>$assessment]) }}" method="post">
+                    @if(!($assessment->is_published) && !(auth()->guard('student')->check()))
+                    <form action="{{ route('assessment.publish', ['course'=>$course,'module'=>$module,'assessment'=>$assessment]) }}" method="post">
                         @csrf
                         <button class="btn btn-primary ml-1">Publish</button>
                     </form>

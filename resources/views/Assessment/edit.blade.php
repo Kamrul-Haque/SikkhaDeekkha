@@ -19,7 +19,7 @@
             </div>
 
             <div class="card-body">
-                <form method="POST" action="{{ route('assessment.update', ['module'=>$module,'assessment'=>$assessment]) }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('assessment.update', ['course'=>$course,'module'=>$module,'assessment'=>$assessment]) }}" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
                     <div class="pl-4 pr-4 pt-1">
@@ -86,7 +86,7 @@
                                 <button type="submit" class="btn btn-success">
                                     Update
                                 </button>
-                                <a href="{{ route('module.index', $module->course) }}" class="btn btn-warning">Cancel</a>
+                                <a href="{{ route('module.index', $course) }}" class="btn btn-warning">Cancel</a>
                             </div>
                         </div>
                     </div>

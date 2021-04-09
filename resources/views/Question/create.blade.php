@@ -18,7 +18,7 @@
                 <h4>Create Question</h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('question.store', ['module'=>$module,'assessment'=>$assessment]) }}" method="post">
+                <form action="{{ route('question.store', ['course'=>$course,'module'=>$module,'assessment'=>$assessment]) }}" method="post">
                     @csrf
                     <div class="form-group">
                         <label for="question">Question</label>
@@ -109,7 +109,7 @@
                             <button type="submit" class="btn btn-success">
                                 Create
                             </button>
-                            <a href="{{ route('assessment.show', ['module'=>$module,'assessment'=>$assessment]) }}" class="btn btn-warning">Cancel</a>
+                            <a href="{{ route('assessment.show', ['course'=>$course,'module'=>$module,'assessment'=>$assessment]) }}" class="btn btn-warning">Cancel</a>
                         </div>
                     </div>
                 </form>

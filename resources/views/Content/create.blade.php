@@ -19,7 +19,7 @@
             </div>
 
             <div class="card-body">
-                <form method="POST" action="{{ route('content.store', $module) }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('content.store', ['course'=>$course,'module'=>$module]) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="pl-4 pr-4 pt-1">
                         <div class="form-group">
@@ -121,7 +121,7 @@
                                 <button type="submit" class="btn btn-success">
                                     Create
                                 </button>
-                                <a href="{{ route('module.index', $module->course) }}" class="btn btn-warning">Cancel</a>
+                                <a href="{{ route('module.index', $course) }}" class="btn btn-warning">Cancel</a>
                             </div>
                         </div>
                     </div>

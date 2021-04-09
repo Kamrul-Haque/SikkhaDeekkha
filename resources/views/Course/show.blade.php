@@ -79,38 +79,36 @@
                             <h3 class="display-4 course-title">{{ $course->title }}</h3>
                         </div>
                         <div class="col-md-1">
-                            @guest
-                            @else
-                                @if(Auth::guard('admin')->check() || $course->hasInstructor(Auth::user()->id) || $course->hasStudent(Auth::user()->id))
-                                    <div class="dropdown">
-                                        <button class="dropdown-button float-right pt-4" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span data-feather="settings"></span>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
-                                            <a href="{{ route('module.index', $course) }}" class="dropdown-item">Course Modules</a>
-                                            @if(Auth::guard('student')->check())
-                                                @if(!$course->ratings()->where('student_id',Auth::user()->id)->first())
+                            @can('access', $course)
+                                <div class="dropdown">
+                                    <button class="dropdown-button float-right pt-4" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span data-feather="settings"></span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
+                                        <a href="{{ route('module.index', $course) }}" class="dropdown-item">Course Modules</a>
+                                        @can('rate', $course)
+                                            @if(!$course->rated())
                                                 <a href="{{ route('student.course.rating', $course) }}" class="dropdown-item">Rate/Review this Course</a>
-                                                @else
-                                                <a href="{{ route('student.course.rating.edit',['course'=>$course,'rating'=>$course->ratings()->where('student_id',Auth::user()->id)->first()]) }}" class="dropdown-item">Edit Rating/Review</a>
-                                                @endif
+                                            @else
+                                                <a href="{{ route('student.course.rating.edit',['course'=>$course,'rating'=>$course->ratings()->where('student_id',auth()->user()->id)->first()]) }}" class="dropdown-item">Edit Rating/Review</a>
                                             @endif
-                                            @if(Auth::guard('admin')->check() || $course->hasInstructor(Auth::user()->id))
-                                                <a href="{{ route('course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
-                                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#delete">Delete</button>
-                                                <a href="{{ route('course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
-                                                <a href="{{ route('course.image.form', $course) }}" class="dropdown-item">Upload/Change Image</a>
-                                                @if(!Auth::guard('admin')->check())
-                                                <button type="button" class="dropdown-item text-danger" data-toggle="modal" data-target="#leave">Leave Course</button>
-                                                @endif
-                                                @if(Auth::guard('admin')->check() && !($course->institution_id))
-                                                    <a href="{{ route('admin.course.assign.institution', $course) }}" class="dropdown-item">Assign Institution</a>
-                                                @endif
-                                            @endif
-                                        </div>
+                                            <button type="submit" class="dropdown-item text-danger" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
+                                        @endcan
+                                        @can('modify', $course)
+                                            <a href="{{ route('course.edit', $course) }}" class="dropdown-item" title="edit">Edit</a>
+                                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#delete">Delete</button>
+                                            <a href="{{ route('course.add.instructor', $course) }}" class="dropdown-item">Add Instructor</a>
+                                            <a href="{{ route('course.image.form', $course) }}" class="dropdown-item">Upload/Change Image</a>
+                                            @can('leaveCourse', $course)
+                                            <button type="button" class="dropdown-item text-danger" data-toggle="modal" data-target="#leave">Leave Course</button>
+                                            @endcan
+                                            @can('assignInstitution', $course)
+                                                <a href="{{ route('admin.course.assign.institution', $course) }}" class="dropdown-item">Assign Institution</a>
+                                            @endcan
+                                        @endif
                                     </div>
-                                @endif
-                            @endguest
+                                </div>
+                            @endcan
                         </div>
                     </div>
                     <h4>{{ $course->subtitle }}</h4>
@@ -123,32 +121,32 @@
                                     <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
                                 </form>
                             @else
-                                @if($course->hasStudent(Auth::user()->id))
-                                    <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" data-toggle="modal" data-target="#unEnroll"><strong>UN-ENROLL</strong></button>
-                                @elseif(Auth::guard('admin')->check() || Auth::guard('instructor')->check())
-                                    <button type="button" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" disabled><strong>ENROLL</strong></button>
-                                @else
+                                @can('enroll', $course)
                                     <form action="{{ route('student.course.enroll', $course) }}" method="post">
                                         @csrf
                                         <button type="submit" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>ENROLL</strong></button>
                                     </form>
+                                @elsecan('access', $course)
+                                    <a href="{{ route('module.index', $course) }}" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1"><strong>RESUME</strong></a>
+                                @else
+                                    <button type="button" class="btn btn-block btn-primary btn-enroll btn-lg mt-1 mb-1" disabled><strong>ENROLL</strong></button>
                                 @endif
                             @endguest
+
                             <p class="font-weight-bolder"><strong>{{ $course->students()->count() }}</strong> students currently enrolled</p>
-                            @if(Auth::guard('student')->check() && !($course->hasStudent(Auth::user()->id)))
-                                @if(!($course->wishlists()->where('student_id', Auth::user()->id)->first()))
-                                    <form action="{{ route('student.wishlist', $course) }}" method="post">
-                                        @csrf
-                                        <button type="submit" class="text-danger wishlist-button"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</button>
-                                    </form>
-                                @else
-                                    <form action="{{ route('student.wishlist.remove', $course->wishlists()->where('student_id', Auth::user()->id)->first()) }}" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit" class="text-danger wishlist-button">remove from wishlist</button>
-                                    </form>
-                                @endif
-                            @endif
+
+                            @can('wishlist', $course)
+                                <form action="{{ route('student.wishlist', $course) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="text-danger wishlist-button"><span data-feather="bookmark" class="pr-2"></span>wishlist for later</button>
+                                </form>
+                            @elsecan('removeWishlist', $course)
+                                <form action="{{ route('student.wishlist.remove', $course->wishlists()->where('student_id', auth()->user()->id)->first()) }}" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="text-danger wishlist-button">remove from wishlist</button>
+                                </form>
+                            @endcan
                         </div>
                         <div class="col-md-5 pt-5">
 

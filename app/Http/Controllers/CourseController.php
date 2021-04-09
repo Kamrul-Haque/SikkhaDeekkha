@@ -9,7 +9,6 @@ use App\Rating;
 use App\Subject;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class CourseController extends Controller
@@ -201,14 +200,7 @@ class CourseController extends Controller
     {
         $this->authorizeForUser(auth()->user(),'modify', $course);
 
-        if(Auth::guard('admin')->check() || $course->hasInstructor(Auth::user()->id))
-        {
-            return view('Course.add-instructor', compact('course'));
-        }
-        else
-        {
-            return back()->with('toast_warning', 'Not authorized to access the page');
-        }
+        return view('Course.add-instructor', compact('course'));
     }
 
     public function addInstructor(Request $request, Course $course)
@@ -221,10 +213,15 @@ class CourseController extends Controller
 
         $instructor = Instructor::where('UUID', (string)$request->uuid)->get()->first();
 
-        if ($instructor) {
-            $course->instructors()->syncWithoutDetaching($instructor->id);
+        if ($instructor)
+        {
+            if ($instructor->is_verified)
+            {
+                $course->instructors()->syncWithoutDetaching($instructor->id);
 
-            return redirect()->route('course.show',$course)->with('toast_info', 'Instructor Added!');
+                return redirect()->route('course.show',$course)->with('toast_info', 'Instructor Added!');
+            }
+            else return back()->with('toast_warning', 'Instructor you are adding is not verified yet!');
         }
         else
         {
@@ -240,7 +237,7 @@ class CourseController extends Controller
 
         if ($instructors > 1)
         {
-            $course->instructors()->detach(Auth::user()->id);
+            $course->instructors()->detach(auth()->user()->id);
             return redirect()->route('course.index')->with('toast_error','You Left the Course');
         }
         else
@@ -253,12 +250,12 @@ class CourseController extends Controller
     {
         $this->authorizeForUser(auth()->user(),'enroll', $course);
 
-        if ($course->wishlists()->where('student_id',Auth::user()->id)->first())
+        if ($course->wishlists()->where('student_id',auth()->user()->id)->first())
         {
-            $course->wishlists()->where('student_id',Auth::user()->id)->first()->delete();
+            $course->wishlists()->where('student_id',auth()->user()->id)->first()->delete();
         }
 
-        $course->students()->syncWithoutDetaching(Auth::user()->id);
+        $course->students()->syncWithoutDetaching(auth()->user()->id);
 
         return redirect()->route('module.index', $course)->with('toast_success', 'Enrollment Successful!');
     }
@@ -267,7 +264,7 @@ class CourseController extends Controller
     {
         $this->authorizeForUser(auth()->user(),'access', $course);
 
-        $course->students()->detach(Auth::user()->id);
+        $course->students()->detach(auth()->user()->id);
 
         return redirect()->route('course.index', $course)->with('toast_info', 'Un-Enrolled from the Course');
     }
@@ -306,7 +303,7 @@ class CourseController extends Controller
 
     public function assignInstitutionForm(Course $course)
     {
-        $this->authorize('assignInstitution');
+        $this->authorizeForUser(auth()->user(),'assignInstitution', $course);
 
         $institutions = Institution::all();
         return view('Course.assign-institution', compact('institutions','course'));
@@ -314,7 +311,7 @@ class CourseController extends Controller
 
     public function assignInstitution(Request $request, Course $course)
     {
-        $this->authorize('assignInstitution');
+        $this->authorizeForUser(auth()->user(),'assignInstitution', $course);
 
         $course->institution_id = $request->institution;
         $course->save();
@@ -324,14 +321,14 @@ class CourseController extends Controller
 
     public function ratingForm(Course $course)
     {
-        $this->authorizeForUser(auth()->user(),'access', $course);
+        $this->authorizeForUser(auth()->user(),'rate', $course);
 
         return view('Course.rating',compact('course'));
     }
 
     public function rating(Request $request, Course $course)
     {
-        $this->authorizeForUser(auth()->user(),'access', $course);
+        $this->authorizeForUser(auth()->user(),'rate', $course);
 
         $request->validate([
            'rating'=>'required',
@@ -340,7 +337,7 @@ class CourseController extends Controller
 
         $rating = new Rating;
         $rating->course_id = $course->id;
-        $rating->student_id = Auth::user()->id;
+        $rating->student_id = auth()->user()->id;
         $rating->rating = $request->rating;
         $rating->review = $request->review;
         $rating->date = Carbon::today()->toDateString();
@@ -351,15 +348,14 @@ class CourseController extends Controller
 
     public function editRatingForm(Course $course, Rating $rating)
     {
-        $this->authorizeForUser(auth()->user(),'access', $course);
+        $this->authorizeForUser(auth()->user(),'rate', $course);
 
-        $rating = Rating::find($rating->id);
         return view('Course.edit-rating',compact('course','rating'));
     }
 
     public function editRating(Request $request, Course $course, Rating $rating)
     {
-        $this->authorizeForUser(auth()->user(),'access', $course);
+        $this->authorizeForUser(auth()->user(),'rate', $course);
 
         $request->validate([
             'rating'=>'required',

@@ -30,12 +30,12 @@ Route::group(['middleware'=>['auth:admin,instructor']],function (){
     Route::get('/course/{course}/image-upload','CourseController@imageUploadForm')->name('course.image.form');
     Route::put('/course/{course}/image-upload','CourseController@imageUpload')->name('course.image.upload');
     Route::resource('/course/{course}/module','ModuleController')->except(['index']);
-    Route::resource('/course/module/{module}/content','ContentController')->except(['show']);
-    Route::resource('/course/module/{module}/assessment','AssessmentController')->except(['show']);
-    Route::post('/course/module/{module}/assessment/{assessment}','AssessmentController@publish')->name('assessment.publish');
-    Route::resource('/course/module/{module}/assessment/{assessment}/question','QuestionController')->except(['index','show']);
-    Route::resource('/course/module/{module}/assessment/{assessment}/question/{question}/response','ResponseController')->except(['create','store']);
-    Route::post('/course/module/{module}/assessment/{assessment}/question/{question}/response/{response}/grade','ResponseController@grade')->name('response.grade');
+    Route::resource('/course/{course}/module/{module}/content','ContentController')->except(['show']);
+    Route::resource('/course/{course}/module/{module}/assessment','AssessmentController')->except(['show']);
+    Route::post('/course/{course}/module/{module}/assessment/{assessment}','AssessmentController@publish')->name('assessment.publish');
+    Route::resource('/course/{course}/module/{module}/assessment/{assessment}/question','QuestionController')->except(['index','show']);
+    Route::resource('/course/{course}/module/{module}/assessment/{assessment}/question/{question}/response','ResponseController')->except(['create','store']);
+    Route::post('/course/{course}/module/{module}/assessment/{assessment}/question/{question}/response/{response}/grade','ResponseController@grade')->name('response.grade');
     Route::resource('/course/{course}/announcement','AnnouncementController')->except('index','show');
 });
 
@@ -43,9 +43,9 @@ Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
     Route::get('/course','CourseController@index')->name('course.index');
     Route::get('/course/{course}','CourseController@show')->name('course.show');
     Route::get('/course/{course}/module','ModuleController@index')->name('module.index');
-    Route::get('/course/module/{module}/content/{content}','ContentController@show')->name('content.show');
-    Route::get('/course/module/{module}/assessment/{assessment}','AssessmentController@show')->name('assessment.show');
-    Route::post('/course/module/{module}/assessment/{assessment}/question/{question}/response','ResponseController@store')->name('response.store');
+    Route::get('/course/{course}/module/{module}/content/{content}','ContentController@show')->name('content.show');
+    Route::get('/course/{course}/module/{module}/assessment/{assessment}','AssessmentController@show')->name('assessment.show');
+    Route::post('/course/{course}/module/{module}/assessment/{assessment}/question/{question}/response','ResponseController@store')->name('response.store');
     Route::resource('/course/{course}/discussion-panel/{discussionPanel}/thread','ThreadController');
     Route::resource('/course/{course}/discussion-panel/{discussionPanel}/thread/{thread}/reply','ReplyController')->only('store','update','destroy');
     Route::post('/reply/{reply}','ReplyController@markSolution')->name('mark.solution');

@@ -9,20 +9,23 @@ use App\Question;
 use App\Response;
 use App\ResponseAnswer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ResponseController extends Controller
 {
 
-    public function index(Module $module, Assessment $assessment, Question $question)
+    public function index(Course $course, Module $module, Assessment $assessment, Question $question)
     {
-        $responses = Response::where('question_id',$question->id)->paginate(1);
-        $course = Course::find($module->course->id);
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
+        $responses = Response::where('question_id',$question->id)->paginate(10);
+
         return view('Response.index',compact('responses','module','assessment','question','course'));
     }
 
-    public function store(Module $module, Assessment $assessment, Question $question, Request $request)
+    public function store(Course $course, Module $module, Assessment $assessment, Question $question, Request $request)
     {
+        $this->authorizeForUser(auth()->user(),'rate', $course);
+
         $request->validate([
            'answer'=>'sometimes|required|string',
            'options'=>'sometimes|required',
@@ -32,7 +35,7 @@ class ResponseController extends Controller
 
         $response = new Response;
         $response->question_id = $question->id;
-        $response->student_id = Auth::user()->id;
+        $response->student_id = auth()->user()->id;
 
         $responseAnswer = new ResponseAnswer;
         $correct_answers = $question->answers()->where('is_correct',true)->get();
@@ -117,11 +120,13 @@ class ResponseController extends Controller
             }
         }
 
-        return redirect()->route('assessment.show',['module'=>$module,'assessment'=>$assessment])->with('toast_success','Submitted Successfully!');
+        return redirect()->route('assessment.show',['course'=>$course,'module'=>$module,'assessment'=>$assessment])->with('toast_success','Submitted Successfully!');
     }
 
-    public function grade(Module $module, Assessment $assessment, Question $question, Response $response, Request $request)
+    public function grade(Course $course, Module $module, Assessment $assessment, Question $question, Response $response, Request $request)
     {
+        $this->authorizeForUser(auth()->user(),'modify', $course);
+
         $request->validate([
            'marks'=>'required|numeric|between:0,'.$question->marks
         ]);
@@ -130,6 +135,6 @@ class ResponseController extends Controller
         $response->obtained_marks = $request->marks;
         $response->save();
 
-        return redirect()->route('response.index',['module'=>$module,'assessment'=>$assessment,'question'=>$question])->with('toast_success','Graded Successfully!');
+        return redirect()->route('response.index',['course'=>$course,'module'=>$module,'assessment'=>$assessment,'question'=>$question])->with('toast_success','Graded Successfully!');
     }
 }
