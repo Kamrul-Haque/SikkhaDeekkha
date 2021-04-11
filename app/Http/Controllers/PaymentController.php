@@ -2,84 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\Payment;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Course $course)
     {
-        //
+        $payments = Payment::latest()->paginate(10);
+        return view('Payment.index', compact('payments','course'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(Course $course)
     {
-        //
+        return view('Payment.create', compact('course'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Course $course, Request $request)
     {
-        //
+        $request->validate([
+           'acc'=>'required|integer',
+           'trxid'=>'required|string|unique:payment,transaction_id',
+           'amount'=>'required|numeric',
+        ]);
+
+        $payment = new Payment();
+        $payment->course_id = $course->id;
+        $payment->student_id = auth()->user()->id;
+        $payment->account_no = $request->acc;
+        $payment->transaction_id = $request->trxid;
+        $payment->amount = $request->amount;
+        $payment->reference = $request->reference;
+        $payment->save();
+
+        return redirect()->route('student.home')->with('toast_success','Payment saved successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Payment $payment)
+    public function edit(Course $course, Payment $payment)
     {
-        //
+        return view('Payment.edit', compact('course','payment'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Payment $payment)
+    public function update(Request $request, Payment $payment, Course $course)
     {
-        //
+        $request->validate([
+            'acc'=>'required|integer',
+            'trxid'=>'required|string|unique:payment,transaction_id'.$payment->id,
+            'amount'=>'required|numeric',
+        ]);
+
+        $payment->account_no = $request->acc;
+        $payment->transaction_id = $request->trxid;
+        $payment->amount = $request->amount;
+        $payment->reference = $request->reference;
+        $payment->save();
+
+        return redirect()->route('student.home')->with('toast_info','Payment information updated!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Payment $payment)
+    public function destroy(Course $course, Payment $payment)
     {
-        //
-    }
+        $payment->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Payment  $payment
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Payment $payment)
-    {
-        //
+        return redirect()->route('payment.index')->with('toast_error','Payment information deleted!');
     }
 }

@@ -21,6 +21,7 @@ class CreatePaymentsTable extends Migration
             $table->string('transaction_id');
             $table->decimal('amount');
             $table->string('reference')->nullable();
+            $table->boolean('needs_verification')->default(true);
             $table->boolean('is_verified')->default(false);
             $table->timestamps();
 

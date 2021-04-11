@@ -50,6 +50,7 @@ Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
     Route::resource('/course/{course}/discussion-panel/{discussionPanel}/thread/{thread}/reply','ReplyController')->only('store','update','destroy');
     Route::post('/reply/{reply}','ReplyController@markSolution')->name('mark.solution');
     Route::get('/course/{course}/discussion-panel/{discussionPanel}/thread/filter/{content}','ThreadController@filter')->name('thread.filter');
+    Route::resource('/course/{course}/payment','PaymentController')->except('destroy');
 });
 
 Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {
