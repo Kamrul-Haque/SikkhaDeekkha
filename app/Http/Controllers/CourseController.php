@@ -250,14 +250,20 @@ class CourseController extends Controller
     {
         $this->authorizeForUser(auth()->user(),'enroll', $course);
 
-        if ($course->wishlists()->where('student_id',auth()->user()->id)->first())
+        if($course->is_paid)
         {
-            $course->wishlists()->where('student_id',auth()->user()->id)->first()->delete();
+            return route('payment.create', compact('course'));
         }
+        else
+        {
+            if ($course->wishlists()->where('student_id',auth()->user()->id)->first())
+            {
+                $course->wishlists()->where('student_id',auth()->user()->id)->first()->delete();
+            }
+            $course->students()->syncWithoutDetaching(auth()->user()->id);
 
-        $course->students()->syncWithoutDetaching(auth()->user()->id);
-
-        return redirect()->route('module.index', $course)->with('toast_success', 'Enrollment Successful!');
+            return redirect()->route('module.index', $course)->with('toast_success', 'Enrollment Successful!');
+        }
     }
 
     public function unenroll(Course $course)

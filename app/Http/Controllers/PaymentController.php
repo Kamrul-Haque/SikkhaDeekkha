@@ -24,7 +24,7 @@ class PaymentController extends Controller
         $request->validate([
            'acc'=>'required|integer',
            'trxid'=>'required|string|unique:payment,transaction_id',
-           'amount'=>'required|numeric',
+           'amount'=>'required|numeric|gt:0',
         ]);
 
         $payment = new Payment();
@@ -49,7 +49,7 @@ class PaymentController extends Controller
         $request->validate([
             'acc'=>'required|integer',
             'trxid'=>'required|string|unique:payment,transaction_id'.$payment->id,
-            'amount'=>'required|numeric',
+            'amount'=>'required|numeric|gt:0',
         ]);
 
         $payment->account_no = $request->acc;
@@ -66,5 +66,13 @@ class PaymentController extends Controller
         $payment->delete();
 
         return redirect()->route('payment.index')->with('toast_error','Payment information deleted!');
+    }
+
+    public function verify(Course $course, Payment $payment)
+    {
+        $payment->is_verified = true;
+        $payment->save();
+
+        return redirect()->route('payment.index')->with('toast_info','Payment Verified!');
     }
 }

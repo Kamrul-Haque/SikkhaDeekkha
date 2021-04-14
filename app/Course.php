@@ -106,4 +106,14 @@ class Course extends Model
     {
         return $this->hasMany(Announcement::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function recievedPayments()
+    {
+        return $this->hasMany(RecievedPayment::class);
+    }
 }

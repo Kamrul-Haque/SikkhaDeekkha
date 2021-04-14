@@ -8,6 +8,19 @@ class Payment extends Model
 {
     protected $guarded = [];
 
+    public function matched()
+    {
+        $recievedPayments = RecievedPayment::all();
+
+        foreach ($recievedPayments as $recievedPayment)
+        {
+            if($recievedPayment->account_no == $this->account_no)
+                if($recievedPayment->transaction_id == $this->transaction_id)
+                    return true;
+        }
+        return false;
+    }
+
     public function course()
     {
         return $this->belongsTo(Course::class);
