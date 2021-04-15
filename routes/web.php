@@ -37,6 +37,7 @@ Route::group(['middleware'=>['auth:admin,instructor']],function (){
     Route::resource('/course/{course}/module/{module}/assessment/{assessment}/question/{question}/response','ResponseController')->except(['create','store']);
     Route::post('/course/{course}/module/{module}/assessment/{assessment}/question/{question}/response/{response}/grade','ResponseController@grade')->name('response.grade');
     Route::resource('/course/{course}/announcement','AnnouncementController')->except('index','show');
+    Route::resource('/course/{course}/recieved-payments', 'RecievedPaymentController');
 });
 
 Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
@@ -76,6 +77,7 @@ Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], f
     Route::resource('/subject','SubjectController');
     Route::get('/course/{course}/assign-institution/','CourseController@assignInstitutionForm')->name('course.assign.institution');
     Route::post('/course/{course}/assign-institution/','CourseController@assignInstitution')->name('course.institution.store');
+    Route::post('/course/{course}/payment/{payment}/verify','PaymentController@verify')->name('payment.verify');
 });
 
 Route::group(['prefix'=>'/instructor', 'as'=>'instructor.'], function () {

@@ -78,6 +78,11 @@ class Student extends Authenticatable
         return $this->hasMany(Reply::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new StudentResetPasswordNotification($token));

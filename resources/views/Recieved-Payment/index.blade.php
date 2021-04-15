@@ -47,14 +47,10 @@
                                     <td>@if($payment->is_verified) Verified @elseif($payment->needs_verification) Pending Verification @else Failed @endif</td>
                                     <td>
                                         <div class="row justify-content-center">
-                                            <form action="{{ route('admin.payment.verify', ['course'=>$course, 'payment'=>$payment]) }}" method="post">
-                                                @csrf
-                                                <button type="submit" class="btn btn-outline-info btn-sm" title="delete">verify</button>
-                                            </form>
                                             <div class="pl-1">
                                                 <a class="btn btn-primary btn-sm" href="{{ route('payment.edit', ['course'=>$course, 'payment'=>$payment]) }}" title="edit"><span data-feather="edit" style="height: 15px; width: 15px; padding: 0"></span></a>
                                             </div>
-                                            <form class="pl-1" action="{{ route('admin.payment.destroy', ['course'=>$course, 'payment'=>$payment]) }}" method="post">
+                                            <form class="pl-1" action="{{ route('payment.destroy', ['course'=>$course, 'payment'=>$payment]) }}" method="post">
                                                 @method('DELETE')
                                                 @csrf
                                                 <button type="submit" class="btn btn-danger btn-sm" title="delete"><span data-feather="trash-2" style="height: 15px; width: 15px; padding: 0"></span></button>
