@@ -79,7 +79,7 @@
         <div class="p-3">
             <ul class="list-unstyled components mb-5 pt-2">
                 <li>
-                    <a href="#subjectSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Subject</a>
+                    <a href="#subjectSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Subjects</a>
                     <ul class="collapse list-unstyled" id="subjectSubmenu">
                         <li>
                             <a href="{{ route('admin.subject.index') }}" class="child">Index</a>
@@ -90,7 +90,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#institutionSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Institution</a>
+                    <a href="#institutionSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Institutions</a>
                     <ul class="collapse list-unstyled" id="institutionSubmenu">
                         <li>
                             <a href="{{ route('admin.institution.index') }}" class="child">Index</a>
@@ -101,7 +101,7 @@
                     </ul>
                 </li>
                 <li class="active">
-                    <a href="#instructorSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Instructor</a>
+                    <a href="#instructorSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Instructors</a>
                     <ul class="collapse list-unstyled" id="instructorSubmenu">
                         <li>
                             <a href="{{ route('admin.instructor.index') }}" class="child">Index</a>
@@ -112,7 +112,7 @@
                     </ul>
                 </li>
                 <li class="active">
-                    <a href="#courseSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Course</a>
+                    <a href="#courseSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Courses</a>
                     <ul class="collapse list-unstyled" id="courseSubmenu">
                         <li>
                             <a href="{{ route('course.index') }}" class="child">Index</a>
@@ -122,8 +122,16 @@
                         </li>
                     </ul>
                 </li>
+                <li class="active">
+                    <a href="#paymentSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Payments</a>
+                    <ul class="collapse list-unstyled" id="paymentSubmenu">
+                        <li>
+                            <a href="{{ route('admin.payment.index') }}" class="child">Index</a>
+                        </li>
+                    </ul>
+                </li>
                 <li>
-                    <a href="#studentSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Student</a>
+                    <a href="#studentSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar">Students</a>
                     <ul class="collapse list-unstyled" id="studentSubmenu">
                         <li>
                             <a href="{{ route('admin.student.index') }}" class="child">Index</a>
@@ -134,7 +142,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar last text-danger">Admin</a>
+                    <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle sidebar last text-danger">Admins</a>
                     <ul class="collapse list-unstyled" id="adminSubmenu">
                         <li>
                             <a href="{{ route('admin.admin.index') }}" class="child">Index</a>

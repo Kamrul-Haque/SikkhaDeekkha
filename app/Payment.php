@@ -10,7 +10,7 @@ class Payment extends Model
 
     public function matched()
     {
-        $recievedPayments = RecievedPayment::all();
+        $recievedPayments = ReceivedPayment::all();
 
         foreach ($recievedPayments as $recievedPayment)
         {

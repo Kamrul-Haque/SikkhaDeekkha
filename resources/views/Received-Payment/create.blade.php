@@ -20,14 +20,29 @@
     <div class="container py-4">
         <div class="card">
             <div class="card-header bg-primary text-light">
-                <h4>Edit Payment</h4>
+                <h4>Payment</h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('payment.update', ['course'=>$course, 'payment'=>$payment]) }}" method="post">
+                <form action="{{ route('received-payment.store', $course) }}" method="post">
                     @csrf
                     <div class="form-group">
+                        <label for="type">Payment Method</label>
+                        <select name="type" id="type" class="form-control @error('type') is-invalid @enderror" required>
+                            <option value="" selected disabled>Please Select...</option>
+                            <option value="BKash" @if(old('type') == "BKash") selected @endif>BKash</option>
+                            <option value="Nagad" @if(old('type') == "Nagad") selected @endif>Nagad</option>
+                            <option value="Rocket" @if(old('type') == "Rocket") selected @endif>Rocket</option>
+                        </select>
+
+                        @error('type')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
                         <label for="acc">Account No.</label>
-                        <input type="number" id="acc" name="acc" class="form-control @error('acc') is-invalid @enderror" value="{{ old('acc') ?? $payment->account_no }}" required>
+                        <input type="number" id="acc" name="acc" class="form-control @error('acc') is-invalid @enderror" value="{{ old('acc') }}" required>
 
                         @error('acc')
                         <span class="invalid-feedback" role="alert">
@@ -37,7 +52,7 @@
                     </div>
                     <div class="form-group">
                         <label for="trxid">Transaction ID</label>
-                        <input type="text" id="trxid" name="trxid" class="form-control @error('trxid') is-invalid @enderror" value="{{ old('trxid') ?? $payment->transaction_id }}" required>
+                        <input type="text" id="trxid" name="trxid" class="form-control @error('trxid') is-invalid @enderror" value="{{ old('trxid') }}" required>
 
                         @error('trxid')
                         <span class="invalid-feedback" role="alert">
@@ -47,7 +62,7 @@
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount</label>
-                        <input type="number" id="amount" name="amount" class="form-control @error('amount') is-invalid @enderror" value="{{ old('amount') ?? $payment->amount }}" required>
+                        <input type="number" id="amount" name="amount" class="form-control @error('amount') is-invalid @enderror" value="{{ old('amount') }}" required>
 
                         @error('amount')
                         <span class="invalid-feedback" role="alert">
@@ -57,7 +72,7 @@
                     </div>
                     <div class="form-group">
                         <label for="reference">Reference</label>
-                        <input type="text" id="reference" name="reference" class="form-control @error('reference') is-invalid @enderror" value="{{ old('reference') ?? $payment->reference }}">
+                        <input type="text" id="reference" name="reference" class="form-control @error('reference') is-invalid @enderror" value="{{ old('reference') }}">
 
                         @error('reference')
                         <span class="invalid-feedback" role="alert">
@@ -66,8 +81,18 @@
                         @enderror
                     </div>
                     <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" name="date" class="form-control @error('date') is-invalid @enderror" value="{{ old('date') }}">
+
+                        @error('date')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="form-group">
                         <a href="{{ back() }}" class="btn btn-warning">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
             </div>

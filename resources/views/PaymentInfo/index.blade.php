@@ -16,48 +16,34 @@
     <div class="container-fluid container-custom py-4">
         <div class="card">
             <div class="card-header bg-primary text-light">
-                <h4>Payments</h4>
+                <h4>Payment Information</h4>
             </div>
             <div class="card-body">
-                @if($payments->count())
+                @if($paymentInfos->count())
                     <div class="table-responsive-lg">
                         <table class="table table-bordered table-striped">
                             <thead class="thead-dark">
                             <tr>
                                 <th>#</th>
-                                <th>Course</th>
-                                <th>Student</th>
+                                <th>Method</th>
                                 <th>Account No.</th>
-                                <th>Transaction ID</th>
-                                <th>Amount</th>
-                                <th>Reference</th>
-                                <th>Status</th>
+                                <th>Account Type</th>
                                 <th class="text-center">Operations</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($payments as $payment)
+                            @foreach($paymentInfos as $paymentInfo)
                                 <tr>
                                     <td>{{ $loop->index+1 }}</td>
-                                    <td>{{ $payment->course->title }}</td>
-                                    <td>{{ $payment->student->name }}</td>
-                                    <td>{{ $payment->account_no }}</td>
-                                    <td>{{ $payment->transaction_id }}</td>
-                                    <td>{{ $payment->amount }}</td>
-                                    <td>{{ $payment->reference }}</td>
-                                    <td>@if($payment->matched()) matched, @endif @if($payment->is_verified) Verified @elseif($payment->needs_verification) Pending Verification @endif</td>
+                                    <td>{{ $paymentInfo->method }}</td>
+                                    <td>{{ $paymentInfo->account_no }}</td>
+                                    <td>{{ $paymentInfo->account_type }}</td>
                                     <td>
                                         <div class="row justify-content-center">
-                                            @if($payment->needs_verification)
-                                            <form action="{{ route('admin.payment.verify', ['course'=>$payment->course, 'payment'=>$payment]) }}" method="post">
-                                                @csrf
-                                                <button type="submit" class="btn btn-outline-info btn-sm mr-1" title="delete">verify</button>
-                                            </form>
-                                            @endif
                                             <div>
-                                                <a class="btn btn-primary btn-sm" href="{{ route('payment.edit', ['course'=>$payment->course, 'payment'=>$payment]) }}" title="edit"><span data-feather="edit" style="height: 15px; width: 15px; padding: 0"></span></a>
+                                                <a class="btn btn-primary btn-sm" href="{{ route('payment-info.edit', ['course'=>$course, 'payment_info'=>$paymentInfo]) }}" title="edit"><span data-feather="edit" style="height: 15px; width: 15px; padding: 0"></span></a>
                                             </div>
-                                            <form class="ml-1" action="{{ route('admin.payment.destroy', ['course'=>$payment->course, 'payment'=>$payment]) }}" method="post">
+                                            <form class="pl-1" action="{{ route('payment-info.destroy', ['course'=>$course, 'payment_info'=>$paymentInfo]) }}" method="post">
                                                 @method('DELETE')
                                                 @csrf
                                                 <button type="submit" class="btn btn-danger btn-sm" title="delete"><span data-feather="trash-2" style="height: 15px; width: 15px; padding: 0"></span></button>
@@ -74,15 +60,15 @@
                 @endif
             </div>
             <div class="card-footer">
-                <div class="d-flex">
+                <div class="d-flex justify-content-between">
                     <div class="flex-column">
-                        <a href="{{ route('admin.home') }}" class="btn btn-light">Back</a>
+                        <a href="{{ route('module.index', $course) }}" class="btn btn-light">Back</a>
                     </div>
                     <div class="flex-column justify-content-center">
-                        {{ $payments->links() }}
+                        {{ $paymentInfos->links() }}
                     </div>
                     <div class="flex-column">
-
+                        <a href="{{ route('payment-info.create', $course) }}" class="btn btn-success">Create</a>
                     </div>
                 </div>
             </div>

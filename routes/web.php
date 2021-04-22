@@ -37,7 +37,8 @@ Route::group(['middleware'=>['auth:admin,instructor']],function (){
     Route::resource('/course/{course}/module/{module}/assessment/{assessment}/question/{question}/response','ResponseController')->except(['create','store']);
     Route::post('/course/{course}/module/{module}/assessment/{assessment}/question/{question}/response/{response}/grade','ResponseController@grade')->name('response.grade');
     Route::resource('/course/{course}/announcement','AnnouncementController')->except('index','show');
-    Route::resource('/course/{course}/recieved-payments', 'RecievedPaymentController');
+    Route::resource('/course/{course}/received-payment', 'ReceivedPaymentController')->except('show');
+    Route::resource('/course/{course}/payment-info','PaymentInfoController')->except('show');
 });
 
 Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
@@ -51,7 +52,7 @@ Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
     Route::resource('/course/{course}/discussion-panel/{discussionPanel}/thread/{thread}/reply','ReplyController')->only('store','update','destroy');
     Route::post('/reply/{reply}','ReplyController@markSolution')->name('mark.solution');
     Route::get('/course/{course}/discussion-panel/{discussionPanel}/thread/filter/{content}','ThreadController@filter')->name('thread.filter');
-    Route::resource('/course/{course}/payment','PaymentController')->except('destroy');
+    Route::resource('/course/{course}/payment','PaymentController')->except('index','destroy');
 });
 
 Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {
@@ -77,6 +78,8 @@ Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], f
     Route::resource('/subject','SubjectController');
     Route::get('/course/{course}/assign-institution/','CourseController@assignInstitutionForm')->name('course.assign.institution');
     Route::post('/course/{course}/assign-institution/','CourseController@assignInstitution')->name('course.institution.store');
+    Route::get('/payment','PaymentController@index')->name('payment.index');
+    Route::delete('/payment/{payment}','PaymentController@destroy')->name('payment.destroy');
     Route::post('/course/{course}/payment/{payment}/verify','PaymentController@verify')->name('payment.verify');
 });
 

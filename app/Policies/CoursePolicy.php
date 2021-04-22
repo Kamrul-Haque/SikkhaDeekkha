@@ -15,7 +15,9 @@ class CoursePolicy
         if (auth()->guard('admin')->check())
             return true;
         else if(auth()->guard('instructor')->check())
-            return $user->is_verified;
+            if ($user->is_verified)
+                return true;
+            else return $this->deny('Sorry! You are not verified yet.');
         else return false;
     }
 

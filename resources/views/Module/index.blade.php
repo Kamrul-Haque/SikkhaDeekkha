@@ -74,7 +74,6 @@
                                     <span data-feather="settings"></span>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="dropdownMenuButton">
-                                    <a href="{{ route('module.index', $course) }}" class="dropdown-item">Course Modules</a>
                                     @can('rate', $course)
                                         @if(!$course->rated())
                                             <a href="{{ route('student.course.rating', $course) }}" class="dropdown-item">Rate/Review this Course</a>
@@ -90,6 +89,8 @@
                                         <a href="{{ route('course.image.form', $course) }}" class="dropdown-item">Upload/Change Image</a>
                                         <a href="{{ route('module.create',$course) }}" class="dropdown-item">Create Module</a>
                                         <a href="{{ route('announcement.create',$course) }}" class="dropdown-item">Create Announcement</a>
+                                        <a href="{{ route('payment-info.index',$course) }}" class="dropdown-item">Payment Information</a>
+                                        <a href="{{ route('received-payment.index',$course) }}" class="dropdown-item">Payment Received</a>
                                         @can('leaveCourse', $course)
                                             <button type="button" class="dropdown-item text-danger" data-toggle="modal" data-target="#leave">Leave Course</button>
                                         @endcan

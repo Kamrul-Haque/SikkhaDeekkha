@@ -23,11 +23,12 @@
                 <h4>Edit Payment</h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('payment.update', ['course'=>$course, 'payment'=>$payment]) }}" method="post">
+                <form action="{{ route('payment.update', ['payment'=>$payment, 'course'=>$course]) }}" method="post">
+                    @method('PUT')
                     @csrf
                     <div class="form-group">
                         <label for="acc">Account No.</label>
-                        <input type="number" id="acc" name="acc" class="form-control @error('acc') is-invalid @enderror" value="{{ old('acc') ?? $payment->account_no }}" required>
+                        <input type="text" id="acc" name="acc" class="form-control @error('acc') is-invalid @enderror" value="{{ old('acc') ?? $payment->account_no }}" required>
 
                         @error('acc')
                         <span class="invalid-feedback" role="alert">
@@ -46,16 +47,6 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="amount">Amount</label>
-                        <input type="number" id="amount" name="amount" class="form-control @error('amount') is-invalid @enderror" value="{{ old('amount') ?? $payment->amount }}" required>
-
-                        @error('amount')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
                         <label for="reference">Reference</label>
                         <input type="text" id="reference" name="reference" class="form-control @error('reference') is-invalid @enderror" value="{{ old('reference') ?? $payment->reference }}">
 
@@ -66,7 +57,7 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <a href="{{ back() }}" class="btn btn-warning">Cancel</a>
+                        <a href="{{ url()->previous() }}" class="btn btn-warning">Cancel</a>
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </form>

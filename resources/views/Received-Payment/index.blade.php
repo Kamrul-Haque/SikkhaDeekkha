@@ -16,41 +16,40 @@
     <div class="container-fluid container-custom py-4">
         <div class="card">
             <div class="card-header bg-primary text-light">
-                <h4>Admins</h4>
+                <h4>Received Payments</h4>
             </div>
             <div class="card-body">
-                @if($payments->count())
+                @if($receivedPayments->count())
                     <div class="table-responsive-lg">
                         <table class="table table-bordered table-striped">
                             <thead class="thead-dark">
                             <tr>
                                 <th>#</th>
-                                <th>Course</th>
-                                <th>Student</th>
+                                <th>Method</th>
                                 <th>Account No.</th>
                                 <th>Transaction ID</th>
                                 <th>Amount</th>
                                 <th>Reference</th>
-                                <th>Status</th>
+                                <th>Date</th>
                                 <th class="text-center">Operations</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($payments as $payment)
+                            @foreach($receivedPayments as $payment)
                                 <tr>
                                     <td>{{ $loop->index+1 }}</td>
-                                    <td>{{ $payment->course->name }}</td>
-                                    <td>{{ $payment->student->name }}</td>
+                                    <td>{{ $payment->method }}</td>
                                     <td>{{ $payment->account_no }}</td>
                                     <td>{{ $payment->transaction_id }}</td>
+                                    <td>{{ $payment->amount }}</td>
                                     <td>{{ $payment->reference }}</td>
-                                    <td>@if($payment->is_verified) Verified @elseif($payment->needs_verification) Pending Verification @else Failed @endif</td>
+                                    <td>{{ $payment->date }}</td>
                                     <td>
                                         <div class="row justify-content-center">
                                             <div class="pl-1">
-                                                <a class="btn btn-primary btn-sm" href="{{ route('payment.edit', ['course'=>$course, 'payment'=>$payment]) }}" title="edit"><span data-feather="edit" style="height: 15px; width: 15px; padding: 0"></span></a>
+                                                <a class="btn btn-primary btn-sm" href="{{ route('received-payment.edit', ['course'=>$course, 'received_payment'=>$payment]) }}" title="edit"><span data-feather="edit" style="height: 15px; width: 15px; padding: 0"></span></a>
                                             </div>
-                                            <form class="pl-1" action="{{ route('payment.destroy', ['course'=>$course, 'payment'=>$payment]) }}" method="post">
+                                            <form class="pl-1" action="{{ route('received-payment.destroy', ['course'=>$course, 'received_payment'=>$payment]) }}" method="post">
                                                 @method('DELETE')
                                                 @csrf
                                                 <button type="submit" class="btn btn-danger btn-sm" title="delete"><span data-feather="trash-2" style="height: 15px; width: 15px; padding: 0"></span></button>
@@ -67,15 +66,15 @@
                 @endif
             </div>
             <div class="card-footer">
-                <div class="d-flex">
+                <div class="d-flex justify-content-between">
                     <div class="flex-column">
-                        <a href="{{ route('admin.home') }}" class="btn btn-light">Back</a>
+                        <a href="{{ route('module.index', $course) }}" class="btn btn-light">Back</a>
                     </div>
                     <div class="flex-column justify-content-center">
-                        {{ $payments->links() }}
+                        {{ $receivedPayments->links() }}
                     </div>
                     <div class="flex-column">
-
+                        <a href="{{ route('received-payment.create', $course) }}" class="btn btn-success">ADD</a>
                     </div>
                 </div>
             </div>

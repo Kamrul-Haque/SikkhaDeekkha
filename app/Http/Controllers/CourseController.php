@@ -31,7 +31,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        $this->authorizeForUser(auth()->user(),'create');
+        $this->authorizeForUser(auth()->user(),'create', Course::class);
 
         $subjects = Subject::all();
         return view('Course.create',compact('subjects'));
@@ -45,7 +45,7 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorizeForUser(auth()->user(),'create');
+        $this->authorizeForUser(auth()->user(),'create', Course::class);
 
         $request->validate([
            'title'=>'required|string|min:5|unique:courses',
@@ -252,7 +252,7 @@ class CourseController extends Controller
 
         if($course->is_paid)
         {
-            return route('payment.create', compact('course'));
+            return redirect()->route('payment.create', compact('course'));
         }
         else
         {

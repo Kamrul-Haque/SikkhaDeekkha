@@ -33,6 +33,9 @@
                     <div class="list-group">
                         <h4>Filter</h4>
                         <div class="list-group-item">
+                            <a href="{{ route('thread.index', ['course'=>$course, 'discussionPanel'=>$discussionPanel]) }}" class="content-link">All Posts</a>
+                        </div>
+                        <div class="list-group-item">
                             <a href="{{ route('thread.filter', ['course'=>$course, 'discussionPanel'=>$discussionPanel, 'content'=>'0']) }}" class="content-link">General Discussion</a>
                         </div>
                         @foreach($course->modules as $module)

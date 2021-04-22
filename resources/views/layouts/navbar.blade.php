@@ -68,15 +68,13 @@
                         <a class="nav-link" href="{{ route('guest.course.index') }}">Courses</a>
                     </li>
                 @else
-                    @if(Auth::guard('instructor')->check())
-                        <li>
-                            <a class="nav-link" href="{{ route('course.create') }}">Create Course</a>
-                        </li>
-                    @endif
-                    @if(!Auth::guard('admin')->check())
                     <li>
                         <a class="nav-link" href="{{ route('course.index') }}">Courses</a>
                     </li>
+                    @can('create', \App\Course::class)
+                        <li>
+                            <a class="nav-link" href="{{ route('course.create') }}">Create Course</a>
+                        </li>
                     @endif
                 @endif
             </ul>
