@@ -93,7 +93,7 @@
                             <hr>
                             <h3>{{ $course->subject->subject_name }}</h3>
                             <h5>{{ $course->topic }}</h5>
-                            <h6 class="mt-3">Offered by <strong>@foreach($course->instructors as $instructor){{ $instructor->name }} @endforeach</strong></h6>
+                            <h6 class="mt-3">Offered by <strong>@foreach($course->instructors as $instructor){{ $instructor->name }}@continue($loop->last), @endforeach</strong></h6>
                             <br><br>
                             <div>
                                 @if($course->institution)
@@ -148,7 +148,7 @@
             </div>
             <br>
             @empty
-                <h4 class="display-4 text-center p-5">NO RECORDS FOUND</h4>
+                <h4 class="text-center p-5"><strong>NO RECORDS FOUND</strong></h4>
             @endforelse
         </div>
         <div class="col-sm-4 d-flex justify-content-center">

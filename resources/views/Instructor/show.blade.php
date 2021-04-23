@@ -93,12 +93,22 @@
                 </div>
                 <hr>
 
-                <div class="form-group row mb-0 justify-content-end">
-                    <div class="pr-2 pl-2">
+                <div class="form-group row mb-0 d-flex justify-content-between">
+                    <div class="flex-column pl-3">
                         <a href="{{ route('admin.instructor.index') }}" class="btn btn-light btn-sm">Back</a>
-                        <a href="{{ route('admin.institution.edit',$instructor) }}" class="btn btn-dark btn-sm">
-                            Edit
-                        </a>
+                    </div>
+                    <div class="flex-column pr-3">
+                        <div class="d-flex justify-content-end">
+                            @if(!$instructor->is_verified)
+                                <form action="{{ route('admin.instructor.verify', $instructor) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-info btn-sm mr-1">Verify</button>
+                                </form>
+                            @endif
+                            <a href="{{ route('admin.institution.edit', $instructor) }}" class="btn btn-dark btn-sm">
+                                Edit
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

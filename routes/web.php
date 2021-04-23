@@ -11,6 +11,7 @@
 |
 */
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +54,16 @@ Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
     Route::post('/reply/{reply}','ReplyController@markSolution')->name('mark.solution');
     Route::get('/course/{course}/discussion-panel/{discussionPanel}/thread/filter/{content}','ThreadController@filter')->name('thread.filter');
     Route::resource('/course/{course}/payment','PaymentController')->except('index','destroy');
+    Route::get('/notifications', function (){
+       return view('notifications');
+    })->name('notifications');
+    Route::post('/search', function (Request $request){
+        $courses = \App\Course::query()
+            ->where('title', 'LIKE', "%{$request->string}%")
+            ->orWhere('topic', 'LIKE', "%{$request->string}%")
+            ->paginate(10);
+        return view('search', compact('courses'));
+    })->name('search');
 });
 
 Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {
@@ -81,6 +92,7 @@ Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], f
     Route::get('/payment','PaymentController@index')->name('payment.index');
     Route::delete('/payment/{payment}','PaymentController@destroy')->name('payment.destroy');
     Route::post('/course/{course}/payment/{payment}/verify','PaymentController@verify')->name('payment.verify');
+    Route::post('/instructor/{instructor}/verify','InstructorController@verify')->name('instructor.verify');
 });
 
 Route::group(['prefix'=>'/instructor', 'as'=>'instructor.'], function () {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Instructor;
+use App\Notifications\AccountVerified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -183,5 +184,15 @@ class InstructorController extends Controller
         $instructor->save();
 
         return redirect()->route('instructor.profile')->with('toast_info', 'Successfully Uploaded');
+    }
+
+    public function verify(Instructor $instructor)
+    {
+        $instructor->is_verified = true;
+        $instructor->save();
+
+        $instructor->notify(new AccountVerified());
+
+        return redirect()->route('admin.instructor.index')->with('toast_info', 'Instructor Account Verified');
     }
 }

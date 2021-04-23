@@ -29,6 +29,9 @@
         .wishlist-button:hover{
             text-decoration: underline;
         }
+        th{
+            font-weight: 900;
+        }
     </style>
 @endsection
 
@@ -37,13 +40,13 @@
         <div class="info table-responsive-lg">
             @if($course->paymentInfos->count())
                 <table class="table border-bottom">
-                    <thead class="thead-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Method</th>
-                        <th>Account No.</th>
-                        <th>Account Type</th>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Method</th>
+                            <th>Account No.</th>
+                            <th>Account Type</th>
+                        </tr>
                     </thead>
                     <tbody>
                     @foreach($course->paymentInfos as $paymentInfo)

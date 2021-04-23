@@ -34,7 +34,7 @@ class CoursePolicy
     {
         if (auth()->guard('admin')->check())
         {
-            if (!$course->institution->first())
+            if (!$course->institution)
                 return true;
             else return $this->deny('Institution is already assigned.');
         }

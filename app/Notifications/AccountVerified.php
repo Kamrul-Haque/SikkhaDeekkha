@@ -7,19 +7,18 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PaymentConfirmed extends Notification
+class AccountVerified extends Notification
 {
     use Queueable;
 
-    public $payment;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($payment)
+    public function __construct()
     {
-        $this->payment = $payment;
+        //
     }
 
     /**
@@ -41,8 +40,7 @@ class PaymentConfirmed extends Notification
      */
     public function toMail($notifiable)
     {
-        $payment = $this->payment;
-        return (new MailMessage)->subject('Payment Confirmation')->markdown('emails.payment-confirmed', compact('payment'));
+        return (new MailMessage)->markdown('emails.account-verified')->subject('Account Verification');
     }
 
     /**
@@ -54,7 +52,7 @@ class PaymentConfirmed extends Notification
     public function toArray($notifiable)
     {
         return [
-            'course'=>$this->payment->course->title
+            //
         ];
     }
 }

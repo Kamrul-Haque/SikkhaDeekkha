@@ -32,6 +32,7 @@
                                 <th>Department</th>
                                 <th>Institution</th>
                                 <th>Address</th>
+                                <th>Verified</th>
                                 <th>Operations</th>
                             </tr>
                             </thead>
@@ -46,6 +47,7 @@
                                     <td> {{ $instructor->department }} </td>
                                     <td> {{ $instructor->institution }} </td>
                                     <td> {{ $instructor->address }} </td>
+                                    <td> @if($instructor->is_verified) true @else false @endif </td>
                                     <td>
                                         <div class="row justify-content-center">
                                             <a href="{{ route('admin.instructor.show', $instructor) }}" class="btn btn-dark btn-sm" title="view"><span data-feather="eye" style="height: 15px; width: 15px; padding: 0"></span></a>

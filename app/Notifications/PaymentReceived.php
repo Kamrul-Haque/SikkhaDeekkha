@@ -51,7 +51,7 @@ class PaymentReceived extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toArray($notifiable)
     {
         return [
             'course'=>$this->payment->course->title,

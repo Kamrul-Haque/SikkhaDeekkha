@@ -14,9 +14,10 @@ class Payment extends Model
 
         foreach ($recievedPayments as $recievedPayment)
         {
-            if($recievedPayment->account_no == $this->account_no)
-                if($recievedPayment->transaction_id == $this->transaction_id)
-                    return true;
+            if ($recievedPayment->method == $this->method)
+                if($recievedPayment->account_no == $this->account_no)
+                    if($recievedPayment->transaction_id == $this->transaction_id)
+                        return true;
         }
         return false;
     }

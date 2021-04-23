@@ -87,24 +87,39 @@
                     </li>
                 @else
                     <div class="nav-item mt-1 mr-3">
-                        <form class="d-flex">
-                            <input class="form-control search-box me-2" type="search" placeholder="Search Course..." aria-label="Search">
+                        <form action="{{ route('search') }}" class="d-flex" method="post">
+                            @csrf
+                            <input class="form-control search-box me-2" type="search" name="string" placeholder="Search Course..." aria-label="Search">
                             <button class="btn btn-outline-light btn-search btn-sm" type="submit"><span data-feather="search" class="p-1"></span></button>
                         </form>
                     </div>
-                    <div class="nav-item dropdown">
-                        <a class="nav-link notification-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="nav-item dropdown" id="notification">
+                        <a class="nav-link notification-button" type="button" id="notificationButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           onclick="{{ auth()->user()->unreadNotifications->markAsRead() }}">
                             <span data-feather="bell" class="notification-icon"></span>
-                            <span class="badge badge-primary">3</span>
+                            @if(auth()->user()->unreadNotifications->count())
+                                <span class="badge badge-primary">{{ auth()->user()->unreadNotifications->count() }}</span>
+                            @endif
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right bg-dark border-0" aria-labelledby="dropdownMenuButton">
-                            <span class="dropdown-item text-light">Notification 1</span>
-                            <hr>
-                            <span class="dropdown-item text-light">Notification 2</span>
-                            <hr>
-                            <span class="dropdown-item text-light">Notification 3</span>
-                            <hr>
-                            <span class="dropdown-item text-light">see all notifications</span>
+                        <div>
+                            <div class="dropdown-menu dropdown-menu-right bg-dark border-0" aria-labelledby="notificationButton">
+                                @foreach(auth()->user()->unreadNotifications as $notification)
+                                    <span class="dropdown-item text-light">
+                                    @if($notification->type === \App\Notifications\PaymentReceived::class)
+                                        Your Payment of {{ $notification->data['amount'] }} for {{ $notification->data['course'] }}
+                                        <br>has been received. Check email for details.
+                                    @elseif($notification->type === \App\Notifications\PaymentConfirmed::class)
+                                        Your Payment for {{ $notification->data['course'] }} has been confirmed. You are now enrolled into the course.
+                                    @elseif($notification->type === \App\Notifications\AccountVerified::class)
+                                        Your account has been verified. You can now teach in our platform.
+                                    @endif
+                                    </span>
+                                    <hr>
+                                @endforeach
+                                <span class="dropdown-item text-light">
+                                    <a href="{{ route('notifications') }}">see all notifications</a>
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <li class="nav-item dropdown">
@@ -160,4 +175,11 @@
         </div>
     </div>
 </nav>
+<script>
+    $(document).ready(function(){
+        $('#notification').on('hidden.bs.dropdown', function(){
+            location.reload();
+        });
+    });
+</script>
 
