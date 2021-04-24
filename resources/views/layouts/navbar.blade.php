@@ -31,6 +31,7 @@
     }
     .search-box{
         background: transparent;
+        width: 250px;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
         border-right: 0;
@@ -89,7 +90,7 @@
                     <div class="nav-item mt-1 mr-3">
                         <form action="{{ route('search') }}" class="d-flex" method="post">
                             @csrf
-                            <input class="form-control search-box me-2" type="search" name="string" placeholder="Search Course..." aria-label="Search">
+                            <input class="form-control search-box" type="search" name="string" placeholder="Search course with title or topic..." aria-label="Search">
                             <button class="btn btn-outline-light btn-search btn-sm" type="submit"><span data-feather="search" class="p-1"></span></button>
                         </form>
                     </div>
