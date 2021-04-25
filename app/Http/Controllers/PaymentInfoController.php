@@ -23,7 +23,7 @@ class PaymentInfoController extends Controller
     {
         $request->validate([
             'service'=>'required',
-            'acc'=>'required|digits:11',
+            'acc'=>'required|digits:10',
             'type'=>'required',
         ]);
 
@@ -46,7 +46,7 @@ class PaymentInfoController extends Controller
     {
         $request->validate([
             'service'=>'required',
-            'acc'=>'required|digits:11',
+            'acc'=>'required|digits:10',
             'type'=>'required',
         ]);
 

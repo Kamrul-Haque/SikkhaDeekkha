@@ -29,7 +29,7 @@ class PaymentController extends Controller
 
         $request->validate([
            'type'=>'required',
-           'acc'=>'required|digits:11',
+           'acc'=>'required|digits:10',
            'trxid'=>'required|string|unique:payments,transaction_id',
            'amount'=>'required|numeric|in:'.$course->fee
         ]);
@@ -61,7 +61,7 @@ class PaymentController extends Controller
         $this->authorizeForUser(auth()->user(),'update', $payment);
 
         $request->validate([
-            'acc'=>'required|digits:11',
+            'acc'=>'required|digits:10',
             'trxid'=>'required|string|unique:payments,transaction_id,'.$payment->id,
         ]);
 

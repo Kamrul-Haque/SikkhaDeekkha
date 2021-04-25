@@ -67,8 +67,8 @@ Route::group(['middleware'=>['auth:admin,instructor,student']],function (){
 });
 
 Route::group(['prefix'=>'/admin', 'as'=>'admin.'], function () {
-    Route::get('/login', 'auth\LoginController@showAdminLoginForm')->name('login.form');
-    Route::post('/login', 'auth\LoginController@adminLogin')->name('login');
+    Route::get('/login', 'Auth\LoginController@showAdminLoginForm')->name('login.form');
+    Route::post('/login', 'Auth\LoginController@adminLogin')->name('login');
     Route::post('/logout','AdminController@adminLogout')->name('logout');
 
     Route::post('/password/email', 'Auth\AdminForgotPasswordController@sendResetLinkEmail')->name('password.email');
@@ -96,11 +96,11 @@ Route::group(['prefix'=>'/admin', 'as'=>'admin.', 'middleware'=>'auth:admin'], f
 });
 
 Route::group(['prefix'=>'/instructor', 'as'=>'instructor.'], function () {
-    Route::get('/login', 'auth\LoginController@showInstructorLoginForm')->name('login.form');
-    Route::post('/login', 'auth\LoginController@instructorLogin')->name('login');
-    Route::post('/logout','instructorController@instructorLogout')->name('logout');
-    Route::get('/register', 'auth\RegisterController@showInstructorRegisterForm')->name('register.form');
-    Route::post('/register', 'auth\RegisterController@instructorCreate')->name('register');
+    Route::get('/login', 'Auth\LoginController@showInstructorLoginForm')->name('login.form');
+    Route::post('/login', 'Auth\LoginController@instructorLogin')->name('login');
+    Route::post('/logout','InstructorController@instructorLogout')->name('logout');
+    Route::get('/register', 'Auth\RegisterController@showInstructorRegisterForm')->name('register.form');
+    Route::post('/register', 'Auth\RegisterController@instructorCreate')->name('register');
 
     Route::post('/password/email', 'Auth\InstructorForgotPasswordController@sendResetLinkEmail')->name('password.email');
     Route::get('/password/reset', 'Auth\InstructorForgotPasswordController@showLinkRequestForm')->name('password.request');
@@ -120,11 +120,11 @@ Route::group(['prefix'=>'/instructor', 'as'=>'instructor.', 'middleware'=>'auth:
 });
 
 Route::group(['prefix'=>'/student', 'as'=>'student.'], function () {
-    Route::get('/login', 'auth\LoginController@showStudentLoginForm')->name('login.form');
-    Route::post('/login', 'auth\LoginController@studentLogin')->name('login');
-    Route::post('/logout','studentController@studentLogout')->name('logout');
-    Route::get('/register', 'auth\RegisterController@showStudentRegisterForm')->name('register.form');
-    Route::post('/register', 'auth\RegisterController@studentCreate')->name('register');
+    Route::get('/login', 'Auth\LoginController@showStudentLoginForm')->name('login.form');
+    Route::post('/login', 'Auth\LoginController@studentLogin')->name('login');
+    Route::post('/logout','StudentController@studentLogout')->name('logout');
+    Route::get('/register', 'Auth\RegisterController@showStudentRegisterForm')->name('register.form');
+    Route::post('/register', 'Auth\RegisterController@studentCreate')->name('register');
 
     Route::post('/password/email', 'Auth\StudentForgotPasswordController@sendResetLinkEmail')->name('password.email');
     Route::get('/password/reset', 'Auth\StudentForgotPasswordController@showLinkRequestForm')->name('password.request');

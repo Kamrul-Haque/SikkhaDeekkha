@@ -23,7 +23,7 @@ class ReceivedPaymentController extends Controller
     {
         $request->validate([
             'type'=>'required',
-            'acc'=>'required|digits:11',
+            'acc'=>'required|digits:10',
             'trxid'=>'required|string|unique:received_payments,transaction_id',
             'amount'=>'required|numeric|in:'.$course->fee,
             'date'=>'required|before_or_equal:today'
@@ -51,7 +51,7 @@ class ReceivedPaymentController extends Controller
     {
         $request->validate([
             'type'=>'required',
-            'acc'=>'required|digits:11',
+            'acc'=>'required|digits:10',
             'trxid'=>'required|string|unique:received_payments,transaction_id,'.$receivedPayment->id,
             'amount'=>'required|numeric|in:'.$course->fee,
             'date'=>'required|before_or_equal:today'

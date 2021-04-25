@@ -28,13 +28,18 @@
                     @csrf
                     <div class="form-group">
                         <label for="acc">Account No.</label>
-                        <input type="text" id="acc" name="acc" class="form-control @error('acc') is-invalid @enderror" value="{{ old('acc') ?? $payment->account_no }}" required>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">+880</div>
+                            </div>
+                            <input id="acc" type="tel" class="form-control @error('acc') is-invalid @enderror" name="acc" value="{{ old('acc') ?? $payment->account_no }}" required>
 
-                        @error('acc')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
+                            @error('acc')
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="trxid">Transaction ID</label>
