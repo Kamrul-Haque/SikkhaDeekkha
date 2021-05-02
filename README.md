@@ -1,7 +1,7 @@
-### Short Description
+## Short Description
 an online course platform like Edx, Coursera, Udemy etc.  with combined and advanced features compared to these platforms, specially designed for Bangladeshi Students.
     
-## Main Features
+### Main Features
 - Guard Based Multi-Auth for 3 types of users: Instructor, Student & Admin
 - Free & Paid Courses
 - Youtube Embedded video player for Video Content, working on Vimeo Streaming for paid courses
@@ -14,7 +14,7 @@ an online course platform like Edx, Coursera, Udemy etc.  with combined and adva
 - Instructor Account Verification System
 
 
-## Technology Stack
+### Technology Stack
 - PHP Laravel Framework
 - Bootstrap
 - jQuery
