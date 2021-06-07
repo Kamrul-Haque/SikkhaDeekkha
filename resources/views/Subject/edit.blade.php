@@ -3,7 +3,7 @@
 @section('content')
     <div class="container py-4">
         <div class="card">
-            <div class="card-header bg-dark text-light">
+            <div class="card-header">
                 Edit Subject
             </div>
             <div class="card-body">

@@ -83,7 +83,35 @@
             <ul class="navbar-nav ml-auto">
                 <!-- Authentication Links -->
                 @guest
-                    <li class="nav-item">
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Login
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right bg-dark border-0" aria-labelledby="navbarDropdown">
+                            <a href="{{ route('student.login.form') }}" class="dropdown-item text-light">
+                                Student Login
+                            </a>
+                            <a href="{{ route('instructor.login.form') }}" class="dropdown-item text-light">
+                                Instructor Login
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Register
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right bg-dark border-0" aria-labelledby="navbarDropdown">
+                            <a href="{{ route('student.register.form') }}" class="dropdown-item text-light">
+                                Student Register
+                            </a>
+                            <a href="{{ route('instructor.register.form') }}" class="dropdown-item text-light">
+                                Instructor Register
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item ml-3">
                         <a class="nav-link" href="{{ route('admin.login.form') }}">Admin Login</a>
                     </li>
                 @else

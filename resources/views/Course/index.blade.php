@@ -15,12 +15,6 @@
         .display-4{
             text-shadow: 1px 1px dimgrey!important;
         }
-        .card{
-            filter: drop-shadow(0px 1px 1px darkgray);
-        }
-        .card:hover{
-            filter: drop-shadow(1px 3px 3px darkgray);
-        }
         hr{
             width: 100%;
         }

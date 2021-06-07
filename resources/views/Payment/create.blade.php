@@ -70,8 +70,8 @@
         </div>
         <br>
         <div class="card">
-            <div class="card-header bg-primary text-light">
-                <h4>Payment</h4>
+            <div class="card-header">
+                Payment
             </div>
             <div class="card-body">
                 <form action="{{ route('payment.store', $course) }}" method="post">

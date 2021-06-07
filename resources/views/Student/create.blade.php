@@ -5,8 +5,8 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header @guest bg-primary @else bg-dark @endguest text-light">
-                        <h4>@guest Student Registration @else Create Student @endguest</h4>
+                    <div class="card-header">
+                        @guest Student Registration @else Create Student @endguest
                     </div>
 
                     <div class="card-body">

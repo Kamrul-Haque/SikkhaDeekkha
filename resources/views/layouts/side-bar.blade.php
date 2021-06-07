@@ -23,8 +23,8 @@
         padding-top: 35px;
         min-width: 200px;
         max-width: 200px;
-        min-height: 100vh;
-        max-height: 100vh;
+        min-height: 100%;
+        max-height: 100%;
         background: #23272b;
         color: #fff;
         -webkit-transition: all 1s;

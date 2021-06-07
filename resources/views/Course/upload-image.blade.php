@@ -3,8 +3,8 @@
 @section('content')
     <div class="container py-4">
         <div class="card">
-            <div class="card-header bg-success text-light">
-                <h4>Image Upload</h4>
+            <div class="card-header">
+                Image Upload
             </div>
             <div class="card-body">
                 <form action="{{ route('course.image.upload', $course) }}" method="post" enctype="multipart/form-data">

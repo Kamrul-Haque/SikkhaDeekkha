@@ -15,8 +15,8 @@
 @section('content')
     <div class="container-fluid container-custom py-4">
         <div class="card">
-            <div class="card-header bg-primary text-light">
-                <h4>Payments</h4>
+            <div class="card-header">
+                Payments
             </div>
             <div class="card-body">
                 @if($payments->count())

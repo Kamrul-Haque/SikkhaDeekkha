@@ -3,8 +3,8 @@
 @section('content')
     <div class="container py-4">
         <div class="card">
-            <div class="card-header bg-dark text-light">
-                <h4>Assign Institution</h4>
+            <div class="card-header">
+                Assign Institution
             </div>
             <div class="card-body">
                 <form action="{{ route('admin.course.institution.store',$course) }}" method="post">

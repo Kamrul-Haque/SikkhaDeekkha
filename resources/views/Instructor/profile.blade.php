@@ -15,7 +15,7 @@
 @section('content')
     <div class="container py-4">
         <div class="card">
-            <div class="card-header bg-success text-light">Instructor Profile</div>
+            <div class="card-header">Instructor Profile</div>
 
             <div class="card-body pl-4">
                 <div class="d-flex row">

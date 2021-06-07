@@ -3,8 +3,8 @@
 @section('content')
     <div class="container py-4">
         <div class="card">
-            <div class="card-header bg-primary text-light">
-                <h4>Update Rating/Review</h4>
+            <div class="card-header">
+                Update Rating/Review
             </div>
             <div class="card-body">
                 <form action="{{ route('student.course.rating.update',['course'=>$course,'rating'=>$rating]) }}" method="post">

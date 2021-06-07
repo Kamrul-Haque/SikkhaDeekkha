@@ -16,7 +16,7 @@
     <div class="container-fluid custom-container p-4">
         <div class="card">
             <div class="card-header bg-primary text-light">
-                <h4>Instructors</h4>
+                Instructors
             </div>
             <div class="card-body">
                 @if($instructors->count() > 0)

@@ -15,8 +15,8 @@
 @section('content')
     <div class="container-fluid custom-container p-4">
         <div class="card">
-            <div class="card-header bg-primary text-light">
-                <h4>Students</h4>
+            <div class="card-header">
+                Students
             </div>
             <div class="card-body">
                 @if($students->count() > 0)

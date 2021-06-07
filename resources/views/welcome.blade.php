@@ -332,11 +332,9 @@
                             <br>
                             <div class="text-light">
                                 <h5><span data-feather="phone" class="text-success"></span> +88 01521-479924</h5>
-                                <h5><span data-feather="phone" class="text-success"></span> +88 01521-214410</h5>
                             </div>
                             <br>
                             <div class="text-light">
-                                <h5><span data-feather="mail" class="text-info"></span> showaive35-263@diu.edu.bd</h5>
                                 <h5><span data-feather="mail" class="text-info"></span> kamrul35-255@diu.edu.bd</h5>
                             </div>
                             <br>

@@ -5,8 +5,8 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header @if(Auth::guard('admin')->check()) bg-dark @else bg-success @endif text-light">
-                        <h4>@if(Auth::guard('admin')->check()) Edit Instructor @else Update Profile @endif</h4>
+                    <div class="card-header">
+                        @if(Auth::guard('admin')->check()) Edit Instructor @else Update Profile @endif
                     </div>
 
                     <div class="card-body">

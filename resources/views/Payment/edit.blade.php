@@ -19,8 +19,8 @@
 @section('content')
     <div class="container py-4">
         <div class="card">
-            <div class="card-header bg-primary text-light">
-                <h4>Edit Payment</h4>
+            <div class="card-header">
+                Edit Payment
             </div>
             <div class="card-body">
                 <form action="{{ route('payment.update', ['payment'=>$payment, 'course'=>$course]) }}" method="post">

@@ -20,8 +20,8 @@
     #sidebar {
         position: fixed;
         max-width: 250px;
-        min-height: 100vh;
-        max-height: 100vh;
+        min-height: 100%;
+        max-height: 100%;
         background: white;
         -webkit-transition: all 1s;
         -o-transition: all 1s;

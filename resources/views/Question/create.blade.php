@@ -14,8 +14,8 @@
 @section('content')
     <div class="container py-4">
         <div class="card">
-            <div class="card-header bg-success text-light">
-                <h4>Create Question</h4>
+            <div class="card-header">
+                Create Question
             </div>
             <div class="card-body">
                 <form action="{{ route('question.store', ['course'=>$course,'module'=>$module,'assessment'=>$assessment]) }}" method="post">

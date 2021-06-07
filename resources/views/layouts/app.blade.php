@@ -23,6 +23,7 @@
 
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/form.css') }}" rel="stylesheet">
         <style>
             html, body, th {
                 font-family: 'Nunito', sans-serif;

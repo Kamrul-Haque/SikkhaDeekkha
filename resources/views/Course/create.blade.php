@@ -17,9 +17,7 @@
 @section('content')
     <div class="container p-4">
         <div class="card">
-            <div class="card-header bg-success text-light">
-                <h4>Create Course</h4>
-            </div>
+            <div class="card-header">Create Course</div>
 
             <div class="card-body">
                 <form method="POST" action="{{ route('course.store') }}" enctype="multipart/form-data">

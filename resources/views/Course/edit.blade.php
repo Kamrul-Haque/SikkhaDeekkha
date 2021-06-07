@@ -14,8 +14,8 @@
 @section('content')
     <div class="container p-4">
         <div class="card">
-            <div class="card-header bg-success text-light">
-                <h4>Edit Course</h4>
+            <div class="card-header">
+               Edit Course
             </div>
 
             <div class="card-body">
