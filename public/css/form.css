@@ -132,16 +132,16 @@ label{
     font-size: medium;
 }
 .is-invalid{
-    border: 2px solid red !important;
+    border: 2px solid crimson !important;
 }
 .invalid-append{
     border-left: 0;
-    border-top: 2px solid red !important;
-    border-right: 2px solid red !important;
-    border-bottom: 2px solid red !important;
+    border-top: 2px solid crimson !important;
+    border-right: 2px solid crimson !important;
+    border-bottom: 2px solid crimson !important;
 }
 .invalid-icon{
-    color: red !important;
+    color: crimson !important;
 }
 .text-custom{
     color: dodgerblue !important;
