@@ -5,8 +5,8 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header bg-dark text-light">
-                        <h4>Edit Admin</h4>
+                    <div class="card-header">
+                        Edit Admin
                     </div>
 
                     <div class="card-body">

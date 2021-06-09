@@ -3,7 +3,7 @@
 @section('content')
     <div class="container pt-4">
         <div class="card">
-            <div class="card-header bg-success text-light">
+            <div class="card-header">
                 Edit Announcement
             </div>
             <div class="card-body">

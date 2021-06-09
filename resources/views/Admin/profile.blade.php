@@ -14,7 +14,7 @@
 @section('content')
     <div class="container py-4">
         <div class="card">
-            <div class="card-header bg-dark text-light">Admin Profile</div>
+            <div class="card-header">Admin Profile</div>
 
             <div class="card-body pl-4">
                 <h4 class="font-weight-bolder">{{ Auth::user()->name }}</h4>

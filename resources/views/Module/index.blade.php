@@ -180,6 +180,7 @@
                     @forelse($module->contents as $content)
                     <div class="row">
                         <div class="col-md-10">
+                            <span class="ml-4" @if($content->type == 'Video') data-feather="play" @elseif($content->type == 'Text') data-feather="file-text" @elseif($content->type == 'Link') data-feather="link" @elseif($content->type == 'File') data-feather="file" @endif></span>
                             <a href="{{ route('content.show', ['course'=>$course,'module'=>$module,'content'=>$content]) }}" class="pl-4 content-link">{{ $content->title }}</a>
                         </div>
                         @can('modify', $course)
@@ -203,6 +204,7 @@
                         @if(!(auth()->guard('student')->check() && !($assessment->is_published)))
                         <div class="row">
                             <div class="col-md-10">
+                                <span class="ml-4" data-feather="edit-3"></span>
                                 <a href="{{ route('assessment.show', ['course'=>$course,'module'=>$module,'assessment'=>$assessment]) }}" class="pl-4 content-link">{{ $assessment->title }}</a>
                             </div>
                             @can('modify', $course)

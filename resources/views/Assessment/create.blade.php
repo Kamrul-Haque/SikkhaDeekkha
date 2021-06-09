@@ -14,8 +14,8 @@
 @section('content')
     <div class="container py-4">
         <div class="card">
-            <div class="card-header bg-success text-light">
-                <h4>Create Assessment</h4>
+            <div class="card-header">
+                Create Assessment
             </div>
 
             <div class="card-body">

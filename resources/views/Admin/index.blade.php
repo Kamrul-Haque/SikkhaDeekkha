@@ -15,8 +15,8 @@
 @section('content')
     <div class="container-fluid container-custom py-4">
         <div class="card">
-            <div class="card-header bg-primary text-light">
-                <h4>Admins</h4>
+            <div class="card-header">
+                Admins
             </div>
             <div class="card-body">
                 @if($admins->count()>0)

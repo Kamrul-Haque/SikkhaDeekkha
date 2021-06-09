@@ -43,7 +43,7 @@
             border-top: 1px solid black;
             width: 70%;
         }
-        button{
+        .login{
             display: block;
             position: relative;
             z-index: 5!important;
@@ -133,7 +133,7 @@
                         <div class="row">
                             <div class="col-md-5"></div>
                             <div class="dropdown col-md-1 float-right pr-1">
-                                <button class="dropdown-button btn btn-block btn-success btn-lg" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="dropdown-button login btn btn-block btn-success btn-lg" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Register
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right bg-transparent border-0 text-right" aria-labelledby="dropdownMenuButton">
@@ -142,7 +142,7 @@
                                 </div>
                             </div>
                             <div class="dropdown col-md-1 float-left pl-1">
-                                <button class="dropdown-button btn btn-block btn-primary btn-lg" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="dropdown-button login btn btn-block btn-primary btn-lg" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Login
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-left bg-transparent border-0 text-left" aria-labelledby="dropdownMenuButton">

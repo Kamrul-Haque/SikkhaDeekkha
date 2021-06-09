@@ -74,46 +74,46 @@ input:focus, select:focus, textarea:focus{
 .form-group>.input-group>.form-control:focus+.input-group-append>.icon{
     color: dodgerblue !important;
 }
-.btn-primary{
+.btn-primary.custom{
     background: dodgerblue !important;
     color: white;
     font-weight: bold;
     border-radius: 0;
 }
-.btn-primary:hover{
+.btn-primary.custom:hover{
     color: white;
     border-color: dodgerblue !important;
     box-shadow: 1px 1px white, 3px 3px dodgerblue !important;
 }
-.btn-success{
+.btn-success.custom{
     background: mediumseagreen !important;
     color: white;
     font-weight: bold;
     border-radius: 0;
 }
-.btn-success:hover{
+.btn-success.custom:hover{
     color: white;
     border-color: mediumseagreen !important;
     box-shadow: 1px 1px white, 3px 3px mediumseagreen !important;
 }
-.btn-dark{
+.btn-dark.custom{
     background: black !important;
     color: white;
     font-weight: bold;
     border-radius: 0;
 }
-.btn-dark:hover{
+.btn-dark.custom:hover{
     color: white;
     border-color: black !important;
     box-shadow: 1px 1px white, 3px 3px black !important;
 }
-.btn-warning{
+.btn-warning.custom{
     background: darkorange !important;
     color: white;
     font-weight: bold;
     border-radius: 0;
 }
-.btn-warning:hover{
+.btn-warning.custom:hover{
     color: white;
     border-color: darkorange !important;
     box-shadow: 1px 1px white, 3px 3px darkorange !important;

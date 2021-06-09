@@ -53,7 +53,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-dark">
+                                <button type="submit" class="btn btn-dark custom">
                                     {{ __('Login') }}
                                 </button>
                                 <span class="float-right"><a href="{{ route('admin.password.request') }}" class="text-custom">Forgot Your Password?</a></span>

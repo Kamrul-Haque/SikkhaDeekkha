@@ -154,7 +154,7 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn @guest btn-success @else btn-dark @endguest">Submit</button>
+                                    <button type="submit" class="btn custom @guest btn-success @else btn-dark @endguest">Submit</button>
                                 </div>
                             </div>
                         </form>

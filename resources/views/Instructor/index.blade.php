@@ -15,7 +15,7 @@
 @section('content')
     <div class="container-fluid custom-container p-4">
         <div class="card">
-            <div class="card-header bg-primary text-light">
+            <div class="card-header">
                 Instructors
             </div>
             <div class="card-body">

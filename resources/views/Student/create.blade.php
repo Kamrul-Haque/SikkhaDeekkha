@@ -163,7 +163,7 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn @guest btn-primary @else btn-dark @endguest">
+                                    <button type="submit" class="btn custom @guest btn-primary @else btn-dark @endguest">
                                         Submit
                                     </button>
                                 </div>
