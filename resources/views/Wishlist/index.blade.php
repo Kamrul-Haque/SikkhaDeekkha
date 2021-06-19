@@ -62,7 +62,7 @@
     <div class="container-fluid pl-0 pr-0">
         <div class="jumbotron">
             <div class="container">
-                <h4 class="display-4">Courses</h4>
+                <h4 class="display-4">Wishlists</h4>
             </div>
         </div>
         <div class="container">
