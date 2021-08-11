@@ -1,4 +1,4 @@
-## Short Description
+## SikkhaDeekkha
 an online course platform like Edx, Coursera, Udemy etc.  with combined and advanced features compared to these platforms, specially designed for Bangladeshi Students.
     
 ### Main Features
